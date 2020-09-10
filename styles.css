@@ -1,5 +1,5 @@
 body {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
 }
 
 .column {
@@ -20,15 +20,16 @@ textarea {
 
 .hide-select::selection {}
 
-#startButton {
+.btn-size1 {
   width: 150px;
   height: 50px;
   font-size: 19px;
+  margin-right: 10px;
 }
 
 .pretty-button {
-  background-color : #2db92d;
-  border: 2px solid #2db92d;
+  background-color : black;
+  border: 2px solid black;
   color: white;
   transition-duration: 0.2s;
   border-radius: 2px; 
@@ -38,6 +39,16 @@ textarea {
 .pretty-button:hover {
   background-color: white;
   color: black;
+}
+
+.pretty-button:disabled {
+  background-color : #a0a0a0;
+  color: white;
+  border: 2px solid #a0a0a0;
+}
+
+.pretty-button:hover:disabled {
+  background-color : #a0a0a0;
 }
 
 .green-btn {
@@ -51,3 +62,11 @@ textarea {
   color: black;
 }
 
+.darkred-btn {
+  background-color : #c40000;
+  border-color: #c40000;
+}
+
+.darkred-btn:hover {
+  background-color: white;
+}
