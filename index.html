@@ -4,13 +4,13 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <button type="button" id="startButton">Click here to start typing</button>
+        <button type="button" id="startButton" class="pretty-button green-btn">Click to start</button>
         <p id="status"><br></p><br>
         <div class="column">
-            <textarea rows="20" id="editor" class="textarea1" style="resize: none" readonly></textarea>
+            <textarea rows="20" id="editor" style="resize: none" readonly></textarea>
         </div>
         <div class="column">
-            <textarea rows="20" style="resize: none" readonly id="need" class="textarea1"></textarea>
+            <textarea rows="20" style="resize: none" readonly id="target" class="hide-select" unselectable="on"></textarea>
         </div>
         <script src="main.js"></script>
     </body>

@@ -1,14 +1,14 @@
 let editor = document.getElementById("editor");
-let need = document.getElementById("need");
+let target = document.getElementById("target");
 let button = document.getElementById("startButton");
-let needText = "Hello, world!";
+let targetText = "Hello, world!";
 let status = document.getElementById("status");
+let startTime = undefined;
 
 window.onload = function() {
-    need.value = needText;
+    target.value = targetText;
 };
 
-let startTime = undefined;
 
 button.onclick = function() {
     startTime = new Date();
@@ -18,14 +18,31 @@ button.onclick = function() {
     editor.readOnly = false;
 }
 
+
 editor.oninput = function() {
-    if (editor.value == needText) {
-        status.innerHTML = "Done, your time: " + Math.abs(new Date() - startTime) / 1000.0;
+    if (editor.value == targetText) {
+        status.innerHTML = "Done, your time: " + Math.abs(new Date() - startTime) / 1000.0 + "s";
         startTime = undefined;
         editor.readOnly = true;
     }
 };
 
-need.addEventListener('copy', (event) => {
+
+target.oncopy = function(event) {
     event.preventDefault();
-});
+};
+
+
+deselect = function() {
+  if (window.getSelection) {
+      if (window.getSelection().empty) {  // Chrome
+        window.getSelection().empty();
+      } else if (window.getSelection().removeAllRanges) {  // Firefox
+        window.getSelection().removeAllRanges();
+      }
+    } else if (document.selection) {  // IE?
+      document.selection.empty();
+    }
+}
+
+target.onselect = deselct;
