@@ -8,16 +8,16 @@ let typingTimer;
 
 
 function time2secs(tm) {
-  return (tm / 1000).toFixed(1);
+    return (tm / 1000).toFixed(1);
 }
 
 
 function showTypingTimer() {
-  if (typeof startTime == "undefined") {
-      return;
-  }
-  var tm = time2secs(new Date() - startTime);
-  status.innerHTML = "You type: " + tm + "s";
+    if (typeof startTime == "undefined") {
+        return;
+    }
+    var tm = time2secs(new Date() - startTime);
+    status.innerHTML = "You type: " + tm + "s";
 } 
 
 
@@ -52,14 +52,6 @@ target.oncopy = function(event) {
 
 
 target.onselect = function() { // deselect
-  if (window.getSelection) {
-      if (window.getSelection().empty) {  // Chrome
-        window.getSelection().empty();
-      } else if (window.getSelection().removeAllRanges) {  // Firefox
-        window.getSelection().removeAllRanges();
-      }
-    } else if (document.selection) {  // IE?
-      document.selection.empty();
-    }
+  target.selectionStart = target.selectionEnd;
 };
 
