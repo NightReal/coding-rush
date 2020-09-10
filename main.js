@@ -13,12 +13,15 @@ let startTime = undefined;
 button.onclick = function() {
     startTime = new Date();
     editor.value = "";
-    status.value = "Now type";
+    status.innerHTML = "Now type";
+    editor.focus();
+    editor.readOnly = false;
 }
 
 editor.oninput = function() {
     if (editor.value == needText) {
-        status.value = "Done, your time: " + Math.abs(new Date() - startTime) / 1000.0;
+        status.innerHTML = "Done, your time: " + Math.abs(new Date() - startTime) / 1000.0;
         startTime = undefined;
+        editor.readOnly = true;
     }
 };
