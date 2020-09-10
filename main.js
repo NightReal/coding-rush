@@ -25,3 +25,7 @@ editor.oninput = function() {
         editor.readOnly = true;
     }
 };
+
+need.addEventListener('copy', (event) => {
+    event.preventDefault();
+});
