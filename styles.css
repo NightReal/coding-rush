@@ -1,14 +1,54 @@
+body {
+  background-color: #FAFAFA;
+}
+
 .column {
   float: left;
   width: 50%;
 }
 
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
+textarea {
+  font-size: 16px;
+  width:98%;
+  border: 1px solid gray;
+  border-radius: 1px; 
 }
 
-.textarea1 {
-  width:98%;
+#target:focus {
+  outline:none;
 }
+
+.hide-select::selection {}
+
+
+#startButton {
+  width: 150px;
+  height: 50px;
+  font-size: 19px;
+}
+
+.pretty-button {
+  background-color : #2db92d;
+  border: 2px solid #2db92d;
+  color: white;
+  transition-duration: 0.2s;
+  border-radius: 2px; 
+  outline: none;
+}
+
+.pretty-button:hover {
+  background-color: white;
+  color: black;
+}
+
+.green-btn {
+  background-color : #2db92d;
+  border-color: #2db92d;
+  color: white;
+}
+
+.green-btn:hover {
+  background-color: white;
+  color: black;
+}
+
