@@ -4,6 +4,22 @@ let button = document.getElementById("startButton");
 let targetText = "Hello, world!";
 let status = document.getElementById("status");
 let startTime = undefined;
+let typingTimer;
+
+
+function time2secs(tm) {
+  return (tm / 1000).toFixed(1);
+}
+
+
+function showTypingTimer() {
+  if (typeof startTime == "undefined") {
+      return;
+  }
+  var tm = time2secs(new Date() - startTime);
+  status.innerHTML = "You type: " + tm + "s";
+} 
+
 
 window.onload = function() {
     target.value = targetText;
@@ -11,17 +27,19 @@ window.onload = function() {
 
 
 button.onclick = function() {
-    startTime = new Date();
     editor.value = "";
-    status.innerHTML = "Now type";
-    editor.focus();
+    startTime = new Date();
+    showTypingTimer();
+    typingTimer = setInterval(showTypingTimer, 100);
     editor.readOnly = false;
+    editor.focus();
 }
 
 
 editor.oninput = function() {
     if (editor.value == targetText) {
-        status.innerHTML = "Done, your time: " + Math.abs(new Date() - startTime) / 1000.0 + "s";
+        clearInterval(typingTimer);
+        status.innerHTML = "Done! Your time: " + time2secs(new Date() - startTime) + "s";
         startTime = undefined;
         editor.readOnly = true;
     }
@@ -33,7 +51,7 @@ target.oncopy = function(event) {
 };
 
 
-deselect = function() {
+target.onselect = function() { // deselect
   if (window.getSelection) {
       if (window.getSelection().empty) {  // Chrome
         window.getSelection().empty();
@@ -43,6 +61,5 @@ deselect = function() {
     } else if (document.selection) {  // IE?
       document.selection.empty();
     }
-}
+};
 
-target.onselect = deselct;
