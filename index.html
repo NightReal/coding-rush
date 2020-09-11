@@ -4,15 +4,17 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <div>
-            <button type="button" id="startButton" class="column pretty-button green-btn btn-size1">Click to start</button>
-            <button type="button" id="stopButton" disabled class="pretty-button darkred-btn btn-size1">Stop</button>
-        </div>
-        <p id="status"><br></p><br>
+        <p id="textName">First step - Hello, wolrd!</p>
         <div class="column">
+            <div style="text-align: right; position: relative; margin-right: 2%; margin-bottom: 10px;">
+                <button style="margin-right: 10px;" type="button" id="startButton" class="pretty-button green-btn btn-size1">Click to start</button>
+                <button type="button" id="stopButton" disabled class="pretty-button darkred-btn btn-size1">Stop</button>
+            </div>
             <textarea rows="20" id="editor" style="resize: none" readonly></textarea>
         </div>
         <div class="column">
+            <p id="status" style="height: 50px; bottom: 10px;"><br></p>
+            <div style="height: 10"></div>
             <textarea rows="20" style="resize: none" readonly id="target" class="hide-select"></textarea>
         </div>
         <script src="main.js"></script>
