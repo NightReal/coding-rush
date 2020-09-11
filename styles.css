@@ -14,8 +14,8 @@ textarea {
   border-radius: 1px; 
 }
 
-#target:focus {
-  outline:none;
+textarea:read-only {
+  outline: none;
 }
 
 .hide-select::selection {}
@@ -37,8 +37,8 @@ textarea {
 }
 
 .pretty-button:hover {
-  background-color: white;
-  color: black;
+  background-color: #3F3F3F;
+  border-color: #3f3f3f;
 }
 
 .pretty-button:disabled {
@@ -49,17 +49,17 @@ textarea {
 
 .pretty-button:hover:disabled {
   background-color : #a0a0a0;
+  border-color: #a0a0a0;
 }
 
 .green-btn {
   background-color : #2db92d;
   border-color: #2db92d;
-  color: white;
 }
 
 .green-btn:hover {
-  background-color: white;
-  color: black;
+  background-color: #218D21;
+  border-color: #218D21;
 }
 
 .darkred-btn {
@@ -68,5 +68,7 @@ textarea {
 }
 
 .darkred-btn:hover {
-  background-color: white;
+  background-color: #8B0000;
+  border-color: #8B0000;
 }
+
