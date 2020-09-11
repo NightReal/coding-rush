@@ -18,14 +18,15 @@ textarea:read-only {
   outline: none;
 }
 
+
 .hide-select::selection {}
 
 .btn-size1 {
   width: 150px;
   height: 50px;
   font-size: 19px;
-  margin-right: 10px;
 }
+
 
 .pretty-button {
   background-color : black;
@@ -68,7 +69,12 @@ textarea:read-only {
 }
 
 .darkred-btn:hover {
-  background-color: #8B0000;
-  border-color: #8B0000;
+  background-color: #9C0000;
+  border-color: #9C0000;
+}
+
+#status {
+  display: table-cell;
+  vertical-align: middle;
 }
 
