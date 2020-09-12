@@ -30,7 +30,7 @@ startButton.onclick = function(e, rightText=false) {
     startButton.classList.toggle('green-btn');
     editor.readOnly ^= true;
     if (typing) {
-        startButton.innderHTML = "Start";
+        startButton.innerHTML = "Start";
         clearInterval(typingTimer);
         if (!rightText)
             status.innerHTML = "You stopped typing.";
@@ -40,7 +40,7 @@ startButton.onclick = function(e, rightText=false) {
         }
         startTime = undefined;
     } else {
-        startButton.innderHTML = "Stop";
+        startButton.innerHTML = "Stop";
         editor.value = "";
         startTime = new Date();
         showTypingTimer();
