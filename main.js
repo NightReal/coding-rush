@@ -102,4 +102,22 @@ target.onselect = function() { // deselect
   target.selectionStart = target.selectionEnd;
 };
 
+function checkModKeys(e, ...keys) {
+  if (keys.includes('ctrl') != e.ctrlKey)
+    return false;
+  if (keys.includes('shift') != e.shiftKey)
+    return false;
+  if (keys.includes('alt') != e.altKey)
+    return false;
+  if (keys.includes('meta') != e.metaKey)
+    return false;
+  return true;
+}
+
+window.onkeydown = function(e) {
+  if (checkModKeys(e, 'ctrl') && e.keyCode == 13) { // Ctrl+Enter
+    startButton.onclick();
+  }
+}
+
 
