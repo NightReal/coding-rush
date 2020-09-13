@@ -6,14 +6,15 @@ let status = document.getElementById("status");
 let startTime = undefined;
 let typingTimer;
 let typing = false;
-let stylesheet = document.documentElement.appendChild(document.createElement("style")).sheet;
+let stylesheet = document.getElementById("dynamic-style").sheet;
 let textName = document.getElementById("textName");
 let textNameText = textName.innerHTML;
 let textNameWidth = textName.clientWidth;
+let tooltips = document.querySelectorAll('.tooltip .tooltiptext');
 
 
 function updateTextNameAnimation() {
-    let textNameFieldWidth = document.getElementById("textNameField").width;
+    var textNameFieldWidth = document.getElementById("textNameField").offsetWidth;
     if (textNameWidth <= textNameFieldWidth) {
         textName.style.animationName = "";
         textName.innerHTML = textNameText;
@@ -59,10 +60,22 @@ window.onresize = function() {
     updateTextNameAnimation();
 }
 
+function getRevVisibility(vis) {
+  if (vis == "hidden")
+    return "visible";
+  return "hidden";
+}
+
+function switchVisibility(element) {
+    element.style.visibility = getRevVisibility(element.style.visibility);
+}
+
 
 startButton.onclick = function(e, rightText=false) {
     startButton.classList.toggle('darkred-btn');
     startButton.classList.toggle('green-btn');
+    switchVisibility(document.getElementById("startButtonTooltip"));
+    switchVisibility(document.getElementById("stopButtonTooltip"));
     editor.readOnly ^= true;
     if (typing) {
         startButton.innerHTML = "Start";
@@ -119,5 +132,14 @@ window.onkeydown = function(e) {
     startButton.onclick();
   }
 }
+
+window.onmousemove = function (e) {
+    var x = (e.clientX + 20) + 'px';
+    var y = (e.clientY + 20) + 'px';
+    for (var i = 0; i < tooltips.length; i++) {
+        tooltips[i].style.left = x;
+        tooltips[i].style.top = y;
+    }
+};
 
 
