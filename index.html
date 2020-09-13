@@ -2,15 +2,20 @@
 <html>
     <head>
         <link rel="stylesheet" href="styles.css">
+        <style id="dynamic-style" src="style.css"></style>
     </head>
     <body>
         <div class="column">
             <div id="textNameField"> 
-                <p id="textName">First step - Hello, wolrd! The name is very long so requires to be dynamic.</p>
+                <p id="textName">First step - Hello, wolrd!</p>
             </div>
-            <button type="button" id="startButton" class="pretty-button green-btn btn-size1">Start</button>
+            <div id="startButtonDiv" class="tooltip">
+              <button type="button" id="startButton" class="pretty-button green-btn btn-size1">Start</button>
+              <span style="visibility: visible;" id="startButtonTooltip" class="tooltiptext">Click or press Ctrl+Enter<br>to start typing</span>
+              <span style="visibility: hidden;" id="stopButtonTooltip" class="tooltiptext">Click or press Ctrl+Enter<br>to stop typing</span>
+            </div>
         </div>
-        <p id="status"S><br></p>
+        <p id="status"><br></p>
         <div style="height: 10px; width: 100%;"></div>
         <div class="column">
             <textarea rows="20" id="editor"readonly></textarea>
@@ -19,5 +24,5 @@
             <textarea rows="20" readonly id="target" class="hide-select"></textarea>
         </div>
         <script src="main.js"></script>
-</div>
+    </body>
 </html>
