@@ -5,12 +5,12 @@ let targetText = "Hello, world!";
 let status = document.getElementById("status");
 let startTime = undefined;
 let typingTimer;
-let typing = false;
 let stylesheet = document.getElementById("dynamic-style").sheet;
 let textName = document.getElementById("textName");
 let textNameText = textName.innerHTML;
 let textNameWidth = textName.clientWidth;
 let tooltips = document.querySelectorAll('.tooltip .tooltiptext');
+let lastTextValue = "";
 
 
 function updateTextNameAnimation() {
@@ -44,7 +44,7 @@ function time2secs(tm) {
 
 
 function showTypingTimer() {
-    if (typeof startTime == "undefined")
+    if (!typing())
         return;
     var tm = time2secs(new Date() - startTime);
     status.innerHTML = "You type: " + tm + "s";
@@ -53,6 +53,7 @@ function showTypingTimer() {
 
 window.onload = function() {
     target.value = targetText;
+    editor.focus();
     updateTextNameAnimation();
 }
 
@@ -71,17 +72,20 @@ function switchVisibility(element) {
     element.style.visibility = getRevVisibility(element.style.visibility);
 }
 
+function typing() {
+    return startTime !== undefined;
+}
 
-startButton.onclick = function(e, rightText=false) {
+function startStopTyping(opts={'rightText' : false, 'defText' : ''}) {
     startButton.classList.toggle('darkred-btn');
     startButton.classList.toggle('green-btn');
     switchVisibility(document.getElementById("startButtonTooltip"));
     switchVisibility(document.getElementById("stopButtonTooltip"));
-    editor.readOnly ^= true;
-    if (typing) {
+    //editor.readOnly ^= true;
+    if (typing()) {
         startButton.innerHTML = "Start";
         clearInterval(typingTimer);
-        if (!rightText)
+        if (!opts.rightText)
             status.innerHTML = "You stopped typing.";
         else {
             var tm = time2secs(new Date() - startTime);
@@ -90,20 +94,31 @@ startButton.onclick = function(e, rightText=false) {
         startTime = undefined;
     } else {
         startButton.innerHTML = "Stop";
-        editor.value = "";
+        editor.value = opts.defText;
         startTime = new Date();
         showTypingTimer();
         typingTimer = setInterval(showTypingTimer, 100);
         editor.focus();
     }
-    typing ^= true;
+}
+
+startButton.onclick = function(e) {
+    startStopTyping();
 }
 
 
 editor.oninput = function(e) {
-    if (editor.value == targetText) {
-        startButton.onclick(e, rightText=true);
+    if (e.inputType == "insertFromPaste") {
+        editor.value = lastTextValue;
+        return;
     }
+    if (!typing()) {
+        startStopTyping({defText: e.data});
+    }
+    if (editor.value == targetText) {
+        startStopTyping({rightText: true});
+    }
+    lastTextValue = editor.value;
 };
 
 
@@ -130,7 +145,7 @@ function checkModKeys(e, ...keys) {
 
 window.onkeydown = function(e) {
   if (checkModKeys(e, 'ctrl') && e.keyCode == 13) { // Ctrl+Enter
-    startButton.onclick();
+    startStopTyping();
   }
 }
 
