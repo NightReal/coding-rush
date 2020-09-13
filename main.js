@@ -22,9 +22,10 @@ function updateTextNameAnimation() {
     }
     textName.innerHTML = (textNameText + "&nbsp;".repeat(8)).repeat(2);
     widthText = textName.clientWidth / 2;
+    var t1 = 2, t2 = widthText / 60;
     var rule = ` example {
         0% { left: 0px; }
-        15% { left: 0px; }
+        ${t1 / (t1 + t2) * 100}% { left: 0px; }
         100% { left: ${-widthText}px; }
     }`;
     if (CSSRule.KEYFRAMES_RULE)
@@ -33,7 +34,7 @@ function updateTextNameAnimation() {
         rule = "@-webkit-keyframes" + rule;
     stylesheet.insertRule(rule, stylesheet.cssRules.length);
     textName.style.animationName = "example";
-    textName.style.animationDuration = (widthText / 60) + 's';
+    textName.style.animationDuration = (t1 + t2) + 's';
 }
 
 
@@ -133,12 +134,24 @@ window.onkeydown = function(e) {
   }
 }
 
-window.onmousemove = function (e) {
+startButton.onmouseover = function(e) {
+    document.getElementById("startButtonTooltip").style.display = "block";
+    document.getElementById("stopButtonTooltip").style.display = "block";
+}
+
+startButton.onmouseout = function(e) {
+    document.getElementById("startButtonTooltip").style.display = "none";
+    document.getElementById("stopButtonTooltip").style.display = "none";
+}
+
+window.onmousemove = function(e, kek=false) {
     var x = (e.clientX + 20) + 'px';
     var y = (e.clientY + 20) + 'px';
     for (var i = 0; i < tooltips.length; i++) {
-        tooltips[i].style.left = x;
-        tooltips[i].style.top = y;
+        if (tooltips[i].style.display != "none") {
+            tooltips[i].style.left = x;
+            tooltips[i].style.top = y;
+        }
     }
 };
 

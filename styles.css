@@ -30,7 +30,7 @@ body {
   animation-timing-function: linear;
 }
 
-#startButton, #startButtonDiv {
+#startButtonDiv {
   float: right;
   margin-right: 2%;
 }
