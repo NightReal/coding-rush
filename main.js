@@ -113,7 +113,10 @@ editor.oninput = function(e) {
         return;
     }
     if (!typing()) {
-        startStopTyping({defText: e.data});
+        if (e.data == null)
+            editor.value = "";
+        else
+            startStopTyping({defText: e.data});
     }
     if (editor.value == targetText) {
         startStopTyping({rightText: true});
