@@ -9,7 +9,8 @@ let stylesheet = document.getElementById("dynamic-style").sheet;
 let textName = document.getElementById("textName");
 let textNameText = textName.innerHTML;
 let textNameWidth = textName.clientWidth;
-let tooltips = document.querySelectorAll('.tooltip .tooltiptext');
+let tooltipsl = document.querySelectorAll('.tooltip .tooltiptext-l');
+let tooltipsr = document.querySelectorAll('.tooltip .tooltiptext-r');
 let lastTextValue = "";
 
 
@@ -154,23 +155,21 @@ window.onkeydown = function(e) {
   }
 }
 
-startButton.onmouseover = function(e) {
-    document.getElementById("startButtonTooltip").style.display = "block";
-    document.getElementById("stopButtonTooltip").style.display = "block";
-}
-
-startButton.onmouseout = function(e) {
-    document.getElementById("startButtonTooltip").style.display = "none";
-    document.getElementById("stopButtonTooltip").style.display = "none";
-}
-
 window.onmousemove = function(e, kek=false) {
-    var x = e.clientX - 10;
-    var y = e.clientY + 10;
-    for (var i = 0; i < tooltips.length; i++) {
-        if (tooltips[i].style.display != "none") {
-            tooltips[i].style.left = x - tooltips[i].offsetWidth + 'px';
-            tooltips[i].style.top = y + 'px';
+    var x = e.clientX;
+    var y = e.clientY;
+    for (var i = 0; i < tooltipsl.length; i++) {
+        var tt = tooltipsl[i];
+        if (getComputedStyle(tt).display != "none") {
+            tt.style.left = x - tt.offsetWidth + 'px';
+            tt.style.top = y + 'px';
+        }
+    }
+    for (var i = 0; i < tooltipsr.length; i++) {
+        var tt = tooltipsr[i];
+        if (getComputedStyle(tt).display != "none") {
+            tt.style.left = x + 'px';
+            tt.style.top = y + 'px';
         }
     }
 };

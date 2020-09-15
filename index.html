@@ -9,7 +9,7 @@
     </head>
     <body>
         <header class="headfoot">
-            <button type="button" id="backButton" class="header-button">🢀 </button>
+            <button type="button" id="backButton" class="header-button tooltip">🢀<span class="tooltiptext-r">Back</span></button>
             <button type="button" id="theButton" class="header-button">Button for something</button>
             <button type="button" id="lastButton" class="header-button">Last button</button>
         </header>
@@ -19,23 +19,24 @@
             </div>
         </div>
         <div class="column">
-        <div id="startButtonDiv" class="tooltip">
-              <button type="button" id="startButton" class="pretty-button green-btn">Start</button>
-              <span style="display: none; visibility: visible;" id="startButtonTooltip" class="tooltiptext">Click or press Ctrl+Enter<br>to start typing</span>
-              <span style="display: none; visibility: hidden;" id="stopButtonTooltip" class="tooltiptext">Click or press Ctrl+Enter<br>to stop typing</span>
-        </div>
-        <p id="status"><br></p>
+            <div id="startButtonDiv" class="tooltip">
+                <button type="button" id="startButton" class="pretty-button green-btn">Start</button>
+                <span style="visibility: visible;" id="startButtonTooltip" class="tooltiptext-l">Click or press Ctrl+Enter<br>to start typing</span>
+                <span style="visibility: hidden;" id="stopButtonTooltip" class="tooltiptext-l">Click or press Ctrl+Enter<br>to stop typing</span>
+            </div>
+            <p id="status"><br></p>
         </div>
         <div style="height: 10px; width: 100%; clear: both;"></div>
         <div class="column">
             <textarea rows="20" id="editor"></textarea>
         </div>
         
-        
         <div class="column">
             <textarea rows="20" readonly id="target" class="hide-select"></textarea>
         </div>
-        <footer class="headfoot">asdf</footer>
+        <footer class="headfoot">
+            <p id="copyright">Copyright (c) 2020 Ilian Andrianov, Alexander Nekrasov, Viktor Abishev.</p>
+        </footer>
         <script src="main.js"></script>
     </body>
 </html>
