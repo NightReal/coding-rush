@@ -100,6 +100,7 @@ function startStopTyping(opts={'rightText' : false, 'defText' : ''}) {
         typingTimer = setInterval(showTypingTimer, 100);
         editor.focus();
     }
+    lastTextValue = editor.value;
 }
 
 startButton.onclick = function(e) {
@@ -113,10 +114,11 @@ editor.oninput = function(e) {
         return;
     }
     if (!typing()) {
-        if (e.data == null)
+        if (e.data == null) {
             editor.value = "";
-        else
+        } else {
             startStopTyping({defText: e.data});
+        }
     }
     if (editor.value == targetText) {
         startStopTyping({rightText: true});
@@ -163,12 +165,12 @@ startButton.onmouseout = function(e) {
 }
 
 window.onmousemove = function(e, kek=false) {
-    var x = (e.clientX + 20) + 'px';
-    var y = (e.clientY + 20) + 'px';
+    var x = e.clientX - 10;
+    var y = e.clientY + 10;
     for (var i = 0; i < tooltips.length; i++) {
         if (tooltips[i].style.display != "none") {
-            tooltips[i].style.left = x;
-            tooltips[i].style.top = y;
+            tooltips[i].style.left = x - tooltips[i].offsetWidth + 'px';
+            tooltips[i].style.top = y + 'px';
         }
     }
 };
