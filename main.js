@@ -14,8 +14,11 @@ let textNameText = textName.innerHTML;
 let textNameWidth = textName.clientWidth;
 let tooltipsl = document.querySelectorAll('.tooltip .tooltiptext-l');
 let tooltipsr = document.querySelectorAll('.tooltip .tooltiptext-r');
+let tooltips = document.querySelectorAll('.tooltip .tooltiptext-l, .tooltip .tooltiptext-r');
 let lastTextValue = "";
 let resizeTimer = null;
+let tooltipButton = document.getElementById("tooltipButton");
+let tooltipsEnabled = true;
 
 
 function updateTextNameAnimation() {
@@ -120,11 +123,15 @@ editor.oninput = function(e) {
         editor.value = lastTextValue;
         return;
     }
+    var char = e.data;
+    if (e.inputType == "insertLineBreak") {
+        char = '\n';
+    }
     if (!typing()) {
-        if (e.data == null) {
+        if (char === null) {
             editor.value = "";
         } else {
-            startStopTyping({defText: e.data});
+            startStopTyping({defText: char});
         }
     }
     if (editor.value == targetText) {
@@ -161,7 +168,9 @@ window.onkeydown = function(e) {
   }
 }
 
-window.onmousemove = function(e, kek=false) {
+window.onmousemove = function(e) {
+    if (!tooltipsEnabled)
+        return;
     var x = e.clientX;
     var y = e.clientY;
     for (var i = 0; i < tooltipsl.length; i++) {
@@ -185,7 +194,7 @@ function updateFooterPosition() {
   footer.style.display = "none";
   var h = body.offsetHeight;
   footer.style.display = "block";
-  var h2 = parseInt(getComputedStyle(footer).height) - 5;
+  var h2 = parseInt(getComputedStyle(footer).height);
   var H = window.innerHeight;
   if (h + h2 >= H)
     return;
@@ -197,10 +206,16 @@ function updateTextareaHeight() {
     target.style.height = getComputedStyle(editor).height;
     updateFooterPosition();
 }
-
+function updateTextareaHeightRev() {
+    editor.style.height = getComputedStyle(target).height;
+    updateFooterPosition();
+}
 
 editor.onmousedown = function() {
     resizeTimer = setInterval(updateTextareaHeight, 15);
+}
+target.onmousedown = function() {
+    resizeTimer = setInterval(updateTextareaHeightRev, 15);
 }
 
 window.onmouseup = function() {
@@ -210,3 +225,19 @@ window.onmouseup = function() {
     }
 }
 
+
+tooltipButton.onclick = function() {
+    var w = getComputedStyle(tooltipButton).width;
+    if (tooltipsEnabled) {
+        tooltipButton.innerHTML = "Enable tooltips";
+        for (var i = 0; i < tooltips.length; ++i)
+            tooltips[i].classList.remove("enabled-tooltip");
+            
+    } else {
+        tooltipButton.innerHTML = "Disable tooltips";
+        for (var i = 0; i < tooltips.length; ++i)
+            tooltips[i].classList.add("enabled-tooltip");
+    }
+    tooltipButton.style.width = w;
+    tooltipsEnabled ^= true;
+}
