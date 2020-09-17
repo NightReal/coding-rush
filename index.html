@@ -9,8 +9,8 @@
     </head>
     <body>
         <header class="headfoot">
-            <button type="button" id="backButton" class="header-button tooltip">🢀<span class="tooltiptext-r">Back</span></button>
-            <button type="button" id="theButton" class="header-button">Button for something</button>
+            <button type="button" id="backButton" class="header-button tooltip">🢀<span class="tooltiptext-r enabled-tooltip">Back</span></button>
+            <button type="button" id="tooltipButton" class="header-button">Disable tooltips</button>
             <button type="button" id="lastButton" class="header-button">Last button</button>
         </header>
         <div style="height: 10px;"></div>
@@ -22,8 +22,8 @@
         <div class="column">
             <div id="startButtonDiv" class="tooltip">
                 <button type="button" id="startButton" class="pretty-button green-btn">Start</button>
-                <span style="visibility: visible;" id="startButtonTooltip" class="tooltiptext-l">Click or press Ctrl+Enter<br>to start typing<br>(or just start)</span>
-                <span style="visibility: hidden;" id="stopButtonTooltip" class="tooltiptext-l">Click or press Ctrl+Enter<br>to stop typing</span>
+                <span style="visibility: visible;" id="startButtonTooltip" class="tooltiptext-l enabled-tooltip">Click or press Ctrl+Enter<br>to start typing<br>(or just begin typing)</span>
+                <span style="visibility: hidden;" id="stopButtonTooltip" class="tooltiptext-l enabled-tooltip">Click or press Ctrl+Enter<br>to stop typing</span>
             </div>
             <p id="status"><br></p>
         </div>
@@ -35,7 +35,6 @@
         <div class="column">
             <textarea rows="20" readonly id="target" class="hide-select"></textarea>
         </div>
-        <div style="height: 30px; clear: both;"></div> 
         <footer class="headfoot">
             <p id="copyright">Copyright (c) 2020 Ilian Andrianov, Alexander Nekrasov, Viktor Abishev.</p>
         </footer>
