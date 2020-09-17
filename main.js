@@ -4,7 +4,10 @@ let startButton = document.getElementById("startButton");
 let targetText = "Hello, world!";
 let status = document.getElementById("status");
 let startTime = undefined;
-let typingTimer;
+let header = document.getElementsByTagName("header")[0];
+let footer = document.getElementsByTagName("footer")[0];
+let body = document.getElementsByTagName("body")[0];
+let typingTimer = null;
 let stylesheet = document.getElementById("dynamic-style").sheet;
 let textName = document.getElementById("textName");
 let textNameText = textName.innerHTML;
@@ -12,6 +15,7 @@ let textNameWidth = textName.clientWidth;
 let tooltipsl = document.querySelectorAll('.tooltip .tooltiptext-l');
 let tooltipsr = document.querySelectorAll('.tooltip .tooltiptext-r');
 let lastTextValue = "";
+let resizeTimer = null;
 
 
 function updateTextNameAnimation() {
@@ -56,11 +60,13 @@ window.onload = function() {
     target.value = targetText;
     editor.focus();
     updateTextNameAnimation();
+    window.onresize();
 }
 
 
 window.onresize = function() {
     updateTextNameAnimation();
+    updateFooterPosition();
 }
 
 function getRevVisibility(vis) {
@@ -174,4 +180,33 @@ window.onmousemove = function(e, kek=false) {
     }
 };
 
+
+function updateFooterPosition() {
+  footer.style.display = "none";
+  var h = body.offsetHeight;
+  footer.style.display = "block";
+  var h2 = parseInt(getComputedStyle(footer).height) - 5;
+  var H = window.innerHeight;
+  if (h + h2 >= H)
+    return;
+  var l = H - h - h2;
+  footer.style.marginTop = l + 'px';
+}
+
+function updateTextareaHeight() {
+    target.style.height = getComputedStyle(editor).height;
+    updateFooterPosition();
+}
+
+
+editor.onmousedown = function() {
+    resizeTimer = setInterval(updateTextareaHeight, 15);
+}
+
+window.onmouseup = function() {
+    if (resizeTimer !== null) {
+        clearInterval(resizeTimer);
+        updateTextareaHeight();
+    }
+}
 

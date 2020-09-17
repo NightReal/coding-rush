@@ -5,10 +5,11 @@
 body {
   background-color: #fafafa;
   margin: 0;
+  position: relative;
 }
 
 .headfoot {
-  background-color: #2B004F;
+  background-color: #300058;
   color: white;
   clear: both;
 }
@@ -20,17 +21,18 @@ header {
 }
 
 footer {
-  height: 40px;
+  clear: both;
+  position: relative;
+  height: 45px;
   width: 100%;
-  position: absolute;
-  bottom: 0px;
   font-family: "Lucida Console", Monaco, monospace;
   font-size: 12px;
 }
 
 #copyright {
+  position: relative;
   margin-left: 12px;
-  margin-top: 12px;
+  top: 12px;
   font: inherit;
 }
 
@@ -40,10 +42,9 @@ footer {
 }
 
 
-
 #textNameField {
   float: left;
-  width: 50%;
+  width: 80%;
   position: relative;
   overflow: hidden;
   margin-left: 22px;
@@ -88,17 +89,18 @@ textarea {
   width: 98%;
   border: 1px solid gray;
   border-radius: 2px; 
-  resize: none;
   outline: none;
 }
 
 #editor {
   margin-left: 0.75%;
+  resize: vertical;
 }
 
 #target {
   float: right;
   margin-right: 0.75%;
+  resize: none;
 }
 
 textarea:read-write:focus {
@@ -236,5 +238,16 @@ textarea:read-write:focus {
   animation: tooltipdelay 1.2s 1;
   opacity: 1;
   display: block;
+}
+
+
+/* DISABLE SCROLLBAR */
+
+html::-webkit-scrollbar {
+  display: none;
+}
+html {
+  -ms-overflow-style: none; 
+  scrollbar-width: none;
 }
 
