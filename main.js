@@ -64,6 +64,8 @@ window.onload = function() {
     editor.focus();
     updateTextNameAnimation();
     window.onresize();
+    editor.style.height = getComputedStyle(editor).height;
+    target.style.height = getComputedStyle(target).height;
 }
 
 
@@ -194,12 +196,19 @@ function updateFooterPosition() {
   footer.style.display = "none";
   var h = body.offsetHeight;
   footer.style.display = "block";
-  var h2 = parseInt(getComputedStyle(footer).height);
+  var he = editor.offsetTop + editor.offsetHeight - h + 30;
+  var hf = parseInt(getComputedStyle(footer).height);
   var H = window.innerHeight;
-  if (h + h2 >= H)
-    return;
-  var l = H - h - h2;
-  footer.style.marginTop = l + 'px';
+  var l;
+  if (h + he + hf <= H) {
+      l = H - h - hf;
+  } else {
+      l = he;
+  }
+  l = l + 'px';
+  if (footer.style.marginTop != l) {
+      footer.style.marginTop = l;
+  }
 }
 
 function updateTextareaHeight() {
