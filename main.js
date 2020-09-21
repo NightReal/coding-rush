@@ -19,6 +19,7 @@ let lastTextValue = "";
 let resizeTimer = null;
 let tooltipButton = document.getElementById("tooltipButton");
 let tooltipsEnabled = true;
+let typeInfo = document.getElementById("typeInfo");
 
 
 function updateTextNameAnimation() {
@@ -54,8 +55,15 @@ function time2secs(tm) {
 function showTypingTimer() {
     if (!typing())
         return;
-    var tm = time2secs(new Date() - startTime);
+    var t = new Date() - startTime;
+    var tm = time2secs(t);
     status.innerHTML = "You type: " + tm + "s";
+    if (Math.round(t / 1000 * 10) % 4 != 0)
+        return;
+    var v = 0;
+    if (tm > 0)
+      v = Math.round(editor.value.length / t * 1000 * 60);
+    speed.innerHTML = v;
 } 
 
 
@@ -170,11 +178,15 @@ window.onkeydown = function(e) {
   }
 }
 
+let mouseX, mouseY;
+
 window.onmousemove = function(e) {
     if (!tooltipsEnabled)
         return;
     var x = e.clientX;
     var y = e.clientY;
+    mouseX = x;
+    mouseY = y;
     for (var i = 0; i < tooltipsl.length; i++) {
         var tt = tooltipsl[i];
         if (getComputedStyle(tt).display != "none") {
@@ -193,22 +205,20 @@ window.onmousemove = function(e) {
 
 
 function updateFooterPosition() {
-  footer.style.display = "none";
-  var h = body.offsetHeight;
-  footer.style.display = "block";
-  var he = editor.offsetTop + editor.offsetHeight - h + 30;
+  var he = typeInfo.offsetTop + typeInfo.offsetHeight + 30;
   var hf = parseInt(getComputedStyle(footer).height);
   var H = window.innerHeight;
   var l;
-  if (h + he + hf <= H) {
-      l = H - h - hf;
+  if (he + hf <= H) {
+      l = H - hf;
   } else {
       l = he;
   }
   l = l + 'px';
-  if (footer.style.marginTop != l) {
-      footer.style.marginTop = l;
+  if (footer.style.top != l) {
+      footer.style.top = l;
   }
+  window.scrollTo(0, window.pageYOffset + hf);
 }
 
 function updateTextareaHeight() {
