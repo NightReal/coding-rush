@@ -3,11 +3,13 @@ let target = document.getElementById("target");
 let startButton = document.getElementById("startButton");
 let targetText = "Hello, world!";
 let status = document.getElementById("status");
+let speed = document.getElementById("speed");
+let timepass = document.getElementById("timepass");
 let startTime = undefined;
 let header = document.getElementsByTagName("header")[0];
 let footer = document.getElementsByTagName("footer")[0];
 let body = document.getElementsByTagName("body")[0];
-let typingTimer = null;
+let typingTimer = undefined;
 let stylesheet = document.getElementById("dynamic-style").sheet;
 let textName = document.getElementById("textName");
 let textNameText = textName.innerHTML;
@@ -16,7 +18,7 @@ let tooltipsl = document.querySelectorAll('.tooltip .tooltiptext-l');
 let tooltipsr = document.querySelectorAll('.tooltip .tooltiptext-r');
 let tooltips = document.querySelectorAll('.tooltip .tooltiptext-l, .tooltip .tooltiptext-r');
 let lastTextValue = "";
-let resizeTimer = null;
+let resizeTimer = undefined;
 let tooltipButton = document.getElementById("tooltipButton");
 let tooltipsEnabled = true;
 let typeInfo = document.getElementById("typeInfo");
@@ -57,12 +59,12 @@ function showTypingTimer() {
         return;
     var t = new Date() - startTime;
     var tm = time2secs(t);
-    status.innerHTML = "You type: " + tm + "s";
-    if (Math.round(t / 1000 * 10) % 4 != 0)
+    timepass.innerHTML = tm;
+    if (Math.round(t / 100) % 4 != 0)
         return;
     var v = 0;
     if (tm > 0)
-      v = Math.round(editor.value.length / t * 1000 * 60);
+      v = Math.round(editor.value.length * 1000 * 60 / t);
     speed.innerHTML = v;
 } 
 
@@ -105,11 +107,14 @@ function startStopTyping(opts={'rightText' : false, 'defText' : ''}) {
     if (typing()) {
         startButton.innerHTML = "Start";
         clearInterval(typingTimer);
+        typingTimer = undefined;
         if (!opts.rightText)
             status.innerHTML = "You stopped typing.";
         else {
-            var tm = time2secs(new Date() - startTime);
-            status.innerHTML = "Done! Your time: " + tm + "s";
+            var t = new Date() - startTime;
+            timepass.innerHTML = time2secs(t);
+            speed.innerHTML = Math.round(editor.value.length * 1000 * 60 / t);
+            status.innerHTML = "You finished typing.";
         }
         startTime = undefined;
     } else {
@@ -119,6 +124,7 @@ function startStopTyping(opts={'rightText' : false, 'defText' : ''}) {
         showTypingTimer();
         typingTimer = setInterval(showTypingTimer, 100);
         editor.focus();
+        status.innerHTML = "You typing now.";
     }
     lastTextValue = editor.value;
 }
@@ -183,8 +189,8 @@ let mouseX, mouseY;
 window.onmousemove = function(e) {
     if (!tooltipsEnabled)
         return;
-    var x = e.clientX;
-    var y = e.clientY;
+    var x = e.pageX;
+    var y = e.pageY;
     mouseX = x;
     mouseY = y;
     for (var i = 0; i < tooltipsl.length; i++) {
@@ -203,6 +209,21 @@ window.onmousemove = function(e) {
     }
 };
 
+function smartScroll(x, y) {
+  var w = window.innerWidth, h = window.innerHeight;
+  var x0 = window.scrollX, y0 = window.scrollY;
+  var x1 = w + x0, y1 = h + y0;
+  var a = x0, b = y0;
+  if (x < x0)
+      a = x;
+  if (x > x1)
+      a = x - w;
+  if (y < y0)
+      b = y;
+  if (y > y1)
+      b = y - h;
+  window.scrollTo(a, b);
+}
 
 function updateFooterPosition() {
   var he = typeInfo.offsetTop + typeInfo.offsetHeight + 30;
@@ -218,7 +239,7 @@ function updateFooterPosition() {
   if (footer.style.top != l) {
       footer.style.top = l;
   }
-  window.scrollTo(0, window.pageYOffset + hf);
+  smartScroll(0, he + hf);
 }
 
 function updateTextareaHeight() {
@@ -230,16 +251,32 @@ function updateTextareaHeightRev() {
     updateFooterPosition();
 }
 
+function checkNearRightDown(el, kwargs={'eps': 10}) {
+    var eps = kwargs['eps']
+    var x = el.offsetLeft + el.offsetWidth - eps;
+    var y = el.offsetTop + el.offsetHeight - eps;
+    if (x - eps > mouseX || mouseX > x + eps)
+        return false;
+    if (y - eps > mouseY || mouseY > y + eps)
+        return false;
+    return true;
+}
+
 editor.onmousedown = function() {
+    if (!checkNearRightDown(editor))
+        return;
     resizeTimer = setInterval(updateTextareaHeight, 15);
 }
 target.onmousedown = function() {
+    if (!checkNearRightDown(target))
+        return;
     resizeTimer = setInterval(updateTextareaHeightRev, 15);
 }
 
 window.onmouseup = function() {
-    if (resizeTimer !== null) {
+    if (resizeTimer !== undefined) {
         clearInterval(resizeTimer);
+        resizeTimer = undefined;
         updateTextareaHeight();
     }
 }
