@@ -19,5 +19,7 @@ async def handler(request: web.Request):
     return {}
 
 
-app.router.add_get('/', handler)
-web.run_app(app)
+async def app_factory():
+    app = web.Application()
+    app.router.add_get('/', handler)
+    return app
