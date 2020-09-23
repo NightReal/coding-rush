@@ -24,3 +24,5 @@ async def app_factory():
     await pre_init(app)
     aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('./templates'))
     return app
+
+web.run_app(app_factory())
