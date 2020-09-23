@@ -6,10 +6,7 @@ import asyncio
 
 
 async def pre_init(app):
-    if os.environ.get('PROD', None) == 'true':
-        PROD = True
-    else:
-        PROD = False
+    if os.environ.get('PROD', None) != 'true':
         app.add_routes([web.static('/static', './static')])
 
 
@@ -24,5 +21,3 @@ async def app_factory():
     await pre_init(app)
     aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('./templates'))
     return app
-
-web.run_app(app_factory())
