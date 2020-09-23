@@ -76,12 +76,13 @@ window.onload = function() {
     window.onresize();
     editor.style.height = getComputedStyle(editor).height;
     target.style.height = getComputedStyle(target).height;
+    footer.style.display = "block";
 }
 
 
 window.onresize = function() {
     updateTextNameAnimation();
-    updateFooterPosition();
+    updateFooterPosition(true);
 }
 
 function getRevVisibility(vis) {
@@ -225,7 +226,7 @@ function smartScroll(x, y) {
   window.scrollTo(a, b);
 }
 
-function updateFooterPosition() {
+function updateFooterPosition(windowResize) {
   var he = typeInfo.offsetTop + typeInfo.offsetHeight + 30;
   var hf = parseInt(getComputedStyle(footer).height);
   var H = window.innerHeight;
@@ -239,16 +240,17 @@ function updateFooterPosition() {
   if (footer.style.top != l) {
       footer.style.top = l;
   }
-  smartScroll(0, he + hf);
+  if (!windowResize)
+      smartScroll(0, he + hf);
 }
 
 function updateTextareaHeight() {
     target.style.height = getComputedStyle(editor).height;
-    updateFooterPosition();
+    updateFooterPosition(false);
 }
 function updateTextareaHeightRev() {
     editor.style.height = getComputedStyle(target).height;
-    updateFooterPosition();
+    updateFooterPosition(false);
 }
 
 function checkNearRightDown(el, kwargs={'eps': 10}) {
