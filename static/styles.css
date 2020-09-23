@@ -169,7 +169,7 @@ textarea:read-write:focus {
   border: 1px solid rgba(255, 255, 255, 0);
   
   font-size: 19px;
-  padding: 0 15px;
+  padding: 0px 15px;
 }
 
 .header-button:hover {
@@ -182,8 +182,11 @@ textarea:read-write:focus {
 }
 
 #backButton {
-  font-size: 40px;
+  width: 65px;
   margin-left: 17px;
+  padding: 10px 10px;
+  display: table-cell;
+  vertical-align: bottom;
 }
 
 #tooltipButton {
@@ -267,3 +270,4 @@ html {
   scrollbar-width: none;
 }
 */
+
