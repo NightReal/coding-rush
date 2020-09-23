@@ -84,25 +84,18 @@ footer {
   font-weight: 500;
 }
 
-#status {
-  /*display: table-cell;
-  vertical-align: middle;
-  height: 50px;
-  bottom: 10px;
-  width: 49vw;
-  /*margin-left: 1.25%;*/
-}
-
-#speed {
-  /*display: inline-block;
-  float: right;
-  margin-right: 0.5%;*/
-}
 #speed::before {
   content: "Speed: ";
 }
 #speed::after {
   content: "cpm";
+}
+
+#timepass::before {
+  content: "Time passed: ";
+}
+#timepass::after {
+  content: "s";
 }
 
 
