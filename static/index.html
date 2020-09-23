@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+        <style id="dynamic-style" src="style.css"></style>
+        <meta charset="UTF-8">
+        <title>Coding Rush | Sport Coding Practice</title>
+        <meta name="description" content="Online touch typing practice for competitive programmers. Improve your sportcoding skills: increase speed and make fewer mistakes by writing not just text or developer code but sportcode."> 
+    </head>
+    <body>
+        <header class="headfoot">
+            <button type="button" id="backButton" class="header-button tooltip">🢀<span class="tooltiptext-r enabled-tooltip">Back</span></button>
+            <button type="button" id="tooltipButton" class="header-button">Disable tooltips</button>
+            <button type="button" id="lastButton" class="header-button">Last button</button>
+        </header>
+        <div style="height: 10px;"></div>
+        <div class="column">
+            <div id="textNameField">
+                <p id="textName">First step - Hello, wolrd!</p>
+            </div>
+        </div>
+        <div class="column">
+            <div id="startButtonDiv" class="tooltip">
+                <button type="button" id="startButton" class="pretty-button green-btn">Start</button>
+                <span style="visibility: visible;" id="startButtonTooltip" class="tooltiptext-l enabled-tooltip">Click or press Ctrl+Enter<br>to start typing<br>(or just begin typing)</span>
+                <span style="visibility: hidden;" id="stopButtonTooltip" class="tooltiptext-l enabled-tooltip">Click or press Ctrl+Enter<br>to stop typing</span>
+            </div>
+            <!--p id="status"><br></p-->
+        </div>
+        <footer class="headfoot">
+            <p id="copyright">Copyright (c) 2020 Ilian Andrianov, Alexander Nekrasov, Viktor Abishev.</p>
+        </footer>
+        <div style="height: 10px; width: 100%; clear: both;"></div>
+        <div class="column">
+            <textarea id="editor"></textarea>
+        </div>
+        
+        <div class="column">
+            <textarea readonly id="target" class="hide-select"></textarea>
+        </div>
+
+        <table id="typeInfo">
+            <tr>
+                <th id="speed">0</th>
+            </tr>
+            <tr>
+                <th id="status">Start typing</th>
+            </tr>
+        </table>
+        
+        <script src="main.js"></script>
+    </body>
+</html>
