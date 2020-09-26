@@ -36,7 +36,7 @@ payload = {}
 try:
     raw_payload = sys.stdin.read()
     payload = json.loads(raw_payload)
-except Exception:
+except Exception as e:
     pass
 
 # Checking signature
