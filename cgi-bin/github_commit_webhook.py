@@ -36,8 +36,8 @@ payload = {}
 try:
     raw_payload = sys.stdin.read()
     payload = json.loads(raw_payload)
-except Exception as e:
-    pass
+except Exception as ex:
+    print(ex)
 
 # Checking signature
 header_signature = os.environ.get('HTTP_X_HUB_SIGNATURE', '')
