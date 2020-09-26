@@ -19,17 +19,26 @@ async def handler(request: web.Request):
 async def handle_404(request):
     return {}
 
+@aiohttp_jinja2.template('500.html')
+async def handle_500(request):
+    return {}
+
 
 @web.middleware
 async def error_middleware(request, handler):
     try:
         return await handler(request)
-    except web.HTTPException as ex:
-        if ex.status == 404:
+    except Exception as ex:
+        code = 500
+        if isinstance(ex, web.HTTPException):
+            code = ex.status
+        if code == 404:
             response = await handle_404(request)
+        elif code == 500:
+            response = await handle_500(request)
         else:
             raise ex
-        response.set_status(ex.status)
+        response.set_status(code)
         return response
 
 
