@@ -19,7 +19,7 @@ cgitb.enable()
 cur_dir_path = os.path.dirname(os.path.realpath(__file__))
 GITHUB_SECRET = "secret"
 EVENT_REPO_BRANCH_TO_SCRIPT = {
-    ('push', 'vmsh_tasks_bot', 'master'): 'pull_and_restart.sh',
+    ('push', 'coding_rush', 'master'): 'pull_and_restart.sh',
 }
 
 
