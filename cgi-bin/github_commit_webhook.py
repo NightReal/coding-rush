@@ -17,9 +17,9 @@ cgitb.enable()
 # some ideas
 # https://github.com/carlos-jenkins/python-github-webhooks/blob/master/webhooks.py
 cur_dir_path = os.path.dirname(os.path.realpath(__file__))
-GITHUB_SECRET = "secretFromGithubWebhooks"
+GITHUB_SECRET = "secret"
 EVENT_REPO_BRANCH_TO_SCRIPT = {
-    ('push', 'vmsh_tasks_bot', 'master'): 'pull_and_restart.sh',
+    ('push', 'coding_rush', 'master'): 'pull_and_restart.sh',
 }
 
 
@@ -36,8 +36,8 @@ payload = {}
 try:
     raw_payload = sys.stdin.read()
     payload = json.loads(raw_payload)
-except:
-    pass
+except Exception as ex:
+    print(ex)
 
 # Checking signature
 header_signature = os.environ.get('HTTP_X_HUB_SIGNATURE', '')
