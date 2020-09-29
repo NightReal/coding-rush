@@ -1,4 +1,4 @@
-#!/web/vmsh_tasks_bot/vmsh_tasks_bot_env/bin/python
+#!/web/coding_rush/coding_rush_env/bin/python
 # -*- coding: utf-8 -*-
 
 import cgi
