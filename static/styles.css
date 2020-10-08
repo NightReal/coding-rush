@@ -21,9 +21,6 @@ header {
 }
 
 footer {
-    clear: both;
-    position: absolute;
-    z-index: 10;
     height: 40px;
     width: 100%;
     font-family: "Lucida Console", Monaco, monospace;
@@ -36,12 +33,6 @@ footer {
     top: 2px;
     font: inherit;
 }
-
-.column {
-    float: left;
-    width: 50%;
-}
-
 
 #textNameField {
     float: left;
