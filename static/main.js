@@ -71,14 +71,13 @@ window.onload = function() {
     editor.focus();
     updateTextNameAnimation();
     window.onresize(undefined);
-    editor.style.height = getComputedStyle(editor).height;
-    target.style.height = getComputedStyle(target).height;
+    // editor.style.height = getComputedStyle(editor).height;
+    // target.style.height = getComputedStyle(target).height;
     footer.style.display = 'block';
 };
 
 window.onresize = function() {
     updateTextNameAnimation();
-    updateFooterPosition(true);
 };
 
 function getRevVisibility(vis) {
@@ -209,77 +208,10 @@ window.onmousemove = function(e) {
     }
 };
 
-function smartScroll(x, y) {
-    let w = window.innerWidth, h = window.innerHeight;
-    let x0 = window.scrollX, y0 = window.scrollY;
-    let x1 = w + x0, y1 = h + y0;
-    let a = x0, b = y0;
-    if (x < x0)
-        a = x;
-    if (x > x1)
-        a = x - w;
-    if (y < y0)
-        b = y;
-    if (y > y1)
-        b = y - h;
-    window.scrollTo(a, b);
-}
-
-function updateFooterPosition(windowResize) {
-    let he = typeInfo.offsetTop + typeInfo.offsetHeight + 30;
-    let hf = parseInt(getComputedStyle(footer).height);
-    let H = window.innerHeight;
-    let l;
-    if (he + hf <= H) {
-        l = H - hf;
-    } else {
-        l = he;
-    }
-    l = l + 'px';
-    if (footer.style.top !== l) {
-        footer.style.top = l;
-    }
-    if (!windowResize)
-        smartScroll(0, he + hf);
-}
-
-function updateTextareaHeight() {
-    target.style.height = getComputedStyle(editor).height;
-    updateFooterPosition(false);
-}
-
-function updateTextareaHeightRev() {
-    editor.style.height = getComputedStyle(target).height;
-    updateFooterPosition(false);
-}
-
-function checkNearRightDown(el, kwargs = {'eps': 10}) {
-    let eps = kwargs['eps'];
-    let x = el.offsetLeft + el.offsetWidth - eps;
-    let y = el.offsetTop + el.offsetHeight - eps;
-    if (x - eps > mouseX || mouseX > x + eps)
-        return false;
-    if (y - eps > mouseY || mouseY > y + eps)
-        return false;
-    return true;
-}
-
-editor.onmousedown = function() {
-    if (!checkNearRightDown(editor))
-        return;
-    resizeTimer = setInterval(updateTextareaHeight, 15);
-};
-target.onmousedown = function() {
-    if (!checkNearRightDown(target))
-        return;
-    resizeTimer = setInterval(updateTextareaHeightRev, 15);
-};
-
 window.onmouseup = function() {
     if (resizeTimer !== undefined) {
         clearInterval(resizeTimer);
         resizeTimer = undefined;
-        updateTextareaHeight();
     }
 };
 
