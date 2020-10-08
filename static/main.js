@@ -18,10 +18,9 @@ let tooltipsl = document.querySelectorAll('.tooltip .tooltiptext-l');
 let tooltipsr = document.querySelectorAll('.tooltip .tooltiptext-r');
 let tooltips = document.querySelectorAll('.tooltip .tooltiptext-l, .tooltip .tooltiptext-r');
 let lastTextValue = '';
-let resizeTimer = undefined;
 let tooltipButton = document.getElementById('tooltipButton');
 let tooltipsEnabled = true;
-let typeInfo = document.getElementById('typeInfo');
+// let typeInfo = document.getElementById('typeInfo');
 let mouseX, mouseY;
 
 function updateTextNameAnimation() {
@@ -188,10 +187,10 @@ window.onkeydown = function(e) {
 window.onmousemove = function(e) {
     if (!tooltipsEnabled)
         return;
-    let x = e.pageX;
-    let y = e.pageY;
-    mouseX = x;
-    mouseY = y;
+    mouseX = e.pageX;
+    mouseY = e.pageY;
+    let x = mouseX;
+    let y = mouseY;
     for (let i = 0; i < tooltipsl.length; i++) {
         let tt = tooltipsl[i];
         if (getComputedStyle(tt).display !== 'none') {
@@ -205,13 +204,6 @@ window.onmousemove = function(e) {
             tt.style.left = x + 'px';
             tt.style.top = y + 'px';
         }
-    }
-};
-
-window.onmouseup = function() {
-    if (resizeTimer !== undefined) {
-        clearInterval(resizeTimer);
-        resizeTimer = undefined;
     }
 };
 
