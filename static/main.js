@@ -33,7 +33,7 @@ function updateTextNameAnimation() {
     textName.innerHTML = (textNameText + '&nbsp;'.repeat(8)).repeat(2);
     let widthText = textName.clientWidth / 2;
     let t1 = 2, t2 = widthText / 60;
-    let rule = ` example {
+    let rule = ` title-move {
         0% { left: 0px; }
         ${t1 / (t1 + t2) * 100}% { left: 0px; }
         100% { left: ${-widthText}px; }
@@ -43,7 +43,7 @@ function updateTextNameAnimation() {
     else
         rule = '@-webkit-keyframes' + rule;
     stylesheet.insertRule(rule, stylesheet.cssRules.length);
-    textName.style.animationName = 'example';
+    textName.style.animationName = 'title-move';
     textName.style.animationDuration = (t1 + t2) + 's';
 }
 
