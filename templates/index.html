@@ -14,8 +14,8 @@
 
 
         <header class="headfoot">
-            <button type=" button" id="backButton" class="header-button tooltip"><img src="/static/right-arrow.png"
-                height="45px" alt="Back"><span class="tooltiptext-r enabled-tooltip">Back</span></button>
+            <button type="button" id="backButton" class="header-button tooltip"><img src="/static/images/right-arrow-45x45.png"
+                alt="Back"><span class="tooltiptext-r enabled-tooltip">Back</span></button>
             <button type="button" id="tooltipButton" class="header-button">Disable tooltips</button>
             <button type="button" id="lastButton" class="header-button">Last button</button>
         </header>
@@ -36,7 +36,9 @@
 
 
         <div style="display: flex; justify-content: space-evenly; align-items: stretch; flex: 1 0 auto;">
+            <label for="editor"></label>
             <textarea id="editor" class="hide-select"></textarea>
+            <label for="target"></label>
             <textarea readonly id="target" class="hide-select">Hello, world!</textarea>
         </div>
 
