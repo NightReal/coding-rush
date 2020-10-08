@@ -21,9 +21,6 @@ header {
 }
 
 footer {
-    clear: both;
-    position: absolute;
-    z-index: 10;
     height: 40px;
     width: 100%;
     font-family: "Lucida Console", Monaco, monospace;
@@ -37,15 +34,9 @@ footer {
     font: inherit;
 }
 
-.column {
-    float: left;
-    width: 50%;
-}
-
-
 #textNameField {
     float: left;
-    width: 60%;
+    width: 40%;
     position: relative;
     overflow: hidden;
     margin-left: 22px;
@@ -104,21 +95,12 @@ footer {
 textarea {
     font-family: "Lucida Console", Monaco, monospace;
     font-size: 16px;
-    width: 98%;
+    width: 48.5%;
     border: 1px solid gray;
     border-radius: 2px;
-    resize: vertical;
+    resize: none;
     outline: none;
-    height: 45vh;
-}
-
-#editor {
-    margin-left: 0.75%;
-}
-
-#target {
-    float: right;
-    margin-right: 0.75%;
+    height: 100%;
 }
 
 textarea:read-write:focus {

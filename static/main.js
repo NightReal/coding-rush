@@ -18,10 +18,9 @@ let tooltipsl = document.querySelectorAll('.tooltip .tooltiptext-l');
 let tooltipsr = document.querySelectorAll('.tooltip .tooltiptext-r');
 let tooltips = document.querySelectorAll('.tooltip .tooltiptext-l, .tooltip .tooltiptext-r');
 let lastTextValue = '';
-let resizeTimer = undefined;
 let tooltipButton = document.getElementById('tooltipButton');
 let tooltipsEnabled = true;
-let typeInfo = document.getElementById('typeInfo');
+// let typeInfo = document.getElementById('typeInfo');
 let mouseX, mouseY;
 
 function updateTextNameAnimation() {
@@ -34,7 +33,7 @@ function updateTextNameAnimation() {
     textName.innerHTML = (textNameText + '&nbsp;'.repeat(8)).repeat(2);
     let widthText = textName.clientWidth / 2;
     let t1 = 2, t2 = widthText / 60;
-    let rule = ` example {
+    let rule = ` title-move {
         0% { left: 0px; }
         ${t1 / (t1 + t2) * 100}% { left: 0px; }
         100% { left: ${-widthText}px; }
@@ -44,7 +43,7 @@ function updateTextNameAnimation() {
     else
         rule = '@-webkit-keyframes' + rule;
     stylesheet.insertRule(rule, stylesheet.cssRules.length);
-    textName.style.animationName = 'example';
+    textName.style.animationName = 'title-move';
     textName.style.animationDuration = (t1 + t2) + 's';
 }
 
@@ -71,14 +70,13 @@ window.onload = function() {
     editor.focus();
     updateTextNameAnimation();
     window.onresize(undefined);
-    editor.style.height = getComputedStyle(editor).height;
-    target.style.height = getComputedStyle(target).height;
+    // editor.style.height = getComputedStyle(editor).height;
+    // target.style.height = getComputedStyle(target).height;
     footer.style.display = 'block';
 };
 
 window.onresize = function() {
     updateTextNameAnimation();
-    updateFooterPosition(true);
 };
 
 function getRevVisibility(vis) {
@@ -189,10 +187,10 @@ window.onkeydown = function(e) {
 window.onmousemove = function(e) {
     if (!tooltipsEnabled)
         return;
-    let x = e.pageX;
-    let y = e.pageY;
-    mouseX = x;
-    mouseY = y;
+    mouseX = e.pageX;
+    mouseY = e.pageY;
+    let x = mouseX;
+    let y = mouseY;
     for (let i = 0; i < tooltipsl.length; i++) {
         let tt = tooltipsl[i];
         if (getComputedStyle(tt).display !== 'none') {
@@ -206,80 +204,6 @@ window.onmousemove = function(e) {
             tt.style.left = x + 'px';
             tt.style.top = y + 'px';
         }
-    }
-};
-
-function smartScroll(x, y) {
-    let w = window.innerWidth, h = window.innerHeight;
-    let x0 = window.scrollX, y0 = window.scrollY;
-    let x1 = w + x0, y1 = h + y0;
-    let a = x0, b = y0;
-    if (x < x0)
-        a = x;
-    if (x > x1)
-        a = x - w;
-    if (y < y0)
-        b = y;
-    if (y > y1)
-        b = y - h;
-    window.scrollTo(a, b);
-}
-
-function updateFooterPosition(windowResize) {
-    let he = typeInfo.offsetTop + typeInfo.offsetHeight + 30;
-    let hf = parseInt(getComputedStyle(footer).height);
-    let H = window.innerHeight;
-    let l;
-    if (he + hf <= H) {
-        l = H - hf;
-    } else {
-        l = he;
-    }
-    l = l + 'px';
-    if (footer.style.top !== l) {
-        footer.style.top = l;
-    }
-    if (!windowResize)
-        smartScroll(0, he + hf);
-}
-
-function updateTextareaHeight() {
-    target.style.height = getComputedStyle(editor).height;
-    updateFooterPosition(false);
-}
-
-function updateTextareaHeightRev() {
-    editor.style.height = getComputedStyle(target).height;
-    updateFooterPosition(false);
-}
-
-function checkNearRightDown(el, kwargs = {'eps': 10}) {
-    let eps = kwargs['eps'];
-    let x = el.offsetLeft + el.offsetWidth - eps;
-    let y = el.offsetTop + el.offsetHeight - eps;
-    if (x - eps > mouseX || mouseX > x + eps)
-        return false;
-    if (y - eps > mouseY || mouseY > y + eps)
-        return false;
-    return true;
-}
-
-editor.onmousedown = function() {
-    if (!checkNearRightDown(editor))
-        return;
-    resizeTimer = setInterval(updateTextareaHeight, 15);
-};
-target.onmousedown = function() {
-    if (!checkNearRightDown(target))
-        return;
-    resizeTimer = setInterval(updateTextareaHeightRev, 15);
-};
-
-window.onmouseup = function() {
-    if (resizeTimer !== undefined) {
-        clearInterval(resizeTimer);
-        resizeTimer = undefined;
-        updateTextareaHeight();
     }
 };
 
