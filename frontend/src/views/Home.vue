@@ -1,23 +1,16 @@
 <template>
-  <div id="app"
-       style="display: flex; flex-direction: column; height: 100%; justify-content: space-between;">
-    <!-- <img src="./assets/logo.png"> -->
-    <Header/>
+  <!-- <img src="./assets/logo.png"> -->
+  <div class="editor">
     <Editor :text="text"></Editor>
-    <Footer style="flex-shrink: 0;"></Footer>
   </div>
 </template>
 
 <script>
-import Header from '@/components/Header.vue';
-import Footer from '@/components/Footer.vue';
 import Editor from '@/components/Editor.vue';
 
 export default {
   name: 'Home',
   components: {
-    Header,
-    Footer,
     Editor,
   },
   data() {
