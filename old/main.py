@@ -7,7 +7,7 @@ import asyncio
 
 async def pre_init(app):
     if os.environ.get('PROD', None) != 'true':
-        app.add_routes([web.static('/static', './static')])
+        app.add_routes([web.static('/static', 'static')])
 
 
 @aiohttp_jinja2.template('index.html')
