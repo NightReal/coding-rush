@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   db:
@@ -28,7 +28,7 @@ services:
       context: ./frontend
     volumes:
       - ./frontend:/app/frontend:ro
-      - '/app/node_modules'
+      - ./app/node_modules
     ports:
       - 8080:8080
     networks:
