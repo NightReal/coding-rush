@@ -20,7 +20,7 @@
       <label for="editor"></label>
       <textarea id="editor" class="hide-select"></textarea>
       <label for="target"></label>
-      <textarea readonly id="target" class="hide-select" v-model="text"/>
+      <textarea readonly id="target" class="hide-select" v-model="mtext"/>
     </div>
 
     <table id="typeInfo" style="padding: 10px;">
@@ -41,6 +41,11 @@
 export default {
   name: 'Editor',
   props: ['text'],
+  data() {
+    return {
+      mtext: this.text,
+    };
+  },
 };
 </script>
 
