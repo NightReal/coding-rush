@@ -1,5 +1,6 @@
 <template>
-  <div id="app" style="display: flex; flex-direction: column; height: 100%; justify-content: space-between;">
+  <div id="app"
+       style="display: flex; flex-direction: column; height: 100%; justify-content: space-between;">
     <!-- <img src="./assets/logo.png"> -->
     <Header/>
     <Editor :text="text"></Editor>
@@ -8,23 +9,23 @@
 </template>
 
 <script>
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Editor from './components/Editor'
+import Header from './components/Header.vue';
+import Footer from './components/Footer.vue';
+import Editor from './components/Editor.vue';
 
 export default {
   name: 'App',
   components: {
     Header,
     Footer,
-    Editor
+    Editor,
   },
-  data () {
+  data() {
     return {
-      text: 'Hello, world!'
-    }
-  }
-}
+      text: 'Hello, world!',
+    };
+  },
+};
 </script>
 
 <style>
