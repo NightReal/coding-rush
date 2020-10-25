@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+    <head>
+        <link rel="icon" href="/old/static/favicon.ico">
+        <link rel="stylesheet" href="/old/staticatic/styles.css">
+        <style id="dynamic-style"></style>
+        <meta charset="UTF-8">
+        <title>Coding Rush | Sport Coding Practice</title>
+        <meta name="description"
+              content="Online touch typing practice for competitive programmers. Improve your sportcoding skills:
+              increase speed and make fewer mistakes by writing not just text or developer code but sportcode.">
+    </head>
+
+    <body style="display: flex; flex-direction: column; height: 100%;">
+
+
+        <header class="headfoot">
+            <button type="button" id="backButton" class="header-button tooltip"><img
+                    src="/old/staticatic/images/right-arrow-45x45.png"
+                    alt="Back"><span class="tooltiptext-r enabled-tooltip">Back</span></button>
+            <button type="button" id="tooltipButton" class="header-button">Disable tooltips</button>
+            <button type="button" id="lastButton" class="header-button">Last button</button>
+        </header>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <div id="textNameField">
+                <p id="textName">First step - Hello, world!</p>
+            </div>
+            <div id="startButtonDiv" class="tooltip">
+                <button type="button" id="startButton" class="pretty-button green-btn">Start</button>
+                <span style="visibility: visible;" id="startButtonTooltip" class="tooltiptext-l enabled-tooltip">Click or
+                    press Ctrl+Enter<br>to start typing<br>(or just begin typing)</span>
+                <span style="visibility: hidden;" id="stopButtonTooltip" class="tooltiptext-l enabled-tooltip">Click or
+                    press Ctrl+Enter<br>to stop typing</span>
+            </div>
+        </div>
+
+
+        <div style="display: flex; justify-content: space-evenly; align-items: stretch; flex: 1 0 auto;">
+            <label for="editor"></label>
+            <textarea id="editor" class="hide-select"></textarea>
+            <label for="target"></label>
+            <textarea readonly id="target" class="hide-select">Hello, world!</textarea>
+        </div>
+
+
+        <table id="typeInfo" style="padding: 10px;">
+            <tr>
+                <th id="speed">0</th>
+            </tr>
+            <tr>
+                <th id="timepass">0</th>
+            </tr>
+            <tr>
+                <th id="status">Start typing.</th>
+            </tr>
+        </table>
+
+        <footer class="headfoot" style="flex-shrink: 0;">
+            <p id="copyright">Copyright (c) 2020 Ilian Andrianov, Alexander Nekrasov, Viktor Abishev.</p>
+        </footer>
+
+
+        <script src="/old/staticatic/main.js"></script>
+    </body>
+
+</html>
