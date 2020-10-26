@@ -22,13 +22,14 @@ services:
       - main
     depends_on:
       - db
+
   frontend:
     container_name: frontend
     build:
       context: ./frontend
     volumes:
-      - ./frontend:/app/frontend:ro
-      - ./app/node_modules
+      - ./frontend:/app
+      - 'app/node_modules'
     ports:
       - 8080:8080
     networks:
@@ -38,6 +39,18 @@ services:
       - db
     environment:
       - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./nginx/dev.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      -  main
 
 networks:
   main:
