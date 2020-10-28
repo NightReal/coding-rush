@@ -10,10 +10,11 @@ services:
       - POSTGRES_PASSWORD=postgres
     networks:
       - main
+
   backend:
     container_name: backend
     build: ./backend
-    command: /start_dev.sh
+    command: /start_prod.sh
     volumes:
       - .:/code
       - django-static:/backend/static
@@ -24,35 +25,17 @@ services:
     depends_on:
       - db
 
-  frontend:
-    container_name: frontend
-    build:
-      context: ./frontend
-    volumes:
-      - ./frontend:/app
-      - 'app/node_modules'
-    ports:
-      - 8080:8080
-    networks:
-      - main
-    depends_on:
-      - backend
-      - db
-    environment:
-      - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
-
   nginx:
     container_name: nginx
     build:
       context: .
-      dockerfile: nginx/dev/Dockerfile
+      dockerfile: nginx/prod/Dockerfile
     ports:
       - "80:80"
     depends_on:
       - backend
     volumes:
-      - ./nginx/dev/dev.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/prod/dev.conf:/etc/nginx/nginx.conf:ro
       - django-static:/usr/src/app/static
     networks:
       -  main
