@@ -1,0 +1,22 @@
+name: production build
+
+on:
+  push:
+    branches: [ master ]
+
+
+jobs:
+  pull_and_start:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build docker-compose stack
+        run: docker-compose -f docker-compose.prod.yml up --build -d
+      - name: Check running containers
+        run: docker ps -a
+      - name: Check backend logs
+        run: docker logs backend
+      - name: Check nginx and frontend logs
+        run: docker logs nginx
+      - name: Check db logs
+        run: docker logs db
