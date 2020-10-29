@@ -1,8 +1,8 @@
 <template>
   <!-- <img src="./assets/logo.png"> -->
-  <div class="editor">
-    <Editor :text="text"></Editor>
-  </div>
+  <v-container>
+    <Editor :textProp="text" :textNameProp="textName"></Editor>
+  </v-container>
 </template>
 
 <script>
@@ -16,19 +16,11 @@ export default {
   data() {
     return {
       text: 'Hello, world!',
+      textName: 'First step - Hello, world!',
     };
   },
 };
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  margin: 0;
-}
 </style>
