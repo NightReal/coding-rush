@@ -7,7 +7,7 @@
       <v-col cols="2">
         <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn color="primary" dark v-bind="attrs" v-on="on" @click="switchTyping()">
+          <v-btn color="primary" dark v-bind="attrs" v-on="on" @click="switchTyping">
             {{ typing ? 'Stop' : 'Start' }}
           </v-btn>
         </template>
@@ -19,11 +19,13 @@
       </v-tooltip>
       </v-col>
     </v-row>
-    <v-textarea readonly id="target" outlined rounded v-model="textb"/>
-    <v-textarea id="editor" outlined rounded v-model="code"
-         @input="compareCode()"></v-textarea>
+    <v-row>
+      <v-textarea id="editor" outlined rounded v-model="code" ref="editor"
+          @input="compareCode()"></v-textarea>
+      <v-textarea :readonly="typing" id="target" outlined rounded v-model="textb"/>
+    </v-row>
     <p>
-      {{ getWPM() + ' WPM' }}
+      {{ getCPM() + ' CPM' }}
     </p>
   </v-container>
 </template>
@@ -38,7 +40,7 @@ export default {
       textName: this.textNameProp,
       typing: false,
       code: '',
-      typingTimer: undefined,
+      typingTimer: 0,
     };
   },
   methods: {
@@ -54,9 +56,13 @@ export default {
     },
     switchTyping() {
       this.typing = !this.typing;
+      if (this.typing) {
+        this.$refs.editor.focus();
+        this.typingTimer = new Date();
+      }
       this.code = '';
     },
-    getWPM() {
+    getCPM() {
       return Math.round((this.code.length * 1000 * 60) / (new Date() - this.typingTimer), 2);
     },
   },
