@@ -35,6 +35,8 @@ services:
     depends_on:
       - backend
     volumes:
+      - /etc/letsencrypt/:/etc/letsencrypt/
+      - /etc/ssl/certs/dhparam.pem:/etc/ssl/certs/dhparam.pem
       - ./nginx/prod/prod.conf:/etc/nginx/nginx.conf:ro
       - django-static:/usr/src/app/static
     networks:
