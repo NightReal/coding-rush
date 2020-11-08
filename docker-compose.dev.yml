@@ -4,16 +4,16 @@ services:
   db:
     container_name: db
     image: postgres
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    env_file:
+      - ./.env.dev
     networks:
       - main
   backend:
     container_name: backend
     build: ./backend
     command: /start_dev.sh
+    env_file:
+      - ./.env.dev
     volumes:
       - .:/code
       - django-static:/backend/static
@@ -30,9 +30,9 @@ services:
       context: ./frontend
     volumes:
       - ./frontend:/app
-      - 'app/node_modules'
+      - '/app/node_modules'
     ports:
-      - 8080:8080
+      - "8080:8080"
     networks:
       - main
     depends_on:
