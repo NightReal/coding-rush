@@ -5,9 +5,9 @@ services:
     container_name: db
     image: postgres
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
     networks:
       - main
 
@@ -19,11 +19,17 @@ services:
       - .:/code
       - django-static:/backend/static
     ports:
-      - 8000:8000
+      - "8000:8000"
     networks:
       - main
     depends_on:
       - db
+    environment:
+      - DEBUG=False
+      - DJANGO_SECRET_KEY
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
 
   nginx:
     container_name: nginx
