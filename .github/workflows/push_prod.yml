@@ -16,6 +16,7 @@ jobs:
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          DJANGO_ALLOWED_HOSTS: ${{ secrets.DJANGO_ALLOWED_HOSTS }}
         run: docker-compose -f docker-compose.prod.yml up --build -d
       - name: Check running containers
         run: docker ps -a
