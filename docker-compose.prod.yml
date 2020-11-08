@@ -27,7 +27,7 @@ services:
     depends_on:
       - db
     environment:
-      - DEBUG=False
+      - DEBUG=0
       - DJANGO_SECRET_KEY
       - POSTGRES_DB
       - POSTGRES_USER
