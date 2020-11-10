@@ -27,7 +27,7 @@ services:
     networks:
       - prod_network
     depends_on:
-      - db
+      - prod_db
     environment:
       - DEBUG=0
       - DJANGO_SECRET_KEY
@@ -46,7 +46,7 @@ services:
       - "80:80"
       - "443:443"
     depends_on:
-      - backend
+      - prod_backend
     volumes:
       - /etc/letsencrypt/:/etc/letsencrypt/
       - /etc/ssl/certs/dhparam.pem:/etc/ssl/certs/dhparam.pem
