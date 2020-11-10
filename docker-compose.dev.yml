@@ -18,7 +18,7 @@ services:
       - ./backend:/code
       - django-static:/code/static
     ports:
-      - 8000:8000
+      - "9000:8000"
     networks:
       - main
     depends_on:
@@ -32,7 +32,7 @@ services:
       - ./frontend:/app
       - '/app/node_modules'
     ports:
-      - "8080:8080"
+      - "9090:8080"
     networks:
       - main
     depends_on:
@@ -48,9 +48,10 @@ services:
       context: .
       dockerfile: nginx/dev/Dockerfile
     ports:
-      - "80:80"
+      - "90:80"
     depends_on:
       - backend
+      - frontend
     volumes:
       - ./nginx/dev/dev.conf:/etc/nginx/nginx.conf:ro
       - django-static:/usr/src/app/static
