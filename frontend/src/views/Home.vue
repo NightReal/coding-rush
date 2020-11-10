@@ -1,8 +1,8 @@
 <template>
   <!-- <img src="./assets/logo.png"> -->
-  <div class="editor">
-    <Editor :text="text"></Editor>
-  </div>
+  <v-container>
+    <Editor :textProp="text" :textNameProp="textName"></Editor>
+  </v-container>
 </template>
 
 <script>
@@ -15,20 +15,12 @@ export default {
   },
   data() {
     return {
-      text: 'Hello, world!',
+      text: '#include <bits/stdc++.h>\nusing namespace std;\n\n\nint main() {\n    ios_base::sync_with_stdio(0);\n    cin.tie(0);\n    cout.tie(0);\n    int n;\n    cin >> n;\n    return 0;\n}\n',
+      textName: 'First step - Hello, world!',
     };
   },
 };
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  margin: 0;
-}
 </style>

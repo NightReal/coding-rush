@@ -1,7 +1,9 @@
 <template>
-  <footer class="headfoot">
-    <p id="copyright">Copyright (c) 2020 Ilian Andrianov, Alexander Nekrasov, Viktor Abishev.</p>
-  </footer>
+  <v-footer absolute>
+      <v-col class="text-center" cols="200">
+        {{ new Date().getFullYear() }} — <strong>Coding Rush</strong>
+      </v-col>
+    </v-footer>
 </template>
 
 <script>
@@ -11,16 +13,4 @@ export default {
 </script>
 
 <style scoped>
-.headfoot {
-  background-color: #300058;
-  color: white;
-  clear: both;
-}
-
-#copyright {
-  position: relative;
-  margin-left: 12px;
-  top: 2px;
-  font: inherit;
-}
 </style>
