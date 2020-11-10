@@ -11,12 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build docker-compose stack
+        env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          DJANGO_ALLOWED_HOSTS: ${{ secrets.DJANGO_ALLOWED_HOSTS }}
         run: docker-compose -f docker-compose.prod.yml up --build -d
       - name: Check running containers
         run: docker ps -a
       - name: Check backend logs
-        run: docker logs backend
+        run: docker logs prod_backend
       - name: Check nginx and frontend logs
-        run: docker logs nginx
+        run: docker logs prod_nginx
       - name: Check db logs
         run: docker logs db
