@@ -20,9 +20,9 @@ jobs:
         run: docker-compose -f docker-compose.prod.yml up --build -d
       - name: Check running containers
         run: docker ps -a
-      - name: Check prod_backend logs
-        run: docker logs backend
-      - name: Check prod_nginx and prod_frontend logs
-        run: docker logs nginx
+      - name: Check backend logs
+        run: docker logs prod_backend
+      - name: Check nginx and frontend logs
+        run: docker logs prod_nginx
       - name: Check db logs
         run: docker logs db
