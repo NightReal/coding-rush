@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    container_name: db
+    user: prod
     image: postgres
     environment:
       - POSTGRES_DB
@@ -11,10 +11,10 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     networks:
-      - main
+      - prod_network
 
   backend:
-    container_name: backend
+    user: prod
     build: ./backend
     command: /start_prod.sh
     volumes:
@@ -23,7 +23,7 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - main
+      - prod_network
     depends_on:
       - db
     environment:
@@ -35,7 +35,7 @@ services:
       - DJANGO_ALLOWED_HOSTS
 
   nginx:
-    container_name: nginx
+    user: prod
     build:
       context: .
       dockerfile: nginx/prod/Dockerfile
@@ -50,10 +50,10 @@ services:
       - ./nginx/prod/prod.conf:/etc/nginx/nginx.conf:ro
       - django-static:/usr/src/app/static
     networks:
-      -  main
+      -  prod_network
 
 networks:
-  main:
+  prod_network:
     driver: bridge
 
 volumes:
