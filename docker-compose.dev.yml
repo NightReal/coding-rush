@@ -7,7 +7,7 @@ services:
     env_file:
       - ./.env.dev
     networks:
-      - main
+      - dev_network
   backend:
     container_name: backend
     build: ./backend
@@ -20,7 +20,7 @@ services:
     ports:
       - "9000:8000"
     networks:
-      - main
+      - dev_network
     depends_on:
       - db
 
@@ -34,7 +34,7 @@ services:
     ports:
       - "9090:8080"
     networks:
-      - main
+      - dev_network
     depends_on:
       - backend
       - db
@@ -56,10 +56,10 @@ services:
       - ./nginx/dev/dev.conf:/etc/nginx/nginx.conf:ro
       - django-static:/usr/src/app/static
     networks:
-      -  main
+      -  dev_network
 
 networks:
-  main:
+  dev_network:
     driver: bridge
 
 volumes:
