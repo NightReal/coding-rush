@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.SnippetList.as_view()),
+    path('create/', views.SnippetCreate.as_view()),
     path('<int:pk>/', views.SnippetDetail.as_view()),
 ]
 
