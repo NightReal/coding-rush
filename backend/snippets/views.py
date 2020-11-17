@@ -1,16 +1,23 @@
-from django.shortcuts import render
 from .models import Snippet
 from .serializers import SnippetSerializer
-from django.http import Http404
-from rest_framework import generics
+from rest_framework import generics, permissions
 
 
 # Create your views here.
 
-class SnippetList(generics.ListCreateAPIView):
+class SnippetList(generics.ListAPIView):
     """
-    List all snippets, or create new one
+    List all snippets
     """
+    queryset = Snippet.objects.all()
+    serializer_class = SnippetSerializer
+
+
+class SnippetCreate(generics.CreateAPIView):
+    """
+    Create snippet
+    """
+    permission_classes = [permissions.IsAdminUser]
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
 
