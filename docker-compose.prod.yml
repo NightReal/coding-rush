@@ -26,8 +26,9 @@ services:
       - prod_network
     depends_on:
       - prod_db
+    env_file:
+      - ./.env.prod
     environment:
-      - DEBUG=0
       - DJANGO_SECRET_KEY
       - POSTGRES_DB
       - POSTGRES_USER

@@ -1,20 +1,38 @@
 <template>
-  <!-- <img src="./assets/logo.png"> -->
-  <v-container>
-    parararara
-  </v-container>
+  <div>
+    <form class="login" @submit.prevent="login">
+      <h1>Sign in</h1>
+      <label>Email</label>
+      <input required v-model="email" type="email" placeholder="E-mail"/>
+      <label>Password</label>
+      <input required v-model="password" type="password" placeholder="Password"/>
+      <hr/>
+      <button type="submit">Login</button>
+    </form>
+  </div>
 </template>
 
 <script>
-// import Main from '@/components/Main.vue';
-
 export default {
-  name: 'Login',
-  components: {
-    // Main,
+  name: 'Login.vue',
+  data() {
+    return {
+      email: '',
+      password: '',
+    };
+  },
+  methods: {
+    login() {
+      const { email } = this;
+      const { password } = this;
+      this.$store.dispatch('login', { email, password })
+        .then(() => this.$router.push('/'))
+        .catch((err) => console.log(err));
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
+
 </style>
