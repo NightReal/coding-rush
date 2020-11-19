@@ -1,45 +1,73 @@
 <template>
-  <v-component>
-  <v-app-bar app color="primary" dark>
-    <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-    <v-toolbar-title>Coding Rush</v-toolbar-title>
-  </v-app-bar>
+  <v-container>
+    <v-app-bar app color="primary" dark>
+      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+      <v-toolbar-title>Coding Rush</v-toolbar-title>
 
-  <v-navigation-drawer
-    v-model="drawer"
-    absolute
-    temporary>
+    </v-app-bar>
 
-    <v-list nav dense>
-      <v-list-item-group
-          active-class="deep-purple--text text--accent-4"
-        >
-          <v-list-item href="/">
-            <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item>
+    <v-navigation-drawer class="active" dark
+                         v-model="drawer"
+                         absolute
+                         temporary
+                         color="#2b2b2b">
 
-          <v-list-item href="/editor">
-            <v-list-item-icon>
-              <v-icon>mdi-keyboard</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Type</v-list-item-title>
-          </v-list-item>
+      <v-list nav dense flat>
+        <v-list-item-group mandatory>
+          <template v-for="(item, i) in items">
+            <v-divider class="mb-1" v-if="item === ''" :key="i"></v-divider>
+            <v-list-item v-else
+                         @click="item.text !== 'Close' ? goto(item.path) : drawer = false"
+                         v-bind:class="isActive(item.path)"
+                         :key="i">
+              <v-list-item-icon>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+            </v-list-item>
+          </template>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-  </v-component>
+  </v-container>
+
 </template>
 
 <script>
+
 export default {
   name: 'Header',
 
-  data: () => ({
-    drawer: false,
-  }),
+  data() {
+    return {
+      drawer: false,
+      items: [
+        {
+          text: 'Close',
+          icon: 'mdi-close',
+        },
+        '',
+        {
+          text: 'Home',
+          path: '/home',
+          icon: 'mdi-home',
+        },
+        {
+          text: 'Typing',
+          path: '/editor',
+          icon: 'mdi-keyboard',
+        },
+      ],
+    };
+  },
+  methods: {
+    isActive(path) {
+      return path === this.$router.currentRoute.path ? 'active' : false;
+    },
+    goto(route) {
+      this.$router.push(route).catch((e) => e);
+    },
+  },
 };
 </script>
 
@@ -47,4 +75,9 @@ export default {
 #Title {
   font-size: 22px;
 }
+
+.active {
+  background-color: #d07205;
+}
+
 </style>

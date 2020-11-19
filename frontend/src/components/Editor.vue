@@ -5,23 +5,14 @@
         {{ textName }}
       </v-col>
       <v-col cols="2">
-        <v-tooltip top>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn color="primary" dark v-bind="attrs" v-on="on" @click="switchTyping">
-            {{ typing ? 'Stop' : 'Start' }}
-          </v-btn>
-        </template>
-        <span>
-          <div v-if="!typing">Click or press Ctrl+Enter<br>
-          to start typing<br>(or just begin typing)</div>
-          <div v-else>Click or press Ctrl+Enter<br>to stop typing</div>
-        </span>
-      </v-tooltip>
+        <v-btn min-width="90px" color="primary" dark @click="switchTyping()">
+          {{ typing ? 'Stop' : 'Start' }}
+        </v-btn>
       </v-col>
     </v-row>
     <v-row>
       <v-textarea id="editor" outlined rounded v-model="code" ref="editor"
-          @input="compareCode()"></v-textarea>
+                  @input="compareCode()"></v-textarea>
       <v-textarea :readonly="typing" id="target" outlined rounded v-model="textb"/>
     </v-row>
     <p>
@@ -70,4 +61,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>
