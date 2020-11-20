@@ -1,7 +1,6 @@
 <template>
   <v-app>
-    <Header v-if="!isLogging()"/>
-    <HeaderLogin v-else/>
+    <Header/>
     <v-main>
       <router-view/>
     </v-main>
@@ -12,7 +11,6 @@
 <script>
 
 import Header from '@/components/Header.vue';
-import HeaderLogin from '@/components/HeaderLogin.vue';
 import Footer from '@/components/Footer.vue';
 
 export default {
@@ -20,14 +18,10 @@ export default {
 
   components: {
     Header,
-    HeaderLogin,
     Footer,
   },
 
   methods: {
-    isLogging() {
-      return this.$router.currentRoute.path === '/';
-    },
   },
 };
 </script>
