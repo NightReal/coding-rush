@@ -50,6 +50,7 @@ export default {
       };
       this.$store.dispatch('register', data)
         .then(() => this.$router.push('/'))
+        // eslint-disable-next-line no-console
         .catch((err) => console.log(err));
     },
   },

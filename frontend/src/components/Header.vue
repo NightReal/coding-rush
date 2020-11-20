@@ -49,7 +49,7 @@ export default {
         '',
         {
           text: 'Home',
-          path: '/home',
+          path: '/',
           icon: 'mdi-home',
         },
         {

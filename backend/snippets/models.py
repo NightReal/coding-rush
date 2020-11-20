@@ -10,3 +10,6 @@ class Snippet(models.Model):
     title = models.CharField(max_length=50, blank=True, default='')
     code = models.TextField()
     language = models.CharField(choices=LANGUAGES_CHOICES, max_length=50, default='python')
+
+    def __str__(self):
+        return f"{self.title} - {self.language}"

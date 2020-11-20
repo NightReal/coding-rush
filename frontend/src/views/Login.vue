@@ -2,8 +2,8 @@
   <div>
     <form class="login" @submit.prevent="login">
       <h1>Sign in</h1>
-      <label>Email</label>
-      <input required v-model="email" type="email" placeholder="E-mail"/>
+      <label>Username</label>
+      <input required v-model="username" type="text" placeholder="Username"/>
       <label>Password</label>
       <input required v-model="password" type="password" placeholder="Password"/>
       <hr/>
@@ -23,10 +23,11 @@ export default {
   },
   methods: {
     login() {
-      const { email } = this;
+      const { username } = this;
       const { password } = this;
-      this.$store.dispatch('login', { email, password })
+      this.$store.dispatch('login', { username, password })
         .then(() => this.$router.push('/'))
+        // eslint-disable-next-line no-console
         .catch((err) => console.log(err));
     },
   },
