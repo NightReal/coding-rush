@@ -18,15 +18,27 @@ const requestInterceptor = (request) => {
 };
 
 const errorInterceptor = (error) => {
-  const originalRequest = error.config;
   if (error.config && error.response && error.response.status === 403) {
-    store.dispatch('refresh')
+    return store.dispatch('refresh')
       .then(() => {
+        const originalRequest = error.config;
         originalRequest.headers.Authorization = `Bearer ${store.state.accessToken}`;
-        return APIHelper(originalRequest);
+        // return APIHelper(originalRequest);
+        return new Promise(((resolve, reject) => {
+          APIHelper.request(originalRequest).then((response) => {
+            resolve(response);
+          }).catch((err) => {
+            reject(err);
+          });
+        }));
       })
-      .catch((err) => Promise.reject(err));
+      .catch((err) => {
+        Promise.reject(err);
+      });
   }
+  return new Promise(((resolve, reject) => {
+    reject(error);
+  }));
 };
 
 APIHelper.interceptors.request.use(

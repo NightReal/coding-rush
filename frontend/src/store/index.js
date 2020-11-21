@@ -61,7 +61,7 @@ export default new Vuex.Store({
     },
     getUser(context) {
       return new Promise(((resolve, reject) => {
-        APIHelper.get('/account/getme/')
+        APIHelper('/account/getme/')
           .then((response) => {
             context.commit('updateUser', response.data);
             resolve();
