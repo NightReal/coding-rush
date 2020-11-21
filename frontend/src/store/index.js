@@ -28,6 +28,7 @@ export default new Vuex.Store({
     },
     updateAccess(state, access) {
       state.accessToken = access;
+      localStorage.setItem('accessToken', access);
     },
     updateAll(state, { access, refresh }) {
       localStorage.setItem('accessToken', access);
@@ -52,11 +53,9 @@ export default new Vuex.Store({
         })
           .then((response) => {
             context.commit('updateAccess', response.data.access);
-            resolve();
+            return resolve();
           })
-          .catch((err) => {
-            reject(err);
-          });
+          .catch((err) => reject(err));
       }));
     },
     getUser(context) {
@@ -64,11 +63,9 @@ export default new Vuex.Store({
         APIHelper('/account/getme/')
           .then((response) => {
             context.commit('updateUser', response.data);
-            resolve();
+            return resolve();
           })
-          .catch((err) => {
-            reject(err);
-          });
+          .catch((err) => reject(err));
       }));
     },
     login(context, credentials) {
@@ -82,11 +79,9 @@ export default new Vuex.Store({
               access: response.data.access,
               refresh: response.data.refresh,
             });
-            resolve();
+            return resolve();
           })
-          .catch((err) => {
-            reject(err);
-          });
+          .catch((err) => reject(err));
       }));
     },
   },
