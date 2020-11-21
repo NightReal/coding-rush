@@ -22,7 +22,6 @@ const errorInterceptor = (error) => {
   if (error.config && error.response && error.response.status === 403) {
     store.dispatch('refresh')
       .then(() => {
-        console.log(originalRequest);
         originalRequest.headers.Authorization = `Bearer ${store.state.accessToken}`;
         return APIHelper(originalRequest);
       })
