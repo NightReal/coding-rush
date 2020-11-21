@@ -1,6 +1,8 @@
 import axios from 'axios';
 // eslint-disable-next-line import/no-cycle
 import store from '../store';
+// eslint-disable-next-line import/no-cycle
+import router from '../router';
 
 const APIHelper = axios.create({
   headers: {
@@ -32,9 +34,12 @@ const errorInterceptor = (error) => {
           });
         }));
       })
-      .catch((err) => {
-        Promise.reject(err);
-      });
+      .catch((err) => Promise.reject(err));
+  }
+  if (error.config && error.response && error.response.status === 401) {
+    // here got hacked or refresh expired
+    store.dispatch('logout');
+    router.push('Login');
   }
   return new Promise(((resolve, reject) => {
     reject(error);

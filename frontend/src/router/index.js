@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import store from '../store/index';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import EditorView from '../views/EditorView.vue';
 import Register from '../views/Register.vue';
+// eslint-disable-next-line import/no-cycle
+import store from '../store/index';
 
 Vue.use(VueRouter);
 
