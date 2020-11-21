@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 // eslint-disable-next-line import/no-cycle
-import API from '../api/apihelper';
+import APIHelper from '../api/apihelper';
 
 Vue.use(Vuex);
 
@@ -18,7 +18,13 @@ export default new Vuex.Store({
     destroyToken(state) {
       state.accessToken = null;
       state.refreshToken = null;
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       state.user = {};
+    },
+    destroyAccess(state) {
+      state.accessToken = null;
+      localStorage.removeItem('accessToken');
     },
     updateAccess(state, access) {
       state.accessToken = access;
@@ -29,17 +35,45 @@ export default new Vuex.Store({
       state.accessToken = access;
       state.refreshToken = refresh;
     },
+    updateUser(state, user) {
+      state.user = user;
+    },
   },
   actions: {
     logout(context) {
       // TODO: Make server-side logout
       context.commit('destroyToken');
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+    },
+    refresh(context) {
+      context.commit('destroyAccess');
+      return new Promise(((resolve, reject) => {
+        APIHelper.post('/account/token/refresh/', {
+          refresh: context.state.refreshToken,
+        })
+          .then((response) => {
+            context.commit('updateAccess', response.data.access);
+            resolve();
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      }));
+    },
+    getUser(context) {
+      return new Promise(((resolve, reject) => {
+        APIHelper.get('/account/getme/')
+          .then((response) => {
+            context.commit('updateUser', response.data);
+            resolve();
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      }));
     },
     login(context, credentials) {
       return new Promise(((resolve, reject) => {
-        API.post('/account/token/', {
+        APIHelper.post('/account/token/', {
           username: credentials.username,
           password: credentials.password,
         })

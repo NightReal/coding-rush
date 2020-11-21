@@ -2,19 +2,17 @@
   <v-container>
     just some text
     <br/>
-    {{ username }}
+    Your username:
+    {{ $store.state.user.username }}
   </v-container>
 </template>
 
 <script>
-import store from '../store/index';
 
 export default {
   name: 'Main',
-  data() {
-    return {
-      username: store.state.user,
-    };
+  beforeMount() {
+    this.$store.dispatch('getUser');
   },
 };
 </script>
