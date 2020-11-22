@@ -3,4 +3,5 @@
 dist/
 .cache/
 .env/
+backend/**/migrations/
 
