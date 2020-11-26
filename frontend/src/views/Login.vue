@@ -14,15 +14,15 @@
 </template>
 
 <script>
-import LoginForm from '@/components/LoginForm.vue';
+import LoginForm from '@/components/LoginForm/LoginForm.vue';
 
 export default {
   name: 'Login.vue',
   components: { LoginForm },
   data() {
     return {
-      email: '',
       password: '',
+      username: '',
     };
   },
   methods: {
