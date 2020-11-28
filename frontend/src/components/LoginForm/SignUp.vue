@@ -1,15 +1,6 @@
 <template>
   <v-container>
-    <!--
-    <v-form class="px-6" ref="form" v-model="valid" lazy-validation autocomplete="off">
-      <v-container class="pa-0 pt-4">
-        <v-btn :disabled="!valid" color="success" @click="validate" width="100%">
-          Sign Up
-        </v-btn>
-      </v-container>
-    </v-form>-->
-
-    <v-stepper v-model="e1" class="elevation-0 mt-n2" non-linear>
+    <v-stepper v-model="formStep" class="elevation-0 mt-n2" non-linear>
       <v-stepper-items>
         <v-stepper-content step="1" class="pa-0">
           <v-form class="px-6 pt-6" ref="formName" v-model="validName" lazy-validation
@@ -39,13 +30,16 @@
                           :rules="passwordConfirmRules" label="Confirm password" type="password"
                           required
             ></v-text-field>
-            <v-container class="pt-16" width="100%">
+            <p class="pt-8 text--disabled caption">By clicking «Sign Up», you accept
+              <a class="text-decoration-none blue--text text--darken-3"
+                 href="https://youtu.be/dQw4w9WgXcQ">Terms of Use</a>.</p>
+            <v-container class="mt-n4" width="100%">
               <v-btn :disabled="!validPassword" color="success" @click="validateForm"
                      width="100%">
                 Sign Up
               </v-btn>
               <v-btn text class="text--disabled caption" width="100%" height="20px"
-                     @click="resetValidationPassword(); e1 = 1;">
+                     @click="resetValidationPassword(); formStep = 1;">
                 Back
               </v-btn>
             </v-container>
@@ -61,9 +55,9 @@ export default {
   name: 'SignUpForm',
   data() {
     return {
-      e1: 1,
+      formStep: 1,
+
       validName: true,
-      validPassword: true,
       username: '',
       nameRules: [
         (v) => !!v || 'Name is required',
@@ -71,6 +65,14 @@ export default {
         (v) => (v && v.length <= 20) || 'Name must be less than 20 characters',
         (v) => (v && v.length >= 4) || 'Name must be more than 4 characters',
       ],
+      email: '',
+      emailRules: [
+        (v) => !!v || 'Email is required',
+        (v) => /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v) || 'Email must be valid',
+        (v) => (v && v.length <= 320) || 'Email must be less than 320 characters',
+      ],
+
+      validPassword: true,
       password: '',
       passwordRules: [
         (v) => !!v || 'Password is required',
@@ -82,18 +84,13 @@ export default {
         (v) => !!v || 'Password confirmation is required',
         (v) => (v === this.password) || 'Passwords didn\'t match',
       ],
-      email: '',
-      emailRules: [
-        (v) => !!v || 'Email is required',
-        (v) => /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v) || 'Email must be valid',
-        (v) => (v && v.length <= 320) || 'Email must be less than 320 characters',
-      ],
+
     };
   },
   methods: {
     validateName() {
       this.validName = this.$refs.formName.validate();
-      this.e1 = this.validName ? 2 : 1;
+      this.formStep = this.validName ? 2 : 1;
       return this.validName;
     },
     validatePassword() {
