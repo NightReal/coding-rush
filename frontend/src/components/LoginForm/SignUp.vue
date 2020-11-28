@@ -2,18 +2,6 @@
   <v-container>
     <!--
     <v-form class="px-6" ref="form" v-model="valid" lazy-validation autocomplete="off">
-      <v-text-field class="form-field" v-model="username"
-                    :rules="nameRules" label="Username" required
-      ></v-text-field>
-      <v-text-field class="form-field" v-model="email"
-                    :rules="emailRules" label="Email" required
-      ></v-text-field>
-      <v-text-field class="form-field" v-model="password"
-                    :rules="passwordRules" label="Password" type="password" required
-      ></v-text-field>
-      <v-text-field class="form-field" v-model="passwordConfirm"
-                    :rules="passwordConfirmRules" label="Confirm password" type="password" required
-      ></v-text-field>
       <v-container class="pa-0 pt-4">
         <v-btn :disabled="!valid" color="success" @click="validate" width="100%">
           Sign Up
@@ -22,28 +10,46 @@
     </v-form>-->
 
     <v-stepper v-model="e1" class="elevation-0 mt-n2" non-linear>
-      <v-stepper-header style="height: 48px" class="elevation-0">
-        <v-stepper-step step="1" editable style="height: 24px"></v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step step="2" editable style="height: 24px;"></v-stepper-step>
-      </v-stepper-header>
       <v-stepper-items>
-        <v-stepper-content step="1">
-          <v-card class="mb-12" color="grey lighten-2" height="200px">
-          </v-card>
-          <v-btn color="primary" @click="e1 = 2" width="100%">
-            Continue
-          </v-btn>
+        <v-stepper-content step="1" class="pa-0">
+          <v-form class="px-6 pt-6" ref="formName" v-model="validName" lazy-validation
+                  autocomplete="off">
+            <v-text-field class="form-field" v-model="username"
+                          :rules="nameRules" label="Username" required
+            ></v-text-field>
+            <v-text-field class="form-field" v-model="email"
+                          :rules="emailRules" label="Email" required
+            ></v-text-field>
+            <v-container class="pt-16">
+              <v-btn :disabled="!validName" color="primary" width="100%"
+                     @click="validateName">
+                Continue
+              </v-btn>
+            </v-container>
+          </v-form>
         </v-stepper-content>
 
-        <v-stepper-content step="2">
-          <v-card class="mb-12" color="grey lighten-1" height="200px">
-          </v-card>
-          <v-container class="pa-0 ma-0" width="100%">
-            <v-btn :disabled="!valid" color="success" @click="validate" width="100%">
-              Sign Up
-            </v-btn>
-          </v-container>
+        <v-stepper-content step="2" class="pa-0">
+          <v-form class="px-6 pt-6" ref="formPassword" v-model="validPassword" lazy-validation
+                  autocomplete="off">
+            <v-text-field class="form-field" v-model="password"
+                          :rules="passwordRules" label="Password" type="password" required
+            ></v-text-field>
+            <v-text-field class="form-field" v-model="passwordConfirm"
+                          :rules="passwordConfirmRules" label="Confirm password" type="password"
+                          required
+            ></v-text-field>
+            <v-container class="pt-16" width="100%">
+              <v-btn :disabled="!validPassword" color="success" @click="validateForm"
+                     width="100%">
+                Sign Up
+              </v-btn>
+              <v-btn text class="text--disabled caption" width="100%" height="20px"
+                     @click="resetValidationPassword(); e1 = 1;">
+                Back
+              </v-btn>
+            </v-container>
+          </v-form>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -56,7 +62,8 @@ export default {
   data() {
     return {
       e1: 1,
-      valid: true,
+      validName: true,
+      validPassword: true,
       username: '',
       nameRules: [
         (v) => !!v || 'Name is required',
@@ -84,8 +91,26 @@ export default {
     };
   },
   methods: {
-    validate() {
-      this.$refs.form.validate();
+    validateName() {
+      this.validName = this.$refs.formName.validate();
+      this.e1 = this.validName ? 2 : 1;
+      return this.validName;
+    },
+    validatePassword() {
+      this.validPassword = this.$refs.formPassword.validate();
+      return this.validPassword;
+    },
+    validateForm() {
+      if (!this.validateName() || !this.validatePassword()) { return; }
+
+      // TODO: submit sign up form
+      /* username - this.username
+       * email - this.email
+       * password - this.password */
+      console.log('Submit registraciu tut, please');
+    },
+    resetValidationPassword() {
+      this.$refs.formPassword.resetValidation();
     },
   },
 };

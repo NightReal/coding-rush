@@ -9,7 +9,7 @@
       ></v-text-field>
       <a class="text-decoration-none font-weight-medium blue--text text--darken-3 text-body-2"
          href="https://youtu.be/dQw4w9WgXcQ">Forgot password?</a>
-      <v-container class="pt-0 pt-10">
+      <v-container class="pt-10">
         <v-btn :disabled="!valid" color="success" @click="validate" width="100%">
           Sign In
         </v-btn>
@@ -36,7 +36,12 @@ export default {
   },
   methods: {
     validate() {
-      this.$refs.form.validate();
+      if (!this.$refs.form.validate()) { return; }
+
+      // TODO: submit sign in form
+      /* username - this.username
+       * password - this.password */
+      console.log('Submit vhod tut, please');
     },
   },
 };
