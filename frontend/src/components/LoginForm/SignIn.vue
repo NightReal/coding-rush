@@ -1,10 +1,10 @@
 <template>
   <v-container>
     <v-form class="px-6 pt-4" ref="form" v-model="valid" lazy-validation autocomplete="off">
-      <v-text-field class="form-field"
+      <v-text-field class="form-field" v-model="username"
                     :rules="nameRules" label="Username" required
       ></v-text-field>
-      <v-text-field class="form-field"
+      <v-text-field class="form-field" v-model="password"
                     :rules="passwordRules" label="Password" type="password" required
       ></v-text-field>
       <a class="text-decoration-none font-weight-medium blue--text text--darken-3 text-body-2"
@@ -38,10 +38,10 @@ export default {
     validate() {
       if (!this.$refs.form.validate()) { return; }
 
-      // TODO: submit sign in form
-      /* username - this.username
-       * password - this.password */
-      console.log('Submit vhod tut, please');
+      this.$store.dispatch('login', { username: this.username, password: this.password })
+        .then(() => this.$router.push('/'))
+        // eslint-disable-next-line no-console
+        .catch((err) => console.log(err));
     },
   },
 };
