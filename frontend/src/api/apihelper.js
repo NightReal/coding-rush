@@ -37,9 +37,11 @@ const errorInterceptor = (error) => {
       .catch((err) => Promise.reject(err));
   }
   if (error.config && error.response && error.response.status === 401) {
-    // here got hacked or refresh expired
+    // here we got hacked or refresh expired or we got invalid login.
     store.dispatch('logout');
-    router.push('Login');
+    router.push('/login')
+      .then()
+      .catch(() => {});
   }
   return new Promise(((resolve, reject) => {
     reject(error);
