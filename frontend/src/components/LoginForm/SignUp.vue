@@ -11,7 +11,7 @@
             <v-text-field class="form-field" v-model="email"
                           :rules="emailRules" label="Email" required
             ></v-text-field>
-            <v-container class="pt-16">
+            <v-container class="pt-16 pb-7">
               <v-btn :disabled="!validName" color="primary" width="100%"
                      @click="validateName">
                 Continue
@@ -30,10 +30,10 @@
                           :rules="passwordConfirmRules" label="Confirm password" type="password"
                           required
             ></v-text-field>
-            <p class="pt-8 text--disabled caption">By clicking «Sign Up», you accept
+            <p class="ma-0 pt-7 pb-1 text--disabled caption">By clicking «Sign Up», you accept
               <a class="text-decoration-none blue--text text--darken-3"
-                 href="https://youtu.be/dQw4w9WgXcQ">Terms of Use</a>.</p>
-            <v-container class="mt-n4" width="100%">
+                 href="https://youtu.be/M5V_IXMewl4">Terms of Use</a>.</p>
+            <v-container class="pb-3" width="100%">
               <v-btn :disabled="!validPassword" color="success" @click="validateForm"
                      width="100%">
                 Sign Up
