@@ -29,8 +29,12 @@ export default {
     next();
     this.tab = to.query.type === 'signup' ? 1 : 0;
   },
-  mounted() {
-    this.tabChanged(this.tab);
+  beforeRouteEnter(to, from, next) {
+    if (['signin', 'signup'].includes(to.query.type)) next();
+    next({
+      path: to.path,
+      query: { type: 'signin' },
+    });
   },
 };
 </script>
