@@ -1,9 +1,6 @@
 <template>
   <v-container>
-    just some text
-    <br/>
-    Your username:
-    {{ $store.state.user.username }}
+    <img width="100%" src="https://i.imgur.com/LRKDvc6.jpg">
   </v-container>
 </template>
 
@@ -11,11 +8,5 @@
 
 export default {
   name: 'Main',
-  beforeMount() {
-    this.$store.dispatch('getUser');
-  },
 };
 </script>
-
-<style scoped>
-</style>

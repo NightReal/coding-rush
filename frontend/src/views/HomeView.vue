@@ -6,10 +6,10 @@
 </template>
 
 <script>
-import Main from '@/components/Main.vue';
+import Main from '@/components/Home.vue';
 
 export default {
-  name: 'Home',
+  name: 'HomeView',
   components: {
     Main,
   },

@@ -1,7 +1,7 @@
 <template>
   <v-card class="big-card" rounded="lg" style="margin-left: 20px">
     <v-container>
-      <v-tabs v-model="tab" fixed-tabs centered>
+      <v-tabs v-model="tab" fixed-tabs centered @change="$emit('tab-changed', tab)">
         <v-tab>Sign In</v-tab>
         <v-tab>Sign Up</v-tab>
       </v-tabs>
@@ -26,8 +26,14 @@ export default {
   components: { SignInForm, SignUpForm },
   data() {
     return {
-      tab: null,
+      tab: 0,
     };
+  },
+  props: ['parentTab'],
+  watch: {
+    parentTab(to) {
+      this.tab = to;
+    },
   },
 };
 </script>
