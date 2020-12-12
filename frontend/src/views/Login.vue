@@ -29,6 +29,9 @@ export default {
     next();
     this.tab = to.query.type === 'signup' ? 1 : 0;
   },
+  mounted() {
+    this.tabChanged(this.tab);
+  },
 };
 </script>
 
