@@ -30,11 +30,16 @@ export default {
     this.tab = to.query.type === 'signup' ? 1 : 0;
   },
   beforeRouteEnter(to, from, next) {
-    if (['signin', 'signup'].includes(to.query.type)) next();
-    next({
-      path: to.path,
-      query: { type: 'signin' },
-    });
+    if (['signin', 'signup'].includes(to.query.type)) {
+      next();
+    } else {
+      const { query } = to;
+      query.type = 'signin';
+      next({
+        path: to.path,
+        query,
+      });
+    }
   },
 };
 </script>
