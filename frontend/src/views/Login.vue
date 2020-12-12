@@ -27,6 +27,7 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     next();
+    this.tab = to.query.type === 'signup' ? 1 : 0;
   },
 };
 </script>
