@@ -34,8 +34,8 @@
               <a class="text-decoration-none blue--text text--darken-3"
                  href="https://youtu.be/M5V_IXMewl4">Terms of Use</a>.</p>
             <v-container class="pb-3" width="100%">
-              <v-btn color="success" @click="validateForm"
-                     width="100%">
+              <v-btn color="success" @click="validateForm" width="100%"
+                     :loading="loading" :disabled="loading">
                 Sign Up
               </v-btn>
               <v-btn text class="text--disabled caption" width="100%" height="20px"
@@ -56,6 +56,7 @@ export default {
   data() {
     return {
       formStep: 1,
+      loading: false,
 
       validName: true,
       username: '',
@@ -103,15 +104,17 @@ export default {
       }
       return this.validPassword;
     },
-    validateForm() {
+    async validateForm() {
       if (!this.validateName() || !this.validatePassword()) { return; }
 
+      this.loading = true;
       // TODO: submit sign up form
       /* username - this.username
        * email - this.email
        * password - this.password */
-      // eslint-disable-next-line no-console
+      // await this.$store.dispatch(...);
       console.log('Submit registraciu tut, please');
+      this.loading = false;
     },
     resetValidationPassword() {
       this.$refs.formPassword.resetValidation();
