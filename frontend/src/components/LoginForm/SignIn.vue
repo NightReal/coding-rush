@@ -10,7 +10,8 @@
       <a class="text-decoration-none font-weight-medium blue--text text--darken-3 text-body-2"
          href="https://youtu.be/dQw4w9WgXcQ">Forgot password?</a>
       <v-container class="pt-10">
-        <v-btn color="success" @click="validate" width="100%">
+        <v-btn color="success" @click="validate" width="100%"
+               :loading="loading" :disabled="loading">
           Sign In
         </v-btn>
       </v-container>
@@ -23,6 +24,7 @@ export default {
   name: 'SignInForm',
   data() {
     return {
+      loading: false,
       valid: true,
       username: '',
       nameRules: [
@@ -35,16 +37,16 @@ export default {
     };
   },
   methods: {
-    validate() {
+    async validate() {
       if (!this.$refs.form.validate()) {
         this.focusFirst(['name', 'password']);
         return;
       }
-
-      this.$store.dispatch('login', { username: this.username, password: this.password })
+      this.loading = true;
+      await this.$store.dispatch('login', { username: this.username, password: this.password })
         .then(() => this.$router.push('/'))
-        // eslint-disable-next-line no-console
         .catch((err) => console.log(err));
+      this.loading = false;
     },
     focusFirst(fields) {
       // eslint-disable-next-line guard-for-in,no-restricted-syntax
