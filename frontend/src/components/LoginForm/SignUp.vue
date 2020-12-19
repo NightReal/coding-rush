@@ -5,14 +5,14 @@
         <v-stepper-content step="1" class="pa-0">
           <v-form class="px-6 pt-6" ref="formName" v-model="validName" lazy-validation
                   autocomplete="off">
-            <v-text-field class="form-field" v-model="username"
+            <v-text-field class="form-field" v-model="username" ref="name"
                           :rules="nameRules" label="Username" required
             ></v-text-field>
-            <v-text-field class="form-field" v-model="email"
+            <v-text-field class="form-field" v-model="email" ref="email"
                           :rules="emailRules" label="Email" required
             ></v-text-field>
             <v-container class="pt-16 pb-7">
-              <v-btn :disabled="!validName" color="primary" width="100%"
+              <v-btn color="primary" width="100%"
                      @click="validateName">
                 Continue
               </v-btn>
@@ -23,10 +23,10 @@
         <v-stepper-content step="2" class="pa-0">
           <v-form class="px-6 pt-6" ref="formPassword" v-model="validPassword" lazy-validation
                   autocomplete="off">
-            <v-text-field class="form-field" v-model="password"
+            <v-text-field class="form-field" v-model="password" ref="password"
                           :rules="passwordRules" label="Password" type="password" required
             ></v-text-field>
-            <v-text-field class="form-field" v-model="passwordConfirm"
+            <v-text-field class="form-field" v-model="passwordConfirm" ref="passwordConfirm"
                           :rules="passwordConfirmRules" label="Confirm password" type="password"
                           required
             ></v-text-field>
@@ -34,7 +34,7 @@
               <a class="text-decoration-none blue--text text--darken-3"
                  href="https://youtu.be/M5V_IXMewl4">Terms of Use</a>.</p>
             <v-container class="pb-3" width="100%">
-              <v-btn :disabled="!validPassword" color="success" @click="validateForm"
+              <v-btn color="success" @click="validateForm"
                      width="100%">
                 Sign Up
               </v-btn>
@@ -90,11 +90,17 @@ export default {
   methods: {
     validateName() {
       this.validName = this.$refs.formName.validate();
+      if (!this.validName) {
+        this.focusFirst(['name', 'email']);
+      }
       this.formStep = this.validName ? 2 : 1;
       return this.validName;
     },
     validatePassword() {
       this.validPassword = this.$refs.formPassword.validate();
+      if (!this.validPassword) {
+        this.focusFirst(['password', 'passwordConfirm']);
+      }
       return this.validPassword;
     },
     validateForm() {
@@ -109,6 +115,16 @@ export default {
     },
     resetValidationPassword() {
       this.$refs.formPassword.resetValidation();
+    },
+    focusFirst(fields) {
+      // eslint-disable-next-line guard-for-in,no-restricted-syntax
+      for (const i in fields) {
+        const element = this.$refs[fields[i]];
+        if (!element.valid) {
+          element.focus();
+          break;
+        }
+      }
     },
   },
 };
