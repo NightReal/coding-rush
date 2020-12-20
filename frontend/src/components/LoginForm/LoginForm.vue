@@ -5,7 +5,9 @@
         <v-tab>Sign In</v-tab>
         <v-tab>Sign Up</v-tab>
       </v-tabs>
-      <v-tabs-items v-model="tab" fixed-height fill-height>
+
+      <!-- <v-tabs-items v-model="tab" fixed-height fill-height> -->
+      <v-tabs-items v-model="tab" fill-height>
         <v-tab-item>
           <SignInForm ref="signin"/>
         </v-tab-item>
@@ -65,9 +67,10 @@ export default {
 <style scoped>
 
 .big-card {
-  min-width: 300px;
   height: 384px;
-  width: 20vw;
+  width: 340px;
+  max-width: 340px;
+  min-width: 340px;
 }
 
 </style>

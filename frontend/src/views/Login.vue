@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-container style="display: flex; justify-content: space-around">
     <LoginForm :parent-tab="tab" v-on:tab-changed="tabChanged($event)"/>
-  </div>
+  </v-container>
 </template>
 
 <script>
