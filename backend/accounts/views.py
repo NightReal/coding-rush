@@ -11,7 +11,7 @@ class AccountView(views.APIView):
     queryset = User.objects.all()
     permission_classes = (UserAccountViewPermission,)
 
-    def get(self, request, format=None):
+    def get(self, request, **kwargs):
         user = request.user
         serializer = UserSerializer(user, many=False)
         return response.Response(serializer.data)
@@ -20,10 +20,9 @@ class AccountView(views.APIView):
 class RegisterView(views.APIView):
     queryset = User.objects.all()
 
-    def post(self, request, format=None):
+    def post(self, request, **kwargs):
         serialized = UserSerializer(data=request.data)
         if serialized.is_valid(raise_exception=True):
             user = serialized.save()
             return response.Response(serialized.data, status=status.HTTP_201_CREATED)
-        else:
-            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        return response.Response(status=status.HTTP_400_BAD_REQUEST)
