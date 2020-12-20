@@ -1,17 +1,17 @@
 <template>
   <!-- <img src="./assets/logo.png"> -->
   <v-container>
-    <Main/>
+    <Home/>
   </v-container>
 </template>
 
 <script>
-import Main from '@/components/Main.vue';
+import Home from '@/components/Home.vue';
 
 export default {
-  name: 'Home',
+  name: 'HomeView',
   components: {
-    Main,
+    Home,
   },
 };
 </script>

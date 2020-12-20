@@ -10,18 +10,19 @@
 
 <script>
 
-import Header from '@/components/Header.vue';
+import HeaderAuth from '@/components/Headers/HeaderAuth.vue';
+import HeaderUnauth from '@/components/Headers/HeaderUnauth.vue';
 import Footer from '@/components/Footer.vue';
+import store from '@/store/index';
 
 export default {
   name: 'App',
 
   components: {
-    Header,
+    Header: {
+      render: (c) => c(store.getters.isAuthenticated ? HeaderAuth : HeaderUnauth),
+    },
     Footer,
   },
-
-  data: () => ({
-  }),
 };
 </script>
