@@ -29,6 +29,9 @@ export default {
     next();
     this.tab = to.query.type === 'signup' ? 1 : 0;
   },
+  mounted() {
+    this.tab = this.$route.query.type === 'signup' ? 1 : 0;
+  },
   beforeRouteEnter(to, from, next) {
     if (['signin', 'signup'].includes(to.query.type)) {
       next();
