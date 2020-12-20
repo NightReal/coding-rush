@@ -33,14 +33,12 @@
                           required
             ></v-text-field>
 
-            <!-- <p class="ma-0 pt-7 pb-1 text--disabled caption">
-              By clicking «Sign Up», you accept -->
-            <p class="text--disabled caption">By clicking «Sign Up», you accept
+            <p class="ma-0 pt-7 pb-1 text--disabled caption">
+              By clicking «Sign Up», you accept
               <a class="text-decoration-none blue--text text--darken-3"
                  href="https://youtu.be/M5V_IXMewl4">Terms of Use</a>.</p>
 
-            <!-- <v-container class="pb-3" width="100%"> -->
-            <v-container width="100%">
+            <v-container class="pb-3" width="100%">
 
               <v-btn color="success" @click="validateForm" width="100%"
                      :loading="loading" :disabled="loading">
