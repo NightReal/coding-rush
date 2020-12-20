@@ -4,7 +4,8 @@
                        absolute
                        temporary
                        color="#2b2b2b"
-                       @input="$emit('drawer-switched', drawer)">
+                       @input="$emit('drawer-switched', drawer)"
+                       style="position: fixed">
 
     <v-list nav dense flat>
       <v-list-item-group mandatory>
