@@ -9,7 +9,7 @@
       ></v-text-field>
       <a class="text-decoration-none font-weight-medium blue--text text--darken-3 text-body-2"
          href="https://youtu.be/dQw4w9WgXcQ">Forgot password?</a>
-      <v-container class="pt-10">
+      <v-container class="pt-8">
         <v-btn color="success" @click="validate" width="100%"
                :loading="loading" :disabled="loading">
           Sign In
