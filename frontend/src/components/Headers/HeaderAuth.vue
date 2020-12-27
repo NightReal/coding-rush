@@ -49,7 +49,7 @@ export default {
           activating: false,
           function: () => {
             this.$store.dispatch('logout')
-              .then(() => this.goto('/login'))
+              .then(() => this.goto('/'))
               .catch((err) => console.log(err));
           },
         },

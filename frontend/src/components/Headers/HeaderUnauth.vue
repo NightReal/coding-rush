@@ -32,7 +32,7 @@ export default {
         '',
         {
           text: 'Main page',
-          icon: 'mdi-compass-outline',
+          icon: 'mdi-star',
           path: '/',
           activating: true,
           function: (item) => this.goto(item),
