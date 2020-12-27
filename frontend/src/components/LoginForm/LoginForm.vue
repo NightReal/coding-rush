@@ -68,9 +68,9 @@ export default {
 
 .big-card {
   height: 384px;
-  width: 368px;
-  max-width: 368px;
-  min-width: 368px;
+  width: 370px;
+  max-width: 370px;
+  min-width: 370px;
 }
 
 </style>
