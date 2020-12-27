@@ -1,6 +1,7 @@
 <template>
-  <v-container>
-    <v-app-bar app color="primary" dark>
+  <v-container class="pa-0 ma-0" v-bind:class="padding()">
+    <v-app-bar app dense color="primary" dark
+               v-bind:elevate-on-scroll="mainPage">
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
       <v-toolbar-title>Coding Rush</v-toolbar-title>
     </v-app-bar>
@@ -17,6 +18,7 @@ export default {
   components: {
     NavigationBar,
   },
+  props: ['mainPage'],
   data() {
     return {
       drawer: false,
@@ -57,6 +59,13 @@ export default {
     goto(item) {
       this.$router.push(item).catch((e) => e);
     },
+    padding() {
+      return !this.mainPage ? 'pb-12' : false;
+    },
   },
 };
 </script>
+
+<style scoped>
+
+</style>

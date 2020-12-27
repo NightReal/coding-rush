@@ -1,7 +1,8 @@
 <template>
   <v-app>
-    <Header/>
-    <v-main>
+    <HeaderAuth v-if="isAuthenticated()"/>
+    <HeaderUnauth v-else :main-page="isRoot()"/>
+    <v-main class="pa-0 ma-0">
       <router-view/>
     </v-main>
     <Footer/>
@@ -19,10 +20,17 @@ export default {
   name: 'App',
 
   components: {
-    Header: {
-      render: (c) => c(store.getters.isAuthenticated ? HeaderAuth : HeaderUnauth),
-    },
+    HeaderAuth,
+    HeaderUnauth,
     Footer,
+  },
+  methods: {
+    isAuthenticated() {
+      return store.getters.isAuthenticated;
+    },
+    isRoot() {
+      return this.$route.name === 'Root';
+    },
   },
 };
 </script>
