@@ -2,10 +2,10 @@
   <v-container class="pa-0 ma-0">
     <v-sheet class="pa-0 ma-0" id="big-header" elevation="4" color="primary" dark>
       <v-img id="header-title" transition="" alt="Coding Rush"
-             src="@/assets/text-930x160.png"></v-img>
+             src="@/assets/text-light-930x160.png"></v-img>
       <v-container id="header-content" class="pa-0 ma-0">
-        <v-container class="pa-0 ma-0 mb-16 ml-16" style="display: flex; flex-direction: column;
-         width:auto; font-family: monospace;">
+        <v-container class="pa-0 ma-0 mb-16 ml-16 mr-n16" style="display: flex;
+         flex-direction: column; width:auto; font-family: monospace;">
           <v-container class="pa-0 ma-0" style="font-size: 3rem; text-align: left;">
             {{ 'Competitive' }} <br>
             {{ '\xa0\xa0\xa0coding' }} <br>
@@ -22,7 +22,7 @@
         </v-container>
       </v-container>
       <v-img id="header-logo" transition="scroll-x-transition"
-             src="@/assets/logo-430x430.png"></v-img>
+             src="@/assets/logo-light-430x430.png"></v-img>
     </v-sheet>
     <v-container style="height: 1100px; margin-top: 180px; padding-left: 30px">
       <br>dummy
