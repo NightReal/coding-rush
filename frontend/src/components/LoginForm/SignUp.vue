@@ -111,7 +111,7 @@ export default {
       }
       return this.validPassword;
     },
-    async validateForm() {
+    validateForm() {
       if (!this.validateName() || !this.validatePassword()) { return; }
 
       this.loading = true;
@@ -119,7 +119,10 @@ export default {
       /* username - this.username
        * email - this.email
        * password - this.password */
-      // await this.$store.dispatch(...);
+      // this.$store.dispatch(...)
+      //            .then(...)
+      //            .catch(...)
+      //            .then(() => { this.loading = false; });
       console.log('Submit registraciu tut, please');
       this.loading = false;
     },

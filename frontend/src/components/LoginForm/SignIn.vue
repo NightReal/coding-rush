@@ -37,16 +37,16 @@ export default {
     };
   },
   methods: {
-    async validate() {
+    validate() {
       if (!this.$refs.form.validate()) {
         this.focusFirst(['name', 'password']);
         return;
       }
       this.loading = true;
-      await this.$store.dispatch('login', { username: this.username, password: this.password })
+      this.$store.dispatch('login', { username: this.username, password: this.password })
         .then(() => this.$router.push('/'))
-        .catch((err) => console.log(err));
-      this.loading = false;
+        .catch((err) => console.log(err))
+        .then(() => { this.loading = false; });
     },
     focusFirst(fields) {
       // eslint-disable-next-line guard-for-in,no-restricted-syntax
