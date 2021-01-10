@@ -23,7 +23,7 @@
     </v-sheet>
     <v-container style="min-width: 100vw; margin-top: 160px; padding-left: 30px;
     display: flex; align-items: center; flex-direction: column; padding-bottom: 200px;">
-      <v-card class="card" rounded="lg" width="600px" elevation="6">
+      <v-card class="card mb-3" rounded="lg" width="600px" elevation="6">
         <v-container class="px-10 pt-4 pb-5">
           <p class="card-title">Coding Rush is a</p>
           <p class="card-content">platform for learning to <span>type faster</span> for
@@ -37,20 +37,13 @@
       </p>
       <PrettyDivider/>
       <v-card class="card" flat>
-        <p class="card-title">Who is it for?</p>
-        <p class="card-content"> ???? For competitive programmers who wants to increase their coding
-                                 skills. ???? </p>
-        <p class="card-content"></p>
-      </v-card>
-      <PrettyDivider/>
-      <v-card class="card" flat>
         <p class="card-title">What is it for?</p>
         <v-container class="pa-0 card-content" style="text-align: left; display: flex;
             flex-direction: column; align-items: center;">
           <p class="card-subtitle">Increase your skills</p>
-          <v-container class="pa-0 mb-7"
-                       style="display: flex; justify-content: space-between; min-width: 980px;
-                              margin-left: -200px; height: 165px; align-items: flex-end">
+          <v-container class="pa-0 ma-0 mb-9 mt-3"
+                       style="display: flex; justify-content: space-between; min-width: 1176px;
+                       max-width: 1176px; height: 210px; align-items: flex-end">
             <v-card class="list-card-3" elevation="3">
               <p class="list-item-title">Typing accuracy</p>
               <v-divider style="width: 50px"></v-divider>
@@ -59,7 +52,7 @@
             <v-card class="list-card-3" elevation="5" style="align-self: flex-start">
               <p class="list-item-title">Typing speed</p>
               <v-divider style="width: 50px"></v-divider>
-              <p class="list-item-content">Type faster and faster<br>Letters, numbers, symbols</p>
+              <p class="list-item-content">Type faster and faster:<br>letters, numbers, symbols</p>
             </v-card>
             <v-card class="list-card-3" elevation="3">
               <p class="list-item-title">Knowledge of algorithms</p>
@@ -67,9 +60,36 @@
               <p class="list-item-content">Write basic code without hesitation</p>
             </v-card>
           </v-container>
-          <p style="text-align: center">Learn basic <span>algorithms</span> and <span>data
-                                        structures</span> that are often needed in contests while
-                                        training <span>speed</span> and <span>accuracy</span>.</p>
+          <p style="text-align: center; width: 600px">
+            Learn basic <span>algorithms</span> and <span>data structures</span> that are often
+            needed in contests while training <span>speed</span> and <span>accuracy</span>.
+          </p>
+        </v-container>
+      </v-card>
+      <PrettyDivider/>
+      <v-card class="card" flat>
+        <p class="card-title">Who is it for?</p>
+        <v-container class="pa-0 card-content" style="text-align: left; display: flex;
+            flex-direction: column; align-items: center;">
+          <p class="card-subtitle">Competitive programmers of different levels</p>
+          <v-container class="pa-0 mb-9 mt-3"
+                       style="display: flex; justify-content: space-between; min-width: 780px;
+                       max-width: 780px;">
+            <v-card class="list-card-3" elevation="3">
+              <p class="list-item-title">Beginners</p>
+              <v-divider style="width: 50px"></v-divider>
+              <p class="list-item-content">Just start coding and know not many
+                                           algorithms</p>
+            </v-card>
+            <v-card class="list-card-3" elevation="3">
+              <p class="list-item-title">Advanced</p>
+              <v-divider style="width: 50px"></v-divider>
+              <p class="list-item-content">Know many algorithms and are medalists on olympiads</p>
+            </v-card>
+          </v-container>
+          <p class="card-content" style="width: 600px">Regardless of programmer's level there is
+            <span>some new</span> or difficult to code algorithm <span>for everyone</span>.
+          </p>
         </v-container>
       </v-card>
       <PrettyDivider/>
@@ -78,7 +98,7 @@
         <p class="card-content">Ещё раз сказать что код для спортивного программирования.<br>
                                 Привести примеры а-ля "от Z-функции до Линката".<br>
                                 Сказать какие есть темы (Графы, Строки, Геома, что там ещё бывает)
-                                                                                      <br>
+          <br>
                                 Весь код для написания доступен на C++, но некоторые алгоритмы также
                                 доступны на Python 3, и что там ещё я хз.
         </p>
@@ -166,7 +186,7 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 600px;
+  /*width: 600px;*/
 }
 
 .card-title {
@@ -201,32 +221,32 @@ span {
 }
 
 .list-card-3 {
-  min-width: 320px;
-  max-width: 320px;
-  min-height: 150px;
-  max-height: 150px;
+  min-width: 384px;
+  max-width: 384px;
+  min-height: 180px;
+  max-height: 180px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .list-item-title {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-family: Roboto, sans-serif;
   font-style: italic;
   font-weight: 400;
-  margin-top: 6px;
   text-align: center;
 }
 
 .list-item-content {
-  font-size: 1.15rem;
+  font-size: 1.28rem;
   font-family: Roboto Slab, serif;
   font-weight: 400;
   margin-top: 12px;
-  margin-left: 22px;
-  margin-right: 22px;
+  margin-left: 40px;
+  margin-right: 40px;
   text-align: center;
   color: #555555;
 }
