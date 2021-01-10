@@ -78,7 +78,7 @@
             <v-card class="list-card-3" elevation="3">
               <p class="list-item-title">Beginners</p>
               <v-divider style="width: 50px"></v-divider>
-              <p class="list-item-content">Just start coding and know not many
+              <p class="list-item-content">Have just started coding and know not many
                                            algorithms</p>
             </v-card>
             <v-card class="list-card-3" elevation="3">
