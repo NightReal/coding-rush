@@ -31,7 +31,7 @@
                                   competitive programmers.</p>
         </v-container>
       </v-card>
-      <p class="card-content pt-4" style="font-size: 1.4rem; color: #555555">
+      <p class="card-content pt-4" style="font-size: 1.4rem; color: #555555; width: 900px">
         You won't be typing snippets from books, lyrics from songs or
         famous quotes here.<br>But you can typing
         <span>competitive programming code</span>!
@@ -41,7 +41,7 @@
         <p class="card-title">What is it for?</p>
         <v-container class="pa-0 card-content" style="text-align: left; display: flex;
             flex-direction: column; align-items: center;">
-          <p class="card-subtitle">Increase your skills</p>
+          <p class="card-subtitle">To increase your skills</p>
           <v-container class="pa-0 ma-0 mb-9 mt-3"
                        style="display: flex; justify-content: space-between; min-width: 1176px;
                        max-width: 1176px; height: 210px; align-items: flex-end">
@@ -58,7 +58,7 @@
             <v-card class="list-card-3" elevation="3">
               <p class="list-item-title">Knowledge of algorithms</p>
               <v-divider style="width: 50px"></v-divider>
-              <p class="list-item-content">Write basic code without hesitation</p>
+              <p class="list-item-content">Write basic code without stuttering</p>
             </v-card>
           </v-container>
           <p style="text-align: center; width: 600px">
@@ -72,7 +72,7 @@
         <p class="card-title">Who is it for?</p>
         <v-container class="pa-0 card-content" style="text-align: left; display: flex;
             flex-direction: column; align-items: center;">
-          <p class="card-subtitle">Competitive programmers of different levels</p>
+          <p class="card-subtitle">For competitive programmers of different levels</p>
           <v-container class="pa-0 mb-9 mt-3"
                        style="display: flex; justify-content: space-between; min-width: 780px;
                        max-width: 780px;">
@@ -89,19 +89,34 @@
             </v-card>
           </v-container>
           <p class="card-content" style="width: 600px">Regardless of programmer's level there is
-            <span>some new</span> or difficult to code algorithm <span>for everyone</span>.
+            <span>some new</span> or difficult to code algorithms <span>for everyone</span>.
           </p>
         </v-container>
       </v-card>
       <PrettyDivider/>
       <v-card class="card" flat>
         <p class="card-title">What kind of code?</p>
-        <p class="card-content">Ещё раз сказать что код для спортивного программирования.<br>
-                                Привести примеры а-ля "от Z-функции до Линката".<br>
-                                Сказать какие есть темы (Графы, Строки, Геома, что там ещё
-                                бывает)<br>
-                                Весь код для написания доступен на C++, но некоторые алгоритмы также
-                                доступны на Python 3, и что там ещё я хз.
+        <p class="card-subtitle" style="width: 600px">
+          Algorithms and data structures for competitive programming
+        </p>
+        <p class="card-content" style="width: 900px;">
+          Everyone will find some new (or difficult to code) for themselves — there are
+          <span>more than 50 algorithms</span> of different levels from Z-function to Link Cut Tree.
+        </p>
+        <p class="card-content mb-2" style="width: 900px">
+          Here you will find algorithms on themes:
+        </p>
+        <ul class="card-content mt-0 ml-10"
+            style="text-align: left;">
+          <li>Graphs</li>
+          <li>Strings</li>
+          <li>Geometry</li>
+          <li>Maths</li>
+          <li>Trees</li>
+          <li>and much more</li>
+        </ul>
+        <p class="card-content mb-0">All algorithms available on <span>C++</span>. Some algorithms
+                                     also available on <span>Python 3</span>.
         </p>
       </v-card>
     </v-container>
