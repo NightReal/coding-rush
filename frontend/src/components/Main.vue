@@ -1,7 +1,8 @@
 <template>
   <v-container class="pa-0 ma-0">
     <v-sheet id="big-header" class="pa-0 ma-0" elevation="4" color="primary" dark>
-      <img id="header-title" alt="Coding Rush" src="@/assets/text-light-930x160.png"/>
+      <a href="/" id="header-title"><img alt="Coding Rush"
+                                         src="@/assets/text-light-930x160.png"/></a>
       <v-container id="header-content" class="pa-0 ma-0">
         <v-container id="header-texts" class="pa-0 ma-0 mb-16 ml-16">
           <v-container id="header-text-big" class="pa-0 ma-0">
@@ -138,11 +139,14 @@ export default {
 }
 
 #header-title {
-  max-width: 730px;
-  min-width: 730px;
   align-self: center;
   margin-right: 100px;
   position: absolute;
+}
+
+#header-title img {
+  max-width: 730px;
+  min-width: 730px;
 }
 
 #header-content {
