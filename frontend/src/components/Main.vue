@@ -20,9 +20,11 @@
         </v-container>
       </v-container>
       <v-img id="header-logo" transition="scroll-x-transition"
-             src="@/assets/logo-light-430x430.png"></v-img>
+             src="@/assets/logo-light-430x430.png"
+             @click="scrollToContentStart()">
+      </v-img>
     </v-sheet>
-    <v-container id="content">
+    <v-container id="content" ref="content">
       <v-card class="card mb-3" rounded="lg" width="600px" elevation="6">
         <v-container class="px-10 pt-4 pb-5">
           <p class="card-title">Coding Rush is a</p>
@@ -127,6 +129,15 @@ export default {
       show: true,
     };
   },
+  methods: {
+    scrollToContentStart() {
+      const elementTop = this.$refs.content.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementTop,
+        behavior: 'smooth',
+      });
+    },
+  },
 };
 </script>
 <style scoped>
@@ -164,6 +175,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: auto;
+  cursor: default;
 }
 
 #header-text-big {
@@ -186,12 +198,14 @@ export default {
   margin-left: 7.8vw;
   margin-top: 492px;
   position: absolute;
+  cursor: pointer;
 }
 
 #content {
   min-width: 100vw;
   max-width: 100vw;
-  margin-top: 160px;
+  margin-top: 130px;
+  padding-top: 70px;
   padding-bottom: 100px;
   padding-left: 30px;
   display: flex;
@@ -213,7 +227,7 @@ export default {
   font-size: 2.5rem;
   font-family: Roboto Slab, serif;
   font-weight: 600;
-  margin-bottom: 0px;
+  margin-bottom: 0;
   margin-top: 10px;
   text-align: center;
 }
