@@ -31,8 +31,8 @@
         </v-container>
       </v-card>
       <p class="card-content pt-4">
-        You won't be typing snippets from books, lyrics from songs or
-        famous quotes here.<br>But you can typing
+        You won't type snippets from books, lyrics from songs or
+        famous quotes here.<br>But you can type
         <span>competitive programming code</span>!
       </p>
       <PrettyDivider/>
@@ -69,12 +69,12 @@
           <v-card class="list-card" elevation="3">
             <p class="list-item-title">Beginners</p>
             <v-divider></v-divider>
-            <p class="list-item-content">Have just started coding and know not many algorithms</p>
+            <p class="list-item-content">Have just started to code and know not many algorithms</p>
           </v-card>
           <v-card class="list-card" elevation="3">
             <p class="list-item-title">Advanced</p>
             <v-divider></v-divider>
-            <p class="list-item-content">Know many algorithms and are medalists on olympiads</p>
+            <p class="list-item-content">Know many algorithms and are medalists of olympiads</p>
           </v-card>
         </v-container>
         <p class="card-content" style="width: 600px">Regardless of programmer's level there is
@@ -92,7 +92,7 @@
           <span>more than 50 algorithms</span> of different levels from Z-function to Link Cut Tree.
         </p>
         <p class="card-content mb-2" style="width: 900px">
-          Here you will find algorithms on themes:
+          Here you will find algorithms of themes:
         </p>
         <ul class="card-content mt-0 ml-10" style="text-align: left">
           <li>Graphs</li>
@@ -102,8 +102,8 @@
           <li>Trees</li>
           <li>and much more</li>
         </ul>
-        <p class="card-content mb-0" style="width: 900px">All algorithms available on
-          <span>C++</span>. Some algorithms also available on <span>Python 3</span>.
+        <p class="card-content mb-0">All algorithms are available on
+          <span>C++</span>. Some algorithms are also available on <span>Python 3</span>.
         </p>
       </v-container>
     </v-container>
