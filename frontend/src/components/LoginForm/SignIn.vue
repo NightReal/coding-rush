@@ -45,8 +45,11 @@ export default {
       this.loading = true;
       this.$store.dispatch('login', { username: this.username, password: this.password })
         .then(() => this.$router.push('/'))
+        // eslint-disable-next-line no-console
         .catch((err) => console.log(err))
-        .then(() => { this.loading = false; });
+        .then(() => {
+          this.loading = false;
+        });
     },
     focusFirst(fields) {
       // eslint-disable-next-line guard-for-in,no-restricted-syntax

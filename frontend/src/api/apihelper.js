@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 // eslint-disable-next-line import/no-cycle
 import store from '../store';
 // eslint-disable-next-line import/no-cycle
@@ -7,11 +8,14 @@ import router from '../router';
 const APIHelper = axios.create({
   headers: {
     contentType: 'application/json',
+    'X-CSRFToken': Cookies.get('csrftoken'),
   },
   baseURL: '/api',
 });
 
 const requestInterceptor = (request) => {
+  // eslint-disable-next-line no-console
+  console.log(request);
   if (store.getters.isAuthenticated) {
     // eslint-disable-next-line no-param-reassign
     request.headers.Authorization = `Bearer ${store.state.accessToken}`;
@@ -41,7 +45,8 @@ const errorInterceptor = (error) => {
     store.dispatch('logout');
     router.push('/login')
       .then()
-      .catch(() => {});
+      .catch(() => {
+      });
   }
   return new Promise(((resolve, reject) => {
     reject(error);

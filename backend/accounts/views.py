@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from .serializers import UserSerializer
+from .serializers import (
+    UserSerializer,
+    RegisterSerializer,
+)
 from .permissions import UserAccountViewPermission
-from rest_framework import views, response, status
+from rest_framework import views, response, status, generics, permissions
 
 
 # Create your views here.
@@ -17,12 +20,7 @@ class AccountView(views.APIView):
         return response.Response(serializer.data)
 
 
-class RegisterView(views.APIView):
+class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
-
-    def post(self, request, **kwargs):
-        serialized = UserSerializer(data=request.data)
-        if serialized.is_valid(raise_exception=True):
-            user = serialized.save()
-            return response.Response(serialized.data, status=status.HTTP_201_CREATED)
-        return response.Response(status=status.HTTP_400_BAD_REQUEST)
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = RegisterSerializer
