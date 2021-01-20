@@ -14,7 +14,7 @@
             Improve your coding skills
           </v-container>
         </v-container>
-        <div style="max-width: 10vw; min-width: 10vw; height: 0"></div>
+        <div style="max-width: 10vw; min-width: 10vw; height: 0"><!--it's space--></div>
         <v-container class="pa-0 ma-0 mt-8 mr-10" style="width: auto">
           <LoginForm class="pa-0 ma-0"/>
         </v-container>
@@ -22,8 +22,7 @@
       <v-img id="header-logo" transition="scroll-x-transition"
              src="@/assets/logo-light-430x430.png"></v-img>
     </v-sheet>
-    <v-container style="min-width: 100vw; margin-top: 160px; padding-left: 30px;
-    display: flex; align-items: center; flex-direction: column; padding-bottom: 100px;">
+    <v-container id="content">
       <v-card class="card mb-3" rounded="lg" width="600px" elevation="6">
         <v-container class="px-10 pt-4 pb-5">
           <p class="card-title">Coding Rush is a</p>
@@ -31,83 +30,71 @@
                                   competitive programmers.</p>
         </v-container>
       </v-card>
-      <p class="card-content pt-4" style="font-size: 1.4rem; color: #555555; width: 900px">
+      <p class="card-content pt-4">
         You won't be typing snippets from books, lyrics from songs or
         famous quotes here.<br>But you can typing
         <span>competitive programming code</span>!
       </p>
       <PrettyDivider/>
-      <v-card class="card" flat>
+      <v-container class="card pa-0 ma-0">
         <p class="card-title">What is it for?</p>
-        <v-container class="pa-0 card-content" style="text-align: left; display: flex;
-            flex-direction: column; align-items: center;">
-          <p class="card-subtitle">To increase your skills</p>
-          <v-container class="pa-0 ma-0 mb-9 mt-3"
-                       style="display: flex; justify-content: space-between; min-width: 1176px;
-                       max-width: 1176px; height: 210px; align-items: flex-end">
-            <v-card class="list-card-3" elevation="3">
-              <p class="list-item-title">Typing accuracy</p>
-              <v-divider style="width: 50px"></v-divider>
-              <p class="list-item-content">Make fewer typos and mistakes</p>
-            </v-card>
-            <v-card class="list-card-3" elevation="5" style="align-self: flex-start">
-              <p class="list-item-title">Typing speed</p>
-              <v-divider style="width: 50px"></v-divider>
-              <p class="list-item-content">Type faster and faster:<br>letters, numbers, symbols</p>
-            </v-card>
-            <v-card class="list-card-3" elevation="3">
-              <p class="list-item-title">Knowledge of algorithms</p>
-              <v-divider style="width: 50px"></v-divider>
-              <p class="list-item-content">Write basic code without stuttering</p>
-            </v-card>
-          </v-container>
-          <p style="text-align: center; width: 600px">
-            Learn basic <span>algorithms</span> and <span>data structures</span> that are often
-            needed in contests while training <span>speed</span> and <span>accuracy</span>.
-          </p>
+        <p class="card-subtitle">To increase your skills</p>
+        <v-container id="skills-list" class="pa-0 ma-0 mb-9 mt-3">
+          <v-card class="list-card" elevation="3">
+            <p class="list-item-title">Typing accuracy</p>
+            <v-divider></v-divider>
+            <p class="list-item-content">Make fewer typos and mistakes</p>
+          </v-card>
+          <v-card class="list-card" elevation="5" style="align-self: flex-start">
+            <p class="list-item-title">Typing speed</p>
+            <v-divider></v-divider>
+            <p class="list-item-content">Type faster and faster:<br>letters, numbers, symbols</p>
+          </v-card>
+          <v-card class="list-card" elevation="3">
+            <p class="list-item-title">Knowledge of algorithms</p>
+            <v-divider></v-divider>
+            <p class="list-item-content">Write basic code without stuttering</p>
+          </v-card>
         </v-container>
-      </v-card>
+        <p class="card-content" style="width: 600px">
+          Learn basic <span>algorithms</span> and <span>data structures</span> that are often
+          needed in contests while training <span>speed</span> and <span>accuracy</span>.
+        </p>
+      </v-container>
       <PrettyDivider/>
-      <v-card class="card" flat>
+      <v-container class="card pa-0 ma-0">
         <p class="card-title">Who is it for?</p>
-        <v-container class="pa-0 card-content" style="text-align: left; display: flex;
-            flex-direction: column; align-items: center;">
-          <p class="card-subtitle">For competitive programmers of different levels</p>
-          <v-container class="pa-0 mb-9 mt-3"
-                       style="display: flex; justify-content: space-between; min-width: 780px;
-                       max-width: 780px;">
-            <v-card class="list-card-3" elevation="3">
-              <p class="list-item-title">Beginners</p>
-              <v-divider style="width: 50px"></v-divider>
-              <p class="list-item-content">Have just started coding and know not many
-                                           algorithms</p>
-            </v-card>
-            <v-card class="list-card-3" elevation="3">
-              <p class="list-item-title">Advanced</p>
-              <v-divider style="width: 50px"></v-divider>
-              <p class="list-item-content">Know many algorithms and are medalists on olympiads</p>
-            </v-card>
-          </v-container>
-          <p class="card-content" style="width: 600px">Regardless of programmer's level there is
-            <span>some new</span> or difficult to code algorithms <span>for everyone</span>.
-          </p>
+        <p class="card-subtitle">For competitive programmers of different levels</p>
+        <v-container id="for-list" class="pa-0 mb-9 mt-3">
+          <v-card class="list-card" elevation="3">
+            <p class="list-item-title">Beginners</p>
+            <v-divider></v-divider>
+            <p class="list-item-content">Have just started coding and know not many algorithms</p>
+          </v-card>
+          <v-card class="list-card" elevation="3">
+            <p class="list-item-title">Advanced</p>
+            <v-divider></v-divider>
+            <p class="list-item-content">Know many algorithms and are medalists on olympiads</p>
+          </v-card>
         </v-container>
-      </v-card>
+        <p class="card-content" style="width: 600px">Regardless of programmer's level there is
+          <span>some new</span> or difficult to code algorithms <span>for everyone</span>.
+        </p>
+      </v-container>
       <PrettyDivider/>
-      <v-card class="card" flat>
+      <v-container class="pa-0 ma-0 card">
         <p class="card-title">What kind of code?</p>
         <p class="card-subtitle" style="width: 600px">
           Algorithms and data structures for competitive programming
         </p>
-        <p class="card-content" style="width: 900px;">
+        <p class="card-content" style="width: 900px">
           Everyone will find some new (or difficult to code) for themselves — there are
           <span>more than 50 algorithms</span> of different levels from Z-function to Link Cut Tree.
         </p>
         <p class="card-content mb-2" style="width: 900px">
           Here you will find algorithms on themes:
         </p>
-        <ul class="card-content mt-0 ml-10"
-            style="text-align: left;">
+        <ul class="card-content mt-0 ml-10" style="text-align: left">
           <li>Graphs</li>
           <li>Strings</li>
           <li>Geometry</li>
@@ -118,7 +105,7 @@
         <p class="card-content mb-0">All algorithms available on <span>C++</span>. Some algorithms
                                      also available on <span>Python 3</span>.
         </p>
-      </v-card>
+      </v-container>
     </v-container>
   </v-container>
 </template>
@@ -201,17 +188,32 @@ export default {
   position: absolute;
 }
 
+#content {
+  min-width: 100vw;
+  max-width: 100vw;
+  margin-top: 160px;
+  padding-bottom: 100px;
+  padding-left: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.v-divider {
+  width: 50px;
+}
+
 .card {
   display: flex;
   align-items: center;
   flex-direction: column;
-  /*width: 600px;*/
 }
 
 .card-title {
   font-size: 2.5rem;
   font-family: Roboto Slab, serif;
   font-weight: 600;
+  margin-bottom: 0px;
   margin-top: 10px;
   text-align: center;
 }
@@ -239,7 +241,23 @@ span {
   color: #404040;
 }
 
-.list-card-3 {
+#skills-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  min-width: 1176px;
+  max-width: 1176px;
+  height: 210px;
+}
+
+#for-list {
+  display: flex;
+  justify-content: space-between;
+  min-width: 780px;
+  max-width: 780px;
+}
+
+.list-card {
   min-width: 384px;
   max-width: 384px;
   min-height: 180px;
