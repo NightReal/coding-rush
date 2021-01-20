@@ -102,8 +102,8 @@
           <li>Trees</li>
           <li>and much more</li>
         </ul>
-        <p class="card-content mb-0">All algorithms available on <span>C++</span>. Some algorithms
-                                     also available on <span>Python 3</span>.
+        <p class="card-content mb-0" style="width: 900px">All algorithms available on
+          <span>C++</span>. Some algorithms also available on <span>Python 3</span>.
         </p>
       </v-container>
     </v-container>
