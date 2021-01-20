@@ -17,6 +17,6 @@ urlpatterns = [
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('getme/', AccountView.as_view(), name='getme'),
     path('register/', RegisterView.as_view(), name='registration'),
-    path('usernameExists/<str:username>', UsernameUserExistsView.as_view(), name='registration'),
-    path('emailExists/<str:email>', EmailUserExistsView.as_view(), name='registration'),
+    path('usernameExists/<str:username>', UsernameUserExistsView.as_view(), name='username exists'),
+    path('emailExists/<str:email>', EmailUserExistsView.as_view(), name='email exists'),
 ]
