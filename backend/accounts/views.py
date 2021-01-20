@@ -24,3 +24,23 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (permissions.AllowAny,)
     serializer_class = RegisterSerializer
+
+
+class UsernameUserExistsView(views.APIView):
+    def get(self, request, username: str, *args, **kwargs):
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return response.Response(data={'username': False})
+        else:
+            return response.Response(data={'username': True})
+
+
+class EmailUserExistsView(views.APIView):
+    def get(self, request, email: str, *args, **kwargs):
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return response.Response(data={'username': False})
+        else:
+            return response.Response(data={'username': True})
