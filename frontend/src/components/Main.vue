@@ -23,7 +23,7 @@
              src="@/assets/logo-light-430x430.png"></v-img>
     </v-sheet>
     <v-container style="min-width: 100vw; margin-top: 160px; padding-left: 30px;
-    display: flex; align-items: center; flex-direction: column; padding-bottom: 200px;">
+    display: flex; align-items: center; flex-direction: column; padding-bottom: 100px;">
       <v-card class="card mb-3" rounded="lg" width="600px" elevation="6">
         <v-container class="px-10 pt-4 pb-5">
           <p class="card-title">Coding Rush is a</p>
