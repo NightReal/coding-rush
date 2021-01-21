@@ -3,7 +3,7 @@
     <v-col class="pa-0 ma-0 text-center">
       BIG FOOTER<br>idk<br>some information<br>more information<br>mb contacts<br>about?<br>
       terms of use<br>something more<br>good luck!<br><br>
-      {{ new Date().getFullYear() }} — <strong>Coding Rush</strong>
+      © {{ new Date().getFullYear() }} <span class="font-weight-medium">Coding Rush</span>
     </v-col>
   </v-footer>
 </template>

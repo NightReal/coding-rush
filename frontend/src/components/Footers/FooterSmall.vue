@@ -1,7 +1,7 @@
 <template>
   <v-footer id="footer">
     <v-col class="pa-0 ma-0 text-center">
-      {{ new Date().getFullYear() }} — <strong>Coding Rush</strong>
+      © {{ new Date().getFullYear() }} <span class="font-weight-medium">Coding Rush</span>
     </v-col>
   </v-footer>
 </template>

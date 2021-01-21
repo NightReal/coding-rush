@@ -2,6 +2,7 @@
   <v-app>
     <HeaderAuth v-if="isAuthenticated()"/>
     <HeaderUnauth v-else :main-page="isRoot()"/>
+
     <v-main class="pa-0 ma-0">
       <router-view/>
     </v-main>
