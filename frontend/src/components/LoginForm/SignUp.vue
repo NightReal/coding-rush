@@ -118,7 +118,10 @@ export default {
       /* username - this.username
        * email - this.email
        * password - this.password */
-      // this.$store.dispatch(...).then(() => { this.loading = false; })
+      // this.$store.dispatch(...)
+      //            .then(...)
+      //            .catch(...)
+      //            .then(() => { this.loading = false; });
       console.log('Submit registraciu tut, please');
       this.loading = false;
     },
