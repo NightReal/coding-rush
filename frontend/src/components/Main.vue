@@ -71,12 +71,12 @@
           <v-card class="list-card" elevation="3">
             <p class="list-item-title">Beginners</p>
             <v-divider></v-divider>
-            <p class="list-item-content">Have just started to code and know not many algorithms</p>
+            <p class="list-item-content">Have just started to code and know few algorithms</p>
           </v-card>
           <v-card class="list-card" elevation="3">
             <p class="list-item-title">Advanced</p>
             <v-divider></v-divider>
-            <p class="list-item-content">Know many algorithms and are medalists of olympiads</p>
+            <p class="list-item-content">Know many algorithms and are rewardee of olympiads</p>
           </v-card>
         </v-container>
         <p class="card-content" style="width: 600px">Regardless of programmer's level there is
