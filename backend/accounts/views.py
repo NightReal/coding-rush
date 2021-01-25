@@ -41,6 +41,6 @@ class EmailUserExistsView(views.APIView):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            return response.Response(data={'username': False})
+            return response.Response(data={'email': False})
         else:
-            return response.Response(data={'username': True})
+            return response.Response(data={'email': True})
