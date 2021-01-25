@@ -27,6 +27,8 @@ class RegisterView(generics.CreateAPIView):
 
 
 class UsernameUserExistsView(views.APIView):
+    permission_classes = (permissions.AllowAny,)
+
     def get(self, request, username: str, *args, **kwargs):
         try:
             user = User.objects.get(username=username)
@@ -37,6 +39,8 @@ class UsernameUserExistsView(views.APIView):
 
 
 class EmailUserExistsView(views.APIView):
+    permission_classes = (permissions.AllowAny,)
+
     def get(self, request, email: str, *args, **kwargs):
         try:
             user = User.objects.get(email=email)
