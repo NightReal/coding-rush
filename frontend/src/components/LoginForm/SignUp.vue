@@ -3,6 +3,24 @@
     <v-stepper v-model="formStep" class="elevation-0 mt-n2" non-linear>
       <v-stepper-items>
         <v-stepper-content step="1" class="pa-0">
+          <v-form class="px-6 pt-6" ref="formRealName" v-model="validRealName" lazy-validation
+                  autocomplete="off">
+            <v-text-field class="form-field" v-model="firstName" ref="firstName"
+                          :rules="firstNameRules" label="First Name" required
+            ></v-text-field>
+            <v-text-field class="form-field" v-model="lastName" ref="lastName"
+                          :rules="lastNameRules" label="Last Name" required
+            ></v-text-field>
+            <v-container class="pt-16 pb-7">
+              <v-btn color="primary" width="100%"
+                     @click="validateRealName">
+                Continue
+              </v-btn>
+            </v-container>
+          </v-form>
+        </v-stepper-content>
+
+        <v-stepper-content step="2" class="pa-0">
           <v-form class="px-6 pt-6" ref="formName" v-model="validName" lazy-validation
                   autocomplete="off">
             <v-text-field class="form-field" v-model="username" ref="name"
@@ -16,11 +34,15 @@
                      @click="validateName">
                 Continue
               </v-btn>
+              <v-btn text class="text--disabled caption" width="100%" height="20px"
+                     @click="resetValidationName(); formStep = 1;">
+                Back
+              </v-btn>
             </v-container>
           </v-form>
         </v-stepper-content>
 
-        <v-stepper-content step="2" class="pa-0">
+        <v-stepper-content step="3" class="pa-0">
           <v-form class="pa-0 px-6 pt-6" ref="formPassword" v-model="validPassword" lazy-validation
                   autocomplete="off"
                   style="display: flex; flex-direction: column;
@@ -44,7 +66,7 @@
                 Sign Up
               </v-btn>
               <v-btn text class="text--disabled caption" width="100%" height="20px"
-                     @click="resetValidationPassword(); formStep = 1;">
+                     @click="resetValidationPassword(); formStep = 2;">
                 Back
               </v-btn>
             </v-container>
@@ -63,6 +85,16 @@ export default {
       formStep: 1,
       loading: false,
 
+      validRealName: true,
+      firstName: '',
+      lastName: '',
+      firstNameRules: [
+        (v) => !!v || 'First Name required',
+      ],
+      lastNameRules: [
+        (v) => !!v || 'Last Name required',
+      ],
+
       validName: true,
       username: '',
       nameRules: [
@@ -75,7 +107,7 @@ export default {
       emailRules: [
         (v) => !!v || 'Email is required',
         (v) => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v)
-                          || 'Email must be valid',
+          || 'Email must be valid',
         (v) => (v && v.length <= 320) || 'Email must be less than 320 characters',
       ],
 
@@ -95,12 +127,20 @@ export default {
     };
   },
   methods: {
+    validateRealName() {
+      this.validRealName = this.$refs.formRealName.validate();
+      if (!this.validRealName) {
+        this.focusFirst(['firstName', 'lastName']);
+      }
+      this.formStep = this.validRealName ? 2 : 1;
+      return this.validRealName;
+    },
     validateName() {
       this.validName = this.$refs.formName.validate();
       if (!this.validName) {
         this.focusFirst(['name', 'email']);
       }
-      this.formStep = this.validName ? 2 : 1;
+      this.formStep = this.validName ? 3 : 2;
       return this.validName;
     },
     validatePassword() {
@@ -111,19 +151,39 @@ export default {
       return this.validPassword;
     },
     validateForm() {
-      if (!this.validateName() || !this.validatePassword()) { return; }
+      if (!this.validateRealName() || !this.validateName() || !this.validatePassword()) {
+        return;
+      }
 
       this.loading = true;
-      // TODO: submit sign up form
-      /* username - this.username
-       * email - this.email
-       * password - this.password */
-      // this.$store.dispatch(...)
-      //            .then(...)
-      //            .catch(...)
-      //            .then(() => { this.loading = false; });
-      console.log('Submit registraciu tut, please');
+      this.$store.dispatch('register',
+        {
+          username: this.username,
+          password: this.password,
+          password_confirm: this.passwordConfirm,
+          firstName: this.firstName,
+          lastName: this.lastName,
+          email: this.email,
+        })
+        .then(() => {
+          this.$store.dispatch('login',
+            {
+              username: this.username,
+              password: this.password,
+            })
+            .then(() => this.$router.push('/'))
+            // eslint-disable-next-line no-console
+            .catch((err) => console.log('Fail login after registration', err));
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log('Fail', err);
+        });
+      // console.log('Submit registraciu tut, please');
       this.loading = false;
+    },
+    resetValidationName() {
+      this.$refs.formName.resetValidation();
     },
     resetValidationPassword() {
       this.$refs.formPassword.resetValidation();

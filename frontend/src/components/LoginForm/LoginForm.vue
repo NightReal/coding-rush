@@ -32,7 +32,10 @@ export default {
         this.$refs.signin.validate();
         return;
       }
-      if (this.$refs.signup.$data.formStep === 1) {
+      const step = this.$refs.signup.$data.formStep;
+      if (step === 1) {
+        this.$refs.signup.validateRealName();
+      } else if (step === 2) {
         this.$refs.signup.validateName();
       } else {
         this.$refs.signup.validateForm();

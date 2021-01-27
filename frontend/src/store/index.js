@@ -84,6 +84,22 @@ export default new Vuex.Store({
           .catch((err) => reject(err));
       }));
     },
+    register(context, credentials) {
+      return new Promise((((resolve, reject) => {
+        APIHelper.post('account/register/', {
+          username: credentials.username,
+          password: credentials.password,
+          password_confirm: credentials.password_confirm,
+          email: credentials.email,
+          first_name: credentials.firstName,
+          last_name: credentials.lastName,
+        })
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((err) => reject(err));
+      })));
+    },
   },
   modules: {},
 });

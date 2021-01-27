@@ -1,8 +1,16 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from .serializers import UserSerializer
+from .serializers import (
+    UserSerializer,
+    RegisterSerializer,
+)
 from .permissions import UserAccountViewPermission
-from rest_framework import views, response, status
+from rest_framework import (
+    views,
+    response,
+    generics,
+    permissions
+)
 
 
 # Create your views here.
@@ -17,12 +25,31 @@ class AccountView(views.APIView):
         return response.Response(serializer.data)
 
 
-class RegisterView(views.APIView):
+class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = RegisterSerializer
 
-    def post(self, request, **kwargs):
-        serialized = UserSerializer(data=request.data)
-        if serialized.is_valid(raise_exception=True):
-            user = serialized.save()
-            return response.Response(serialized.data, status=status.HTTP_201_CREATED)
-        return response.Response(status=status.HTTP_400_BAD_REQUEST)
+
+class UsernameUserExistsView(views.APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, username: str, *args, **kwargs):
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return response.Response(data={'username': False})
+        else:
+            return response.Response(data={'username': True})
+
+
+class EmailUserExistsView(views.APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, email: str, *args, **kwargs):
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return response.Response(data={'email': False})
+        else:
+            return response.Response(data={'email': True})

@@ -2,6 +2,8 @@ from django.urls import path
 from .views import (
     AccountView,
     RegisterView,
+    UsernameUserExistsView,
+    EmailUserExistsView,
 )
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -15,4 +17,6 @@ urlpatterns = [
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('getme/', AccountView.as_view(), name='getme'),
     path('register/', RegisterView.as_view(), name='registration'),
+    path('usernameExists/<str:username>', UsernameUserExistsView.as_view(), name='username exists'),
+    path('emailExists/<str:email>', EmailUserExistsView.as_view(), name='email exists'),
 ]

@@ -25,7 +25,9 @@ export default {
           text: 'Close',
           icon: 'mdi-close',
           activating: false,
-          function: () => { this.drawer = false; },
+          function: () => {
+            this.drawer = false;
+          },
         },
         '',
         {
@@ -50,6 +52,7 @@ export default {
           function: () => {
             this.$store.dispatch('logout')
               .then(() => this.goto('/'))
+              // eslint-disable-next-line no-console
               .catch((err) => console.log(err));
           },
         },

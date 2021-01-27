@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 // eslint-disable-next-line import/no-cycle
 import store from '../store';
 // eslint-disable-next-line import/no-cycle
@@ -7,6 +8,7 @@ import router from '../router';
 const APIHelper = axios.create({
   headers: {
     contentType: 'application/json',
+    'X-CSRFToken': Cookies.get('csrftoken'),
   },
   baseURL: '/api',
 });
@@ -20,7 +22,7 @@ const requestInterceptor = (request) => {
 };
 
 const errorInterceptor = (error) => {
-  if (error.config && error.response && error.response.status === 403) {
+  if (error.config && error.response && error.response.status === 401) {
     return store.dispatch('refresh')
       .then(() => {
         const originalRequest = error.config;
@@ -36,12 +38,10 @@ const errorInterceptor = (error) => {
       })
       .catch((err) => Promise.reject(err));
   }
-  if (error.config && error.response && error.response.status === 401) {
+  if (error.config && error.response && error.response.status === 403) {
     // here we got hacked or refresh expired or we got invalid login.
     store.dispatch('logout');
-    router.push('/login')
-      .then()
-      .catch(() => {});
+    router.push('/login');
   }
   return new Promise(((resolve, reject) => {
     reject(error);
