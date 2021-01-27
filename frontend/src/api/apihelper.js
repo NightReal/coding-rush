@@ -24,7 +24,7 @@ const requestInterceptor = (request) => {
 };
 
 const errorInterceptor = (error) => {
-  if (error.config && error.response && error.response.status === 403) {
+  if (error.config && error.response && error.response.status === 401) {
     return store.dispatch('refresh')
       .then(() => {
         const originalRequest = error.config;
@@ -40,7 +40,7 @@ const errorInterceptor = (error) => {
       })
       .catch((err) => Promise.reject(err));
   }
-  if (error.config && error.response && error.response.status === 401) {
+  if (error.config && error.response && error.response.status === 403) {
     // here we got hacked or refresh expired or we got invalid login.
     store.dispatch('logout');
     router.push('/login')

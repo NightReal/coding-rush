@@ -175,8 +175,14 @@ export default {
           email: this.email,
         })
         .then(() => {
-          // eslint-disable-next-line no-console
-          console.log('Success');
+          this.$store.dispatch('login',
+            {
+              username: this.username,
+              password: this.password,
+            })
+            .then(() => this.$router.push('/'))
+            // eslint-disable-next-line no-console
+            .catch((err) => console.log('Fail login after registration', err));
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
