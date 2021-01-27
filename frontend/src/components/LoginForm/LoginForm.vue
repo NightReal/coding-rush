@@ -1,5 +1,5 @@
 <template>
-  <v-card class="big-card" rounded="lg" style="margin-left: 20px">
+  <v-card class="big-card" rounded="lg" style="margin-left: 20px" light>
     <v-container>
       <v-tabs v-model="tab" fixed-tabs centered @change="$emit('tab-changed', tab)">
         <v-tab>Sign In</v-tab>
@@ -70,10 +70,10 @@ export default {
 <style scoped>
 
 .big-card {
-  height: 384px;
-  width: 368px;
-  max-width: 368px;
-  min-width: 368px;
+  height: 360px;
+  width: 370px;
+  max-width: 370px;
+  min-width: 370px;
 }
 
 </style>

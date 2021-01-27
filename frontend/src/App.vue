@@ -1,10 +1,14 @@
 <template>
   <v-app>
-    <Header/>
-    <v-main>
+    <HeaderAuth v-if="isAuthenticated()"/>
+    <HeaderUnauth v-else :main-page="isRoot()"/>
+
+    <v-main class="pa-0 ma-0">
       <router-view/>
     </v-main>
-    <Footer/>
+
+    <FooterBig v-if="isRoot()"/>
+    <FooterSmall v-else/>
   </v-app>
 </template>
 
@@ -12,17 +16,26 @@
 
 import HeaderAuth from '@/components/Headers/HeaderAuth.vue';
 import HeaderUnauth from '@/components/Headers/HeaderUnauth.vue';
-import Footer from '@/components/Footer.vue';
+import FooterBig from '@/components/Footers/FooterBig.vue';
+import FooterSmall from '@/components/Footers/FooterSmall.vue';
 import store from '@/store/index';
 
 export default {
   name: 'App',
 
   components: {
-    Header: {
-      render: (c) => c(store.getters.isAuthenticated ? HeaderAuth : HeaderUnauth),
+    HeaderAuth,
+    HeaderUnauth,
+    FooterSmall,
+    FooterBig,
+  },
+  methods: {
+    isAuthenticated() {
+      return store.getters.isAuthenticated;
     },
-    Footer,
+    isRoot() {
+      return this.$route.name === 'Root';
+    },
   },
 };
 </script>
