@@ -42,7 +42,7 @@
           </v-form>
         </v-stepper-content>
 
-        <v-stepper-content step="2" class="pa-0">
+        <v-stepper-content step="3" class="pa-0">
           <v-form class="pa-0 px-6 pt-6" ref="formPassword" v-model="validPassword" lazy-validation
                   autocomplete="off"
                   style="display: flex; flex-direction: column;
