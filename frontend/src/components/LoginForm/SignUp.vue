@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pb-0">
     <v-stepper v-model="formStep" class="elevation-0 mt-n2" non-linear>
       <v-stepper-items>
         <v-stepper-content step="1" class="pa-0">
@@ -29,7 +29,7 @@
             <v-text-field class="form-field" v-model="email" ref="email"
                           :rules="emailRules" label="Email" required
             ></v-text-field>
-            <v-container class="pt-16 pb-3">
+            <v-container class="pt-14">
               <v-btn color="primary" width="100%"
                      @click="validateName">
                 Continue
@@ -42,8 +42,8 @@
           </v-form>
         </v-stepper-content>
 
-        <v-stepper-content step="3" class="pa-0">
-          <v-form class="px-6 pt-6" ref="formPassword" v-model="validPassword" lazy-validation
+        <v-stepper-content step="2" class="pa-0">
+          <v-form class="pa-0 px-6 pt-6" ref="formPassword" v-model="validPassword" lazy-validation
                   autocomplete="off"
                   style="display: flex; flex-direction: column;
                   justify-content: space-between">
@@ -55,13 +55,12 @@
                           required
             ></v-text-field>
 
-            <p class="ma-0 pt-7 pb-1 text--disabled caption">
+            <p class="ma-0 pt-5 pb-1 text--disabled caption">
               By clicking «Sign Up», you accept
               <a class="text-decoration-none blue--text text--darken-3"
                  href="https://youtu.be/M5V_IXMewl4">Terms of Use</a>.</p>
 
-            <v-container class="pb-3" width="100%">
-
+            <v-container width="100%">
               <v-btn color="success" @click="validateForm" width="100%"
                      :loading="loading" :disabled="loading">
                 Sign Up

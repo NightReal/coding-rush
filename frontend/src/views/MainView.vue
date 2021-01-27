@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pa-0 ma-0 mt-12">
     <Main/>
   </v-container>
 </template>
