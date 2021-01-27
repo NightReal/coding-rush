@@ -89,7 +89,7 @@ export default new Vuex.Store({
         APIHelper.post('account/register/', {
           username: credentials.username,
           password: credentials.password,
-          password2: credentials.password2,
+          password_confirm: credentials.password_confirm,
           email: credentials.email,
           first_name: credentials.firstName,
           last_name: credentials.lastName,

@@ -14,8 +14,6 @@ const APIHelper = axios.create({
 });
 
 const requestInterceptor = (request) => {
-  // eslint-disable-next-line no-console
-  console.log(request);
   if (store.getters.isAuthenticated) {
     // eslint-disable-next-line no-param-reassign
     request.headers.Authorization = `Bearer ${store.state.accessToken}`;
@@ -43,10 +41,7 @@ const errorInterceptor = (error) => {
   if (error.config && error.response && error.response.status === 403) {
     // here we got hacked or refresh expired or we got invalid login.
     store.dispatch('logout');
-    router.push('/login')
-      .then()
-      .catch(() => {
-      });
+    router.push('/login');
   }
   return new Promise(((resolve, reject) => {
     reject(error);

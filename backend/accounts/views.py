@@ -5,7 +5,12 @@ from .serializers import (
     RegisterSerializer,
 )
 from .permissions import UserAccountViewPermission
-from rest_framework import views, response, status, generics, permissions
+from rest_framework import (
+    views,
+    response,
+    generics,
+    permissions
+)
 
 
 # Create your views here.

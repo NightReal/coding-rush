@@ -157,19 +157,11 @@ export default {
       }
 
       this.loading = true;
-      // TODO: submit sign up form
-      /* username - this.username
-       * email - this.email
-       * password - this.password */
-      // this.$store.dispatch()
-      //            .then(...)
-      //            .catch(...)
-      //            .then(() => { this.loading = false; });
       this.$store.dispatch('register',
         {
           username: this.username,
           password: this.password,
-          password2: this.passwordConfirm,
+          password_confirm: this.passwordConfirm,
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,
