@@ -28,16 +28,8 @@ const errorInterceptor = (error) => {
       .then(() => {
         const originalRequest = error.config;
         originalRequest.headers.Authorization = `Bearer ${store.state.accessToken}`;
-        // return APIHelper(originalRequest);
-        return new Promise(((resolve, reject) => {
-          APIHelper.request(originalRequest).then((response) => {
-            resolve(response);
-          }).catch((err) => {
-            reject(err);
-          });
-        }));
-      })
-      .catch((err) => Promise.reject(err));
+        return APIHelper.request(originalRequest);
+      });
   }
   if (error.config && error.response && error.response.status === 403
     && store.getters.isAuthenticated) {
