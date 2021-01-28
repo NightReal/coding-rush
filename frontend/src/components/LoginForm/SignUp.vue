@@ -222,7 +222,6 @@ export default {
           // eslint-disable-next-line no-console
           console.log('Fail', err);
         });
-      // console.log('Submit registraciu tut, please');
       this.loading = false;
     },
     resetValidationName() {
