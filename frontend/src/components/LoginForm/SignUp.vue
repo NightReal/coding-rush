@@ -6,10 +6,10 @@
           <v-form class="px-6 pt-6" ref="formRealName" v-model="validRealName" lazy-validation
                   autocomplete="off">
             <v-text-field class="form-field" v-model="firstName" ref="firstName"
-                          :rules="firstNameRules" label="First Name" required
+                          :rules="firstNameRules" label="First name" required
             ></v-text-field>
             <v-text-field class="form-field" v-model="lastName" ref="lastName"
-                          :rules="lastNameRules" label="Last Name" required
+                          :rules="lastNameRules" label="Last name" required
             ></v-text-field>
             <v-container class="pt-16 pb-7">
               <v-btn color="primary" width="100%"
@@ -24,10 +24,12 @@
           <v-form class="px-6 pt-6" ref="formName" v-model="validName" lazy-validation
                   autocomplete="off">
             <v-text-field class="form-field" v-model="username" ref="name"
-                          :rules="nameRules" label="Username" required
+                          :rules="nameRules" :error-messages="nameErrorMessage"
+                          label="Username" required
             ></v-text-field>
             <v-text-field class="form-field" v-model="email" ref="email"
-                          :rules="emailRules" label="Email" required
+                          :rules="emailRules" :error-messages="emailErrorMessage"
+                          label="Email" required
             ></v-text-field>
             <v-container class="pt-14">
               <v-btn color="primary" width="100%"
@@ -78,6 +80,8 @@
 </template>
 
 <script>
+import APIHelper from '@/api/apihelper';
+
 export default {
   name: 'SignUpForm',
   data() {
@@ -89,22 +93,33 @@ export default {
       firstName: '',
       lastName: '',
       firstNameRules: [
-        (v) => !!v || 'First Name required',
+        (v) => !!v || 'First name required',
       ],
       lastNameRules: [
-        (v) => !!v || 'Last Name required',
+        (v) => !!v || 'Last name required',
       ],
 
       validName: true,
       username: '',
+      nameErrorMessage: [],
       nameRules: [
+        () => {
+          this.nameErrorMessage = [];
+          return true;
+        },
         (v) => !!v || 'Name is required',
-        (v) => /^[a-zA-Z0-9_.-]*$/.test(v) || 'Only Latin letters, digits, and symbols . - _ are allowed',
+        (v) => /^[a-zA-Z0-9_.-]*$/.test(v)
+          || 'Only Latin letters, digits, and symbols . - _ are allowed',
         (v) => (v && v.length <= 20) || 'Name must be less than 20 characters',
         (v) => (v && v.length >= 4) || 'Name must be more than 4 characters',
       ],
       email: '',
+      emailErrorMessage: [],
       emailRules: [
+        () => {
+          this.emailErrorMessage = [];
+          return true;
+        },
         (v) => !!v || 'Email is required',
         (v) => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v)
           || 'Email must be valid',
@@ -135,8 +150,36 @@ export default {
       this.formStep = this.validRealName ? 2 : 1;
       return this.validRealName;
     },
+    checkNameUnique(name) {
+      return APIHelper.get(`/account/usernameExists/${name}`)
+        .then((res) => !res.data.username)
+        .catch(() => false);
+    },
+    checkEmailUnique(email) {
+      return APIHelper.get(`/account/emailExists/${email}`)
+        .then((res) => !res.data.email)
+        .catch(() => false);
+    },
+    async validateUnique() {
+      if (this.$refs.name.valid) {
+        if (!await this.checkNameUnique(this.username)) {
+          this.$refs.name.valid = false;
+          this.validName = false;
+          this.$data.nameErrorMessage = ['This username already taken'];
+        }
+      }
+      if (this.$refs.email.valid) {
+        if (!await this.checkEmailUnique(this.email)) {
+          this.$refs.email.valid = false;
+          this.validName = false;
+          this.$data.emailErrorMessage = ['This email already taken'];
+        }
+      }
+      return this.validName;
+    },
     validateName() {
       this.validName = this.$refs.formName.validate();
+      this.validateUnique();
       if (!this.validName) {
         this.focusFirst(['name', 'email']);
       }
