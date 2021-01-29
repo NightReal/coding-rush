@@ -26,6 +26,7 @@ export default {
     },
   },
   beforeRouteUpdate(to, from, next) {
+    console.log(2);
     next();
     this.tab = to.query.type === 'signup' ? 1 : 0;
   },
@@ -33,7 +34,9 @@ export default {
     this.tab = this.$route.query.type === 'signup' ? 1 : 0;
   },
   beforeRouteEnter(to, from, next) {
+    console.log(0);
     if (['signin', 'signup'].includes(to.query.type)) {
+      console.log(1);
       next();
     } else {
       const { query } = to;
@@ -46,4 +49,3 @@ export default {
   },
 };
 </script>
-

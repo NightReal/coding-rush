@@ -2,9 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import MainView from '../views/MainView.vue';
-import Login from '../views/Login.vue';
+import LoginView from '../views/LoginView.vue';
 import EditorView from '../views/EditorView.vue';
-import Register from '../views/Register.vue';
 // eslint-disable-next-line import/no-cycle
 import store from '../store/index';
 
@@ -33,16 +32,11 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login,
+    component: LoginView,
     props: true,
     meta: {
       requiresDisAuth: true,
     },
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: Register,
   },
 ];
 
