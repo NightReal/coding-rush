@@ -1,6 +1,6 @@
 <template>
-  <v-container class="pb-0">
-    <v-stepper v-model="formStep" class="elevation-0 mt-n2" non-linear>
+  <v-container class="pt-2 pb-0 px-2">
+    <v-stepper v-model="formStep" class="elevation-0" non-linear>
       <v-stepper-items>
         <v-stepper-content step="1" class="pa-0">
           <v-form class="px-6 pt-6" ref="formRealName" v-model="validRealName" lazy-validation
@@ -11,7 +11,7 @@
             <v-text-field class="form-field" v-model="lastName" ref="lastName"
                           :rules="lastNameRules" label="Last name" required
             ></v-text-field>
-            <v-container class="pt-16 pb-7">
+            <v-container class="pt-12 pb-5">
               <v-btn color="primary" width="100%"
                      @click="validateRealName">
                 Continue
@@ -31,7 +31,7 @@
                           :rules="emailRules" :error-messages="emailErrorMessage"
                           label="Email" required
             ></v-text-field>
-            <v-container class="pt-14">
+            <v-container class="pt-12 pb-0">
               <v-btn color="primary" width="100%"
                      @click="validateName">
                 Continue
@@ -45,7 +45,9 @@
         </v-stepper-content>
 
         <v-stepper-content step="3" class="pa-0">
-          <v-form class="pa-0 px-6 pt-6" ref="formPassword" v-model="validPassword" lazy-validation
+          <ErrorBox class="pa-0 ma-0 mb-1" :message="errorMessage" :show="!!errorMessage"
+                    style="min-height: 24px; max-height: 24px"></ErrorBox>
+          <v-form class="pa-0 px-6" ref="formPassword" v-model="validPassword" lazy-validation
                   autocomplete="off"
                   style="display: flex; flex-direction: column;
                   justify-content: space-between">
@@ -57,12 +59,12 @@
                           required
             ></v-text-field>
 
-            <p class="ma-0 pt-5 pb-1 text--disabled caption">
+            <p class="ma-0 pt-3 pb-1 text--disabled caption">
               By clicking «Sign Up», you accept
               <a class="text-decoration-none blue--text text--darken-3"
                  href="https://youtu.be/M5V_IXMewl4">Terms of Use</a>.</p>
 
-            <v-container width="100%">
+            <v-container width="100%" class="pb-0">
               <v-btn color="success" @click="validateForm" width="100%"
                      :loading="loading" :disabled="loading">
                 Sign Up
@@ -81,22 +83,35 @@
 
 <script>
 import APIHelper from '@/api/apihelper';
+import ErrorBox from '@/components/ErrorBox.vue';
 
 export default {
   name: 'SignUpForm',
+  components: { ErrorBox },
   data() {
     return {
       formStep: 1,
       loading: false,
+      errorMessage: '',
 
       validRealName: true,
       firstName: '',
       lastName: '',
       firstNameRules: [
         (v) => !!v || 'First name required',
+        (v) => /^[a-zA-Z0-9 _.-]*$/.test(v)
+          || 'Only Latin letters, digits and symbols . - _ are allowed',
+        (v) => v.replace(/[^a-zA-Z]/g, '').length >= 3
+          || 'First name must contain at least 3 letters',
+        (v) => (v && v.length <= 40) || 'First name must be less than 40 characters',
       ],
       lastNameRules: [
         (v) => !!v || 'Last name required',
+        (v) => /^[a-zA-Z0-9 _.-]*$/.test(v)
+          || 'Only Latin letters, digits and symbols . - _ are allowed',
+        (v) => v.replace(/[^a-zA-Z]/g, '').length >= 3
+          || 'Last name must contain at least 3 letters',
+        (v) => (v && v.length <= 40) || 'Last name must be less than 40 characters',
       ],
 
       validName: true,
@@ -109,9 +124,9 @@ export default {
         },
         (v) => !!v || 'Name is required',
         (v) => /^[a-zA-Z0-9_.-]*$/.test(v)
-          || 'Only Latin letters, digits, and symbols . - _ are allowed',
-        (v) => (v && v.length <= 20) || 'Name must be less than 20 characters',
-        (v) => (v && v.length >= 4) || 'Name must be more than 4 characters',
+          || 'Only Latin letters, digits and symbols . - _ are allowed',
+        (v) => (v && v.length <= 20) || 'Username must be less than 20 characters',
+        (v) => (v && v.length >= 4) || 'Username must be more than 4 characters',
       ],
       email: '',
       emailErrorMessage: [],
@@ -142,12 +157,14 @@ export default {
     };
   },
   methods: {
-    validateRealName() {
+    validateRealName(move = true) {
       this.validRealName = this.$refs.formRealName.validate();
       if (!this.validRealName) {
         this.focusFirst(['firstName', 'lastName']);
       }
-      this.formStep = this.validRealName ? 2 : 1;
+      if (move) {
+        this.formStep = this.validRealName ? 2 : 1;
+      }
       return this.validRealName;
     },
     checkNameUnique(name) {
@@ -165,25 +182,27 @@ export default {
         if (!await this.checkNameUnique(this.username)) {
           this.$refs.name.valid = false;
           this.validName = false;
-          this.$data.nameErrorMessage = ['This username already taken'];
+          this.$data.nameErrorMessage = ['This username is already taken'];
         }
       }
       if (this.$refs.email.valid) {
         if (!await this.checkEmailUnique(this.email)) {
           this.$refs.email.valid = false;
           this.validName = false;
-          this.$data.emailErrorMessage = ['This email already taken'];
+          this.$data.emailErrorMessage = ['This email is already taken'];
         }
       }
       return this.validName;
     },
-    validateName() {
+    async validateName(move = true) {
       this.validName = this.$refs.formName.validate();
-      this.validateUnique();
+      await this.validateUnique();
       if (!this.validName) {
         this.focusFirst(['name', 'email']);
       }
-      this.formStep = this.validName ? 3 : 2;
+      if (move) {
+        this.formStep = this.validName ? 3 : 2;
+      }
       return this.validName;
     },
     validatePassword() {
@@ -193,8 +212,24 @@ export default {
       }
       return this.validPassword;
     },
-    validateForm() {
-      if (!this.validateRealName() || !this.validateName() || !this.validatePassword()) {
+    showSthWrong(err) {
+      const { data } = err.response;
+      if (data.password) {
+        [this.errorMessage] = data.password;
+      } else if (data.username) {
+        [this.errorMessage] = data.username;
+      } else if (data.email) {
+        [this.errorMessage] = data.email;
+      } else {
+        this.errorMessage = 'Something went wrong.';
+        console.log(err);
+        console.log(err.response);
+      }
+    },
+    async validateForm() {
+      if (!this.validateRealName(false)
+        || !await this.validateName(false)
+        || !this.validatePassword()) {
         return;
       }
 
@@ -214,15 +249,14 @@ export default {
               username: this.username,
               password: this.password,
             })
-            .then(() => this.$router.push('/'))
-            // eslint-disable-next-line no-console
-            .catch((err) => console.log('Fail login after registration', err));
+            .then(() => (this.$route.path !== '/' ? this.$router.push('/') : {}))
+            .catch((err) => this.showSthWrong(err));
+          this.loading = false;
         })
         .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log('Fail', err);
+          this.loading = false;
+          this.showSthWrong(err);
         });
-      this.loading = false;
     },
     resetValidationName() {
       this.$refs.formName.resetValidation();

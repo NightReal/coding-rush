@@ -1,6 +1,8 @@
 <template>
-  <v-container>
-    <v-form class="px-6 pt-4" ref="form" v-model="valid" lazy-validation autocomplete="off">
+  <v-container class="pt-2 px-2">
+    <ErrorBox class="pa-0 ma-0 mb-1" :message="errorMessage" :show="!!errorMessage"
+              style="min-height: 24px; max-height: 24px"></ErrorBox>
+    <v-form class="pa-0 px-6" ref="form" v-model="valid" lazy-validation autocomplete="off">
       <v-text-field class="form-field" v-model="username" ref="name"
                     :rules="nameRules" label="Username" required
       ></v-text-field>
@@ -9,7 +11,7 @@
       ></v-text-field>
       <a class="text-decoration-none font-weight-medium blue--text text--darken-3 text-body-2"
          href="https://youtu.be/dQw4w9WgXcQ">Forgot password?</a>
-      <v-container class="pt-8">
+      <v-container class="pt-6">
         <v-btn color="success" @click="validate" width="100%"
                :loading="loading" :disabled="loading">
           Sign In
@@ -20,12 +22,17 @@
 </template>
 
 <script>
+import ErrorBox from '@/components/ErrorBox.vue';
+
 export default {
   name: 'SignInForm',
+  components: { ErrorBox },
   data() {
     return {
       loading: false,
       valid: true,
+      errorMessage: '',
+
       username: '',
       nameRules: [
         (v) => !!v || 'Name is required',
@@ -37,6 +44,15 @@ export default {
     };
   },
   methods: {
+    showSthWrong(err) {
+      if (err.response.status === 401) {
+        this.errorMessage = 'Incorrect username or password.';
+      } else {
+        this.errorMessage = 'Something went wrong.';
+        console.log(err);
+        console.log(err.response);
+      }
+    },
     validate() {
       if (!this.$refs.form.validate()) {
         this.focusFirst(['name', 'password']);
@@ -44,12 +60,9 @@ export default {
       }
       this.loading = true;
       this.$store.dispatch('login', { username: this.username, password: this.password })
-        .then(() => this.$router.push('/'))
-        // eslint-disable-next-line no-console
-        .catch((err) => console.log(err))
-        .then(() => {
-          this.loading = false;
-        });
+        .then(() => (this.$route.path !== '/' ? this.$router.push('/') : {}))
+        .catch((err) => this.showSthWrong(err))
+        .then(() => { this.loading = false; });
     },
     focusFirst(fields) {
       // eslint-disable-next-line guard-for-in,no-restricted-syntax
