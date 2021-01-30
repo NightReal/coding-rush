@@ -94,9 +94,7 @@ export default new Vuex.Store({
           first_name: credentials.firstName,
           last_name: credentials.lastName,
         })
-          .then((response) => {
-            resolve(response);
-          })
+          .then((response) => resolve(response))
           .catch((err) => reject(err));
       })));
     },
