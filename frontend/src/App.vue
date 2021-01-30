@@ -1,7 +1,6 @@
 <template>
   <v-app>
-    <HeaderAuth v-if="isAuthenticated()"/>
-    <HeaderUnauth v-else :main-page="isRoot()"/>
+    <Header/>
 
     <v-main class="pa-0 ma-0">
       <router-view/>
@@ -13,8 +12,9 @@
 
 <script>
 
-import HeaderAuth from '@/components/Headers/HeaderAuth.vue';
-import HeaderUnauth from '@/components/Headers/HeaderUnauth.vue';
+// import HeaderAuth from '@/components/Headers/HeaderAuth.vue';
+// import HeaderUnauth from '@/components/Headers/HeaderUnauth.vue';
+import Header from '@/components/Headers/Header.vue';
 import Footer from '@/components/Footer.vue';
 import store from '@/store/index';
 
@@ -22,8 +22,7 @@ export default {
   name: 'App',
 
   components: {
-    HeaderAuth,
-    HeaderUnauth,
+    Header,
     Footer,
   },
   methods: {
