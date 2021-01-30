@@ -7,8 +7,7 @@
       <router-view/>
     </v-main>
 
-    <FooterBig v-if="isRoot()"/>
-    <FooterSmall v-else/>
+    <Footer/>
   </v-app>
 </template>
 
@@ -16,8 +15,7 @@
 
 import HeaderAuth from '@/components/Headers/HeaderAuth.vue';
 import HeaderUnauth from '@/components/Headers/HeaderUnauth.vue';
-import FooterBig from '@/components/Footers/FooterBig.vue';
-import FooterSmall from '@/components/Footers/FooterSmall.vue';
+import Footer from '@/components/Footer.vue';
 import store from '@/store/index';
 
 export default {
@@ -26,8 +24,7 @@ export default {
   components: {
     HeaderAuth,
     HeaderUnauth,
-    FooterSmall,
-    FooterBig,
+    Footer,
   },
   methods: {
     isAuthenticated() {
