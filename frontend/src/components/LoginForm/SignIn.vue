@@ -54,6 +54,7 @@ export default {
       }
     },
     validate() {
+      this.errorMessage = '';
       if (!this.$refs.form.validate()) {
         this.focusFirst(['name', 'password']);
         return;

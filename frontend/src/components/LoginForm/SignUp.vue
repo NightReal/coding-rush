@@ -33,7 +33,7 @@
             ></v-text-field>
             <v-container class="pt-12 pb-0">
               <v-btn color="primary" width="100%"
-                     @click="validateName">
+                     @click="validateName" :loading="continueLoading" :disabled="continueLoading">
                 Continue
               </v-btn>
               <v-btn text class="text--disabled caption" width="100%" height="20px"
@@ -59,7 +59,7 @@
                           required
             ></v-text-field>
 
-            <p class="ma-0 pt-3 pb-1 text--disabled caption">
+            <p class="ma-0 pt-3 pb-0 text--disabled caption">
               By clicking «Sign Up», you accept
               <a class="text-decoration-none blue--text text--darken-3"
                  href="https://youtu.be/M5V_IXMewl4">Terms of Use</a>.</p>
@@ -92,6 +92,7 @@ export default {
     return {
       formStep: 1,
       loading: false,
+      continueLoading: false,
       errorMessage: '',
 
       validRealName: true,
@@ -195,12 +196,16 @@ export default {
       return this.validName;
     },
     async validateName(move = true) {
+      if (move) {
+        this.continueLoading = true;
+      }
       this.validName = this.$refs.formName.validate();
       await this.validateUnique();
       if (!this.validName) {
         this.focusFirst(['name', 'email']);
       }
       if (move) {
+        this.continueLoading = false;
         this.formStep = this.validName ? 3 : 2;
       }
       return this.validName;
@@ -227,13 +232,16 @@ export default {
       }
     },
     async validateForm() {
+      this.errorMessage = '';
+      this.loading = true;
+
       if (!this.validateRealName(false)
         || !await this.validateName(false)
         || !this.validatePassword()) {
+        this.loading = false;
         return;
       }
 
-      this.loading = true;
       this.$store.dispatch('register',
         {
           username: this.username,
