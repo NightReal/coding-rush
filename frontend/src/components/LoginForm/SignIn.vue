@@ -44,7 +44,7 @@ export default {
     };
   },
   methods: {
-    showSthWrong(err) {
+    showSmthWrong(err) {
       if (err.response.status === 401) {
         this.errorMessage = 'Incorrect username or password.';
       } else {
@@ -61,7 +61,7 @@ export default {
       this.loading = true;
       this.$store.dispatch('login', { username: this.username, password: this.password })
         .then(() => (this.$route.path !== '/' ? this.$router.push('/') : {}))
-        .catch((err) => this.showSthWrong(err))
+        .catch((err) => this.showSmthWrong(err))
         .then(() => { this.loading = false; });
     },
     focusFirst(fields) {
