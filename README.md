@@ -17,5 +17,5 @@ To start deploying use `run.sh` or command
 If something goes wrong try adding flag `-V`.
 
 
-Then go to `localhost:80` (or just `localhost`) to see the result.
+Then go to `localhost:90` to see the result.
 

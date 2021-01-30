@@ -1,290 +1,65 @@
 <template>
-  <div style="display: flex; flex-direction: column; height: 100%; justify-content: space-between;">
-    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-      <div id="textNameField">
-        <p id="textName">First step - Hello, world!</p>
-      </div>
-      <div id="startButtonDiv" class="tooltip">
-        <button type="button" id="startButton" class="pretty-button green-btn">Start</button>
-        <span style="visibility: visible;" id="startButtonTooltip"
-              class="tooltiptext-l enabled-tooltip">Click or
-                    press Ctrl+Enter<br>to start typing<br>(or just begin typing)</span>
-        <span style="visibility: hidden;" id="stopButtonTooltip"
-              class="tooltiptext-l enabled-tooltip">Click or
-                    press Ctrl+Enter<br>to stop typing</span>
-      </div>
-    </div>
-
-    <div
-      style="display: flex; justify-content: space-evenly; align-items: stretch; flex: 1 0 auto;">
-      <label for="editor"></label>
-      <textarea id="editor" class="hide-select"></textarea>
-      <label for="target"></label>
-      <textarea readonly id="target" class="hide-select" v-model="mtext"/>
-    </div>
-
-    <table id="typeInfo" style="padding: 10px;">
-      <tr>
-        <th id="speed">0</th>
-      </tr>
-      <tr>
-        <th id="timepass">0</th>
-      </tr>
-      <tr>
-        <th id="status">Start typing.</th>
-      </tr>
-    </table>
-  </div>
+  <v-container>
+    <v-row justify="space-between">
+      <v-col cols="2" style="white-space: nowrap">
+        {{ textName }}
+      </v-col>
+      <v-col cols="2">
+        <v-btn min-width="90px" color="primary" dark @click="switchTyping()">
+          {{ typing ? 'Stop' : 'Start' }}
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-textarea id="editor" outlined rounded v-model="code" ref="editor"
+                  @input="compareCode()"></v-textarea>
+      <v-textarea :readonly="typing" id="target" outlined rounded v-model="textb"/>
+    </v-row>
+    <p>
+      {{ getCPM() + ' CPM' }}
+    </p>
+  </v-container>
 </template>
 
 <script>
 export default {
   name: 'Editor',
-  props: ['text'],
+  props: ['textNameProp', 'textProp'],
   data() {
     return {
-      mtext: this.text,
+      textb: this.textProp,
+      textName: this.textNameProp,
+      typing: false,
+      code: '',
+      typingTimer: 0,
     };
+  },
+  methods: {
+    compareCode() {
+      if (!this.typing && this.code !== '') {
+        this.typing = true;
+        this.typingTimer = new Date();
+      }
+      if (this.code === this.textb) {
+        this.typing = false;
+        clearInterval(this.typingTimer);
+      }
+    },
+    switchTyping() {
+      this.typing = !this.typing;
+      if (this.typing) {
+        this.$refs.editor.focus();
+        this.typingTimer = new Date();
+      }
+      this.code = '';
+    },
+    getCPM() {
+      return Math.round((this.code.length * 1000 * 60) / (new Date() - this.typingTimer), 2);
+    },
   },
 };
 </script>
 
 <style scoped>
-* {
-  font-family: Verdana, Geneva, sans-serif;
-}
-
-body {
-  background-color: #fafafa;
-  margin: 0;
-  position: relative;
-}
-
-.headfoot {
-  background-color: #300058;
-  color: white;
-  clear: both;
-}
-
-header {
-  height: 100px;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-footer {
-  height: 40px;
-  width: 100%;
-  font-family: "Lucida Console", Monaco, monospace;
-  font-size: 12px;
-}
-
-#copyright {
-  position: relative;
-  margin-left: 12px;
-  top: 2px;
-  font: inherit;
-}
-
-#textNameField {
-  float: left;
-  width: 40%;
-  position: relative;
-  overflow: hidden;
-  margin-left: 22px;
-}
-
-#textName {
-  float: left;
-  font-size: 22px;
-  margin-bottom: 0;
-  position: relative;
-  top: -8px;
-  white-space: nowrap;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-#startButtonDiv {
-  float: right;
-  margin-right: 0.75%;
-}
-
-#startButton {
-  width: 150px;
-  height: 50px;
-  font-size: 19px;
-}
-
-#typeInfo {
-  width: 100%;
-  clear: both;
-}
-
-#typeInfo td, #typeInfo th {
-  text-align: left;
-  font-weight: 500;
-}
-
-#speed::before {
-  content: "Speed: ";
-}
-
-#speed::after {
-  content: "cpm";
-}
-
-#timepass::before {
-  content: "Time passed: ";
-}
-
-#timepass::after {
-  content: "s";
-}
-
-textarea {
-  font-family: "Lucida Console", Monaco, monospace;
-  font-size: 16px;
-  width: 48.5%;
-  border: 1px solid gray;
-  border-radius: 2px;
-  resize: none;
-  outline: none;
-  height: 100%;
-}
-
-textarea:read-write:focus {
-  box-shadow: 0 0 0 2px black;
-}
-
-.pretty-button {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: black;
-  border: 2px solid black;
-  color: white;
-  transition-duration: 0.2s;
-  border-radius: 2px;
-  outline: none;
-}
-
-.pretty-button:hover {
-  background-color: #3F3F3F;
-  border-color: #3f3f3f;
-}
-
-.pretty-button:disabled {
-  background-color: #a0a0a0;
-  color: white;
-  border: 2px solid #a0a0a0;
-}
-
-.pretty-button:hover:disabled {
-  background-color: #a0a0a0;
-  border-color: #a0a0a0;
-}
-
-.header-button {
-  float: left;
-  margin-top: 17px;
-  height: 65px;
-
-  background-color: rgba(0, 0, 0, 0);
-  color: white;
-  outline: none;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0);
-
-  font-size: 19px;
-  padding: 0 15px;
-}
-
-.header-button:hover {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.header-button:active:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-#backButton {
-  width: 65px;
-  margin-left: 17px;
-  padding: 10px;
-  display: table-cell;
-  vertical-align: bottom;
-}
-
-#tooltipButton {
-  margin-left: 30px;
-}
-
-#lastButton {
-  float: right;
-  margin-right: 17px;
-}
-
-.green-btn {
-  background-color: #2db92d;
-  border-color: #2db92d;
-}
-
-.green-btn:hover {
-  background-color: #218D21;
-  border-color: #218D21;
-}
-
-.darkred-btn {
-  background-color: #c40000;
-  border-color: #c40000;
-}
-
-.darkred-btn:hover {
-  background-color: #9C0000;
-  border-color: #9C0000;
-}
-
-@keyframes tooltipdelay {
-  0% {
-    opacity: 0;
-  }
-  35% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.tooltip .tooltiptext-l, .tooltip .tooltiptext-r {
-  visibility: hidden;
-  background-color: #444444ee;
-  color: #ffffff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 20px;
-  position: absolute;
-  z-index: 1;
-  opacity: 0;
-  font-size: 16px;
-  display: none;
-}
-
-.tooltiptext-l {
-  margin-left: -10px;
-  margin-top: 15px;
-}
-
-.tooltiptext-r {
-  margin-left: 20px;
-  margin-top: 15px;
-}
-
-.tooltip:hover .tooltiptext-l.enabled-tooltip, .tooltip:hover .tooltiptext-r.enabled-tooltip {
-  visibility: visible;
-  animation: tooltipdelay 0.6s 1;
-  opacity: 1;
-  display: block;
-}
 
 </style>

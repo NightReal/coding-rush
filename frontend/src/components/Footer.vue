@@ -1,7 +1,9 @@
 <template>
-  <footer class="headfoot">
-    <p id="copyright">Copyright (c) 2020 Ilian Andrianov, Alexander Nekrasov, Viktor Abishev.</p>
-  </footer>
+  <v-footer id="footer">
+    <v-col class="pa-0 ma-0 text-center">
+      © {{ new Date().getFullYear() }} <span class="font-weight-medium">Coding Rush</span>
+    </v-col>
+  </v-footer>
 </template>
 
 <script>
@@ -11,16 +13,11 @@ export default {
 </script>
 
 <style scoped>
-.headfoot {
-  background-color: #300058;
-  color: white;
-  clear: both;
+
+#footer {
+  height: 45px;
+  align-items: center;
+  font-size: 0.93rem;
 }
 
-#copyright {
-  position: relative;
-  margin-left: 12px;
-  top: 2px;
-  font: inherit;
-}
 </style>

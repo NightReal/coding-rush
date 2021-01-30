@@ -38,12 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
+
+    'accounts',
+    'snippets',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -51,7 +56,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CSRF_COOKIE_SECURE = 1 - int(os.getenv("DEBUG", default=0))
+
 ROOT_URLCONF = 'backend.urls'
+
+CORS_ORIGIN_WHITELIST = os.environ.get("DJANGO_CORS_WHITELIST").split(" ")
 
 TEMPLATES = [
     {
@@ -80,7 +89,7 @@ DATABASES = {
         'NAME': os.getenv("POSTGRES_DB", 'postgres'),
         'USER': os.getenv("POSTGRES_USER", 'postgres'),
         'PASSWORD': os.getenv("POSTGRES_PASSWORD", 'postgres'),
-        'HOST': 'db',
+        'HOST': os.getenv("POSTGRES_HOST"),
         'PORT': 5432,
     }
 }
@@ -90,9 +99,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
     ),
 }
 

@@ -1,35 +1,37 @@
 <template>
-  <div id="app">
-    <div id="header">
-      <Header/>
-    </div>
-    <router-view/>
-    <div id="footer">
-      <Footer/>
-    </div>
-  </div>
+  <v-app>
+    <Header/>
+
+    <v-main class="pa-0 ma-0">
+      <router-view/>
+    </v-main>
+
+    <Footer/>
+  </v-app>
 </template>
 
 <script>
-import Header from '@/components/Header.vue';
+
+// import HeaderAuth from '@/components/Headers/HeaderAuth.vue';
+// import HeaderUnauth from '@/components/Headers/HeaderUnauth.vue';
+import Header from '@/components/Headers/Header.vue';
 import Footer from '@/components/Footer.vue';
+import store from '@/store/index';
 
 export default {
+  name: 'App',
+
   components: {
     Header,
     Footer,
   },
-  name: 'coding-rush',
+  methods: {
+    isAuthenticated() {
+      return store.getters.isAuthenticated;
+    },
+    isRoot() {
+      return this.$route.name === 'Root';
+    },
+  },
 };
-
 </script>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-</style>
