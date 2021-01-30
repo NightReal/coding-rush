@@ -34,6 +34,9 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - DJANGO_ALLOWED_HOSTS
+      - DJANGO_SUPERUSER_PASSWORD
+      - DJANGO_SUPERUSER_USERNAME
+      - DJANGO_SUPERUSER_EMAIL
 
   prod_nginx:
     container_name: prod_nginx
