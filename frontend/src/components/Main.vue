@@ -28,19 +28,19 @@
       <v-card class="card mb-3" rounded="lg" width="600px" elevation="6">
         <v-container class="px-10 pt-4 pb-5">
           <p class="card-title">Coding Rush is a</p>
-          <p class="card-content">platform for learning to <span>type faster</span> for
+          <p class="card-content">platform for learning to <span>type faster</span> designed for
                                   competitive programmers.</p>
         </v-container>
       </v-card>
-      <p class="card-content pt-4">
-        You won't type snippets from books, lyrics from songs or
-        famous quotes here.<br>But you can type
+      <p key="" class="card-content pt-4"  style="width: 800px">
+        You don't type snippets from books, lyrics from songs or
+        famous quotes here. Instead, you can train your muscular memory to remember
         <span>competitive programming code</span>!
       </p>
       <PrettyDivider/>
       <v-container class="card pa-0 ma-0">
-        <p class="card-title">What is it for?</p>
-        <p class="card-subtitle">To increase your skills</p>
+        <p class="card-title">What can you achieve here?</p>
+        <p class="card-subtitle">Improve your skills</p>
         <v-container id="skills-list" class="pa-0 ma-0 mb-9 mt-3">
           <v-card class="list-card" elevation="3">
             <p class="list-item-title">Typing accuracy</p>
@@ -55,46 +55,52 @@
           <v-card class="list-card" elevation="3">
             <p class="list-item-title">Knowledge of algorithms</p>
             <v-divider></v-divider>
-            <p class="list-item-content">Write basic code without stuttering</p>
+            <p class="list-item-content">Write simple code without stuttering</p>
           </v-card>
         </v-container>
         <p class="card-content" style="width: 600px">
-          Learn basic <span>algorithms</span> and <span>data structures</span> that are often
-          needed in contests while training <span>speed</span> and <span>accuracy</span>.
+          Learn <span>algorithms</span> and <span>data structures</span> that are often
+          used in programming contests while training your <span>speed</span>
+          and <span>accuracy</span>.
         </p>
       </v-container>
       <PrettyDivider/>
       <v-container class="card pa-0 ma-0">
         <p class="card-title">Who is it for?</p>
-        <p class="card-subtitle">For competitive programmers of different levels</p>
+        <p class="card-subtitle" style="width: 600px">
+          Our platform is designed for competitive programmers
+          with different levels</p>
         <v-container id="for-list" class="pa-0 mb-9 mt-3">
           <v-card class="list-card" elevation="3">
             <p class="list-item-title">Beginners</p>
             <v-divider></v-divider>
-            <p class="list-item-content">Have just started to code and know few algorithms</p>
+            <p class="list-item-content">You have just started coding
+            and know very few algorithms</p>
           </v-card>
           <v-card class="list-card" elevation="3">
             <p class="list-item-title">Advanced</p>
             <v-divider></v-divider>
-            <p class="list-item-content">Know many algorithms and are rewardee of olympiads</p>
+            <p class="list-item-content">You know a lot of algorithms and data structures</p>
           </v-card>
         </v-container>
-        <p class="card-content" style="width: 600px">Regardless of programmer's level there is
-          <span>some new</span> or difficult to code algorithms <span>for everyone</span>.
+        <p class="card-content" style="width: 600px">
+          <span>Everyone</span> can find <span>something new</span>
+          here regardless of their programming experience.
         </p>
       </v-container>
       <PrettyDivider/>
       <v-container class="pa-0 ma-0 card">
-        <p class="card-title">What kind of code?</p>
+        <p class="card-title">What will you find here?</p>
         <p class="card-subtitle" style="width: 600px">
           Algorithms and data structures for competitive programming
         </p>
         <p class="card-content" style="width: 900px">
           Everyone will find some new (or difficult to code) for themselves — there are
-          <span>more than 50 algorithms</span> of different levels from Z-function to Link Cut Tree.
+          <span>more than 50 algorithms</span> of different levels from
+          binary search to Link-Cut tree.
         </p>
         <p class="card-content mb-2" style="width: 900px">
-          Here you will find algorithms of themes:
+          Here you will find algorithms of such topics as:
         </p>
         <ul class="card-content mt-0 ml-10" style="text-align: left">
           <li>Graphs</li>
@@ -104,8 +110,8 @@
           <li>Trees</li>
           <li>and much more</li>
         </ul>
-        <p class="card-content mb-0">All algorithms are available on
-          <span>C++</span>. Some algorithms are also available on <span>Python 3</span>.
+        <p class="card-content mb-0">All algorithms are available in
+          <span>C++</span>. Some algorithms are also available in <span>Python 3</span>.
         </p>
       </v-container>
     </v-container>
