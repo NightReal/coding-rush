@@ -44,9 +44,7 @@ const errorInterceptor = (error) => {
 
 APIHelper.interceptors.request.use(
   (request) => requestInterceptor(request),
-  (error) => {
-    Promise.reject(error);
-  },
+  (error) => Promise.reject(error),
 );
 
 APIHelper.interceptors.response.use(
