@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
+from django.http import Http404
 from .serializers import (
-    UserSerializer,
+    PrivateUserSerializer,
     RegisterSerializer,
+    PublicUserSerializer,
 )
 from .permissions import UserAccountViewPermission
 from rest_framework import (
@@ -15,13 +17,26 @@ from rest_framework import (
 
 # Create your views here.
 
-class AccountView(views.APIView):
+class PrivateAccountView(views.APIView):
     queryset = User.objects.all()
     permission_classes = (UserAccountViewPermission,)
 
     def get(self, request, **kwargs):
         user = request.user
-        serializer = UserSerializer(user, many=False)
+        serializer = PrivateUserSerializer(user, many=False)
+        return response.Response(serializer.data)
+
+
+class PublicAccountView(views.APIView):
+    permission_classes = (permissions.AllowAny,)
+    queryset = User.objects.all()
+
+    def get(self, request, username, **kwargs):
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise Http404
+        serializer = PublicUserSerializer(user, many=False)
         return response.Response(serializer.data)
 
 
