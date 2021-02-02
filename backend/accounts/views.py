@@ -6,7 +6,6 @@ from .serializers import (
     RegisterSerializer,
     PublicUserSerializer,
 )
-from .permissions import UserAccountViewPermission
 from rest_framework import (
     views,
     response,
@@ -19,7 +18,7 @@ from rest_framework import (
 
 class PrivateAccountView(views.APIView):
     queryset = User.objects.all()
-    permission_classes = (UserAccountViewPermission,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, **kwargs):
         user = request.user
