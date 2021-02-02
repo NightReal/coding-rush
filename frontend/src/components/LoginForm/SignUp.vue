@@ -200,7 +200,9 @@ export default {
         this.continueLoading = true;
       }
       this.validName = this.$refs.formName.validate();
-      await this.validateUnique();
+      if (move) {
+        await this.validateUnique();
+      }
       if (!this.validName) {
         this.focusFirst(['name', 'email']);
       }
