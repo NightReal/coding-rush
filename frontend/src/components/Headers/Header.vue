@@ -28,9 +28,7 @@ export default {
           text: 'Close',
           icon: 'mdi-close',
           activating: false,
-          function: () => {
-            this.drawer = false;
-          },
+          function: () => { this.drawer = false; },
         },
         '',
         {
@@ -57,6 +55,7 @@ export default {
               .then(() => this.goto('/'))
               // eslint-disable-next-line no-console
               .catch((err) => console.log(err));
+            this.drawer = false;
           },
         },
       ],
@@ -96,6 +95,7 @@ export default {
   methods: {
     goto(item) {
       this.$router.push(item).catch((e) => e);
+      this.drawer = false;
     },
     isMainPage() {
       return this.$route.name === 'Root';
