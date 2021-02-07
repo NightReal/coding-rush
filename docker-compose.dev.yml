@@ -1,9 +1,15 @@
 version: '3.8'
 
 services:
+  redis:
+    container_name: redis
+    image: redis:alpine
+    networks:
+      - main
+
   db:
     container_name: db
-    image: postgres
+    image: postgres:alpine
     env_file:
       - ./.env.dev
     networks:
