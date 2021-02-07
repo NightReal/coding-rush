@@ -1,6 +1,12 @@
 version: '3.8'
 
 services:
+  redis:
+    container_name: redis
+    image: redis:alpine
+    networks:
+      - main
+
   prod_db:
     container_name: prod_db
     image: postgres
