@@ -5,7 +5,7 @@ services:
     container_name: redis
     image: redis:alpine
     networks:
-      - main
+      - prod_network
 
   prod_db:
     container_name: prod_db
