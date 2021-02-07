@@ -44,8 +44,7 @@ class RegisterView(views.APIView):
             caches['usernameExists'].delete(request.data['username'])
             caches['emailExists'].delete(request.data['email'])
             return response.Response(serializer.data, status.HTTP_201_CREATED)
-        else:
-            return response.Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+        return response.Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
 
 class UsernameUserExistsView(views.APIView):
