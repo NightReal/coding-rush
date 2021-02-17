@@ -51,11 +51,11 @@ export default {
           icon: 'mdi-account-cancel',
           activating: false,
           function: () => {
+            this.drawer = false;
             this.$store.dispatch('logout')
               .then(() => this.goto('/'))
               // eslint-disable-next-line no-console
               .catch((err) => console.log(err));
-            this.drawer = false;
           },
         },
       ],
