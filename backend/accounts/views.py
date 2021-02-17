@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.core.cache import caches
+from django.http import Http404
 
 from .serializers import (
     PrivateUserSerializer,
@@ -28,10 +29,11 @@ class PrivateAccountView(views.APIView):
         user = request.user
         data = caches['privateAccountInfo'].get(user.id)
         if data is None:
-            serializer = UserSerializer(user, many=False)
+            serializer = PrivateUserSerializer(user, many=False)
             data = serializer.data
             caches['privateAccountInfo'].set(user.id, data, CACHE_TTL)
         return response.Response(data)
+
 
 class PublicAccountView(views.APIView):
     permission_classes = (permissions.AllowAny,)
