@@ -2,11 +2,12 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.core.cache import caches
+
 from .serializers import (
-    UserSerializer,
+    PrivateUserSerializer,
     RegisterSerializer,
+    PublicUserSerializer,
 )
-from .permissions import UserAccountViewPermission
 from rest_framework import (
     views,
     response,
@@ -19,9 +20,9 @@ CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 # Create your views here.
 
-class AccountView(views.APIView):
+class PrivateAccountView(views.APIView):
     queryset = User.objects.all()
-    permission_classes = (UserAccountViewPermission,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, **kwargs):
         user = request.user
@@ -31,6 +32,18 @@ class AccountView(views.APIView):
             data = serializer.data
             caches['privateAccountInfo'].set(user.id, data, CACHE_TTL)
         return response.Response(data)
+
+class PublicAccountView(views.APIView):
+    permission_classes = (permissions.AllowAny,)
+    queryset = User.objects.all()
+
+    def get(self, request, username, **kwargs):
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise Http404
+        serializer = PublicUserSerializer(user, many=False)
+        return response.Response(serializer.data)
 
 
 class RegisterView(views.APIView):
