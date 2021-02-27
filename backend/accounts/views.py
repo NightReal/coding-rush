@@ -83,7 +83,7 @@ class EmailUserExistsView(views.APIView):
         res = caches['emailExists'].get(email)
         if res is None:
             try:
-                user = User.objects.get(username=email)
+                user = User.objects.get(email=email)
             except User.DoesNotExist:
                 res = {'email': False}
             else:
