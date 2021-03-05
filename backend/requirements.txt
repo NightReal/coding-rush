@@ -1,9 +1,7 @@
-Django>=3.0,<4.0
-psycopg2-binary>=2.8
-django-cors-headers==3.5.0
-djangorestframework==3.12.2
-django-filter==2.4.0
-djangorestframework-simplejwt==4.6.0
-gunicorn>=19.8
-django-debug-toolbar
-django_redis
+aiohttp
+gunicorn
+uvloop
+aiohttp-middlewares
+aiohttp_jwt
+aiohttp-login
+asyncpg

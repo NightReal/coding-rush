@@ -22,7 +22,6 @@ services:
       - ./.env.dev
     volumes:
       - ./backend:/code
-      - django-static:/code/static
     ports:
       - "9000:8000"
     networks:
