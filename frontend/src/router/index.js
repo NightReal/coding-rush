@@ -53,7 +53,7 @@ router.beforeEach((to, from, next) => {
   if (isAuthed() && to.matched.some((record) => record.meta.requiresDisAuth)) {
     next(from);
   } else if (!isAuthed() && to.matched.some((record) => record.meta.requiresAuth)) {
-    next('/login');
+    next('/signin');
   } else {
     next();
   }
