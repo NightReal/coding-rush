@@ -18,31 +18,16 @@ export default {
   methods: {
     tabChanged(tab) {
       this.tab = tab;
-      const type = tab ? 'signup' : 'signin';
-      this.$router.push({
-        path: this.$route.path,
-        query: { type },
-      }).catch((e) => e);
+      const path = tab === 0 ? '/signin' : '/signup';
+      this.$router.push({ path }).catch((e) => e);
     },
   },
   beforeRouteUpdate(to, from, next) {
     next();
-    this.tab = to.query.type === 'signup' ? 1 : 0;
+    this.tab = to.path === '/signup' ? 1 : 0;
   },
   mounted() {
-    this.tab = this.$route.query.type === 'signup' ? 1 : 0;
-  },
-  beforeRouteEnter(to, from, next) {
-    if (['signin', 'signup'].includes(to.query.type)) {
-      next();
-    } else {
-      const { query } = to;
-      query.type = 'signin';
-      next({
-        path: to.path,
-        query,
-      });
-    }
+    this.tab = this.$route.path === '/signup' ? 1 : 0;
   },
 };
 </script>
