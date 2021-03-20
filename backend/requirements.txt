@@ -6,5 +6,6 @@ aiohttp_jwt
 aiohttp-login
 asyncpg
 aiohttp-devtools
-SQLAlchemy>=0.1.4dev
+SQLAlchemy>=1.4.2
 bcrypt
+alembic
