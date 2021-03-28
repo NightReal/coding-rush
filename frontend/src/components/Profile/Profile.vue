@@ -20,13 +20,14 @@
         </div>
       </div>
 
-      <div id="center-bar" style="display: flex; flex-direction: column;
-                                          align-items: center; width: 100%">
-        <v-card flat style="width: 77%" :loading="activityLoading">
+      <div id="center-bar" class="px-16" style="display: flex; flex-direction: column;
+                                  align-items: center; width: 100%">
+        <v-card flat style="width: 90%;" :loading="activityLoading">
           <template slot="progress">
             <v-progress-linear color="accent" indeterminate></v-progress-linear>
           </template>
-          <Activity class="mt-3" chart-id="activityChart" ref="activity"></Activity>
+          <Activity class="mt-3" chart-id="activityChart" ref="activity"
+                    style="min-width: 400px"></Activity>
         </v-card>
       </div>
     </v-container>
@@ -114,6 +115,7 @@ export default {
 
   #pictureContainer {
     width: 20%;
+    min-width: 100px;
     margin-right: 40px
   }
 
