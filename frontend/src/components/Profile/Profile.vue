@@ -1,34 +1,46 @@
 <template>
   <div>
+    <v-progress-linear color="accent" :active="loading" :indeterminate="loading"
+                       style="position: fixed; z-index: 5; top:0; left: 0; right: 0;">
+    </v-progress-linear>
     <v-container id="bar-container" style="display: flex; justify-content: center;
                                             max-width: 1277px">
 
-      <div id="left-bar" style="display: flex;
-                                          width: 100%; word-wrap: break-word;">
-        <div id="pictureContainer">
-          <img class="elevation-5 rounded-circle" :src="picture"
-               @error="$event.target.src = defaultPicture"
-               style="width: 100%;"/>
-        </div>
-        <div>
-          <div class="font-weight-bold" style="font-size: 1.625rem">
-            {{ firstName }} {{ lastName }}
+      <div id="left-bar" style="display: flex; width: 100%; word-wrap: break-word;
+                                flex-direction: column;">
+        <div id="left-bar-info" style="display: flex; width: 100%;">
+          <div id="pictureContainer">
+            <img class="elevation-5 rounded-circle" :src="picture"
+                 @error="$event.target.src = defaultPicture"
+                 style="width: 100%;"/>
           </div>
-          <div class="font-weight-regular" style="color: #666; font-size: 1.3rem">
-            {{ username }}
+          <div>
+            <div class="font-weight-bold" style="font-size: 1.625rem">
+              {{ firstName }} {{ lastName }}
+            </div>
+            <div class="font-weight-regular" style="color: #666; font-size: 1.3rem">
+              {{ username }}
+            </div>
           </div>
         </div>
+        <div class="mt-5">
+          <v-icon class="mr-1">mdi-laptop</v-icon>
+          {{ numberOfCompletedCodes === 0 ? 'no' : numberOfCompletedCodes }} completed
+          code{{ numberOfCompletedCodes === 1 ? '' : 's' }}
+        </div>
+        <v-btn class="mt-7 text-capitalize" style="font-size: 1rem !important; font-weight: 400"
+               v-if="$store.state.user.username !== undefined &&
+                     this.user.toLowerCase() === $store.state.user.username.toLowerCase()"
+              @click="$router.push('/settings')">
+          Settings
+        </v-btn>
       </div>
 
       <div id="center-bar" class="px-16" style="display: flex; flex-direction: column;
                                   align-items: center; width: 100%">
-        <v-card flat style="width: 90%;" :loading="activityLoading">
-          <template slot="progress">
-            <v-progress-linear color="accent" indeterminate></v-progress-linear>
-          </template>
-          <Activity class="mt-3" chart-id="activityChart" ref="activity"
-                    style="min-width: 400px"></Activity>
-        </v-card>
+        <div style="width: 90%; min-width: 350px">
+          <Activity class="mt-3" chart-id="activityChart" ref="activity"></Activity>
+        </div>
       </div>
     </v-container>
 
@@ -37,24 +49,28 @@
 
 <script>
 
+import APIHelper from '@/api/apihelper';
 import Activity from '@/components/Profile/Activity.vue';
 import defaultAvatar from '@/assets/default-avatar-268x268.png';
 
 export default {
   name: 'Profile',
   components: { Activity },
-  props: ['username'],
+  props: ['user'],
   data() {
     return {
-      firstName: 'First',
-      lastName: 'Lastname',
+      firstName: '',
+      lastName: '',
+      username: '',
       picture: defaultAvatar,
       defaultPicture: defaultAvatar,
-      activityLoading: true,
+      loading: true,
+      numberOfCompletedCodes: 0,
     };
   },
   methods: {
-    process_stats() {
+    // eslint-disable-next-line no-unused-vars
+    process_stats(rawData) {
       const data = (() => {
         const arr = [];
         let x = 52;
@@ -75,14 +91,24 @@ export default {
         }
         return arr;
       })();
-
       this.$refs.activity.updateData(data);
-      this.activityLoading = false;
     },
   },
+
   mounted() {
-    // load info
-    setTimeout(this.process_stats, 1000);
+    this.$store.dispatch('getUser');
+    APIHelper.get(`/account/profile/${this.user}`)
+      .then((res) => {
+        this.firstName = res.data.first_name;
+        this.lastName = res.data.last_name;
+        this.username = res.data.username;
+        if (this.username !== this.user) {
+          this.$router.push(`/profile/${this.username}`);
+        }
+        this.process_stats();
+        this.loading = false;
+      })
+      .catch(() => false);
   },
 };
 
@@ -90,9 +116,12 @@ export default {
 <style>
 
 @media all and (min-width: 770px) {
+  #left-bar-info {
+    flex-direction: column;
+  }
+
   #left-bar {
     flex: 2 0 0;
-    flex-direction: column;
   }
 
   #center-bar {
@@ -113,13 +142,17 @@ export default {
     flex: 1 100%;
   }
 
+  #left-bar {
+    align-items: center;
+  }
+
   #pictureContainer {
     width: 20%;
     min-width: 100px;
     margin-right: 40px
   }
 
-  #left-bar {
+  #left-bar-info {
     align-items: center;
     justify-content: center;
     margin-bottom: 30px;
@@ -129,6 +162,10 @@ export default {
   #bar-container {
     flex-direction: column;
   }
+}
+
+text {
+  font-size: 0.8rem !important;;
 }
 
 </style>

@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0 mt-8">
-    <Profile :username="$route.params.username"/>
+    <Profile :user="$route.params.username"/>
   </v-container>
 </template>
 
