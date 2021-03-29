@@ -1,12 +1,14 @@
-import asyncio
-import models
-
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
-from sqlalchemy.future import select
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm import selectinload
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column
+from sqlalchemy import Integer
+from sqlalchemy import Text
+from sqlalchemy import Boolean
+from sqlalchemy import ForeignKey
+
+Base = declarative_base()
 
 
 class Database:
@@ -21,36 +23,31 @@ class Database:
             f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}/{self.db}"
         )
         async with self.engine.begin() as conn:
-            await conn.run_sync(models.Base.metadata.drop_all)
-            await conn.run_sync(models.Base.metadata.create_all)
+            await conn.run_sync(Base.metadata.reflect)
 
         self.async_session = sessionmaker(
             self.engine, expire_on_commit=False, class_=AsyncSession
         )
 
-    async def create_user(self, user: models.User):
-        async with self.async_session() as session:
-            session.add(user)
-            await session.commit()
+
+class User(Base):
+    __tablename__ = "users"
+    __mapper_args__ = {"eager_defaults": True}
+
+    id = Column(Integer, primary_key=True, unique=True)
+    email = Column(Text, nullable=False, unique=True)
+    username = Column(Text, nullable=False, unique=True)
+    hashed_password = Column(Text, nullable=False)
+    is_activated = Column(Boolean, nullable=False, default=False)
+    activation_token = Column(Text, nullable=False)
+    is_superuser = Column(Boolean, default=False)
+    disabled = Column(Boolean, default=False)
 
 
-async def main():
-    engine = create_async_engine(
-        "postgresql+asyncpg://postgres:postgres@localhost:5432/postgres"
-    )
-    async with engine.begin() as conn:
-        await conn.run_sync(models.Base.metadata.drop_all)
-        await conn.run_sync(models.Base.metadata.create_all)
+class Permission(Base):
+    __tablename__ = "permissions"
+    __mapper_args__ = {"eager_defaults": True}
 
-    async_session = sessionmaker(
-        engine, expire_on_commit=False, class_=AsyncSession
-    )
-
-    async with async_session() as session:
-        n = User(email='asdf@as.as', username='user', hashed_password='aaaaa', is_activated=True, activation_token='adasd')
-        session.add(n)
-        await session.commit()
-
-
-if __name__ == '__main__':
-    asyncio.get_event_loop().run_until_complete(main())
+    id = Column(Integer, primary_key=True, unique=True)
+    user_id = Column(Integer, ForeignKey("users.id", name="fk_permission_user_id", ondelete="CASCADE"), nullable=False)
+    perm_name = Column(Text, nullable=False)

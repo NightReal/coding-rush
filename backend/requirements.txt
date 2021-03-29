@@ -2,10 +2,11 @@ aiohttp
 gunicorn
 uvloop
 aiohttp-middlewares
-aiohttp_jwt
-aiohttp-login
+aiohttp_security
 asyncpg
 aiohttp-devtools
 SQLAlchemy>=1.4.2
 bcrypt
 alembic
+passlib
+pyjwt

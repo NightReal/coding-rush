@@ -1,5 +1,10 @@
 from aiohttp import web
 import settings
+import db
+from aiohttp_security import JWTIdentityPolicy
+from aiohttp_security import setup as setup_security
+
+from users.security import DBAuthorizationPolicy
 
 
 async def index(request):
@@ -15,6 +20,14 @@ async def init():
     # Setup subapps coroutines
     pass
 
+    database = db.Database(settings)
+    await database.init()
+
+    # security setup
+
+    setup_security(app,
+                   JWTIdentityPolicy(settings.SECRET_KEY),
+                   DBAuthorizationPolicy(database))
 
     # Setup global routes
     app.router.add_get('/', index)

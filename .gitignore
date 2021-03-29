@@ -4,4 +4,4 @@ dist/
 .cache/
 .env/
 backend/**/migrations/
-
+backend/alembic/versions/
