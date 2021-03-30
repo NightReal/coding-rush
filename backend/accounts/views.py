@@ -10,9 +10,6 @@ from rest_framework import (
     permissions,
     generics,
 )
-from .permissions import (
-    UserAccountViewPermission,
-)
 
 User = get_user_model()
 
@@ -32,7 +29,7 @@ class ChangePasswordView(generics.UpdateAPIView):
 
 
 class UsernameUserExistsView(views.APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes1 = (permissions.AllowAny,)
 
     def get(self, request, username: str, *args, **kwargs):
         user = User.objects.filter(username__iexact=username)
@@ -51,7 +48,7 @@ class EmailUserExistsView(views.APIView):
 
 class PrivateUserProfileView(views.APIView):
     queryset = User.objects.all()
-    permission_classes = (UserAccountViewPermission,)
+    permission_classes = [permissions.IsAuthenticated, ]
 
     def get(self, request, **kwargs):
         user = request.user
