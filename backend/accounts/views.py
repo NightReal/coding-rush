@@ -29,7 +29,7 @@ class ChangePasswordView(generics.UpdateAPIView):
 
 
 class UsernameUserExistsView(views.APIView):
-    permission_classes1 = (permissions.AllowAny,)
+    permission_classes = (permissions.AllowAny,)
 
     def get(self, request, username: str, *args, **kwargs):
         user = User.objects.filter(username__iexact=username)
