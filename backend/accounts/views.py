@@ -35,7 +35,7 @@ class UsernameUserExistsView(views.APIView):
     permission_classes = (permissions.AllowAny,)
 
     def get(self, request, username: str, *args, **kwargs):
-        user = User.objects.filter(username=username)
+        user = User.objects.filter(username__iexact=username)
         res = {'username': bool(user)}
         return response.Response(res)
 
