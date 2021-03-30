@@ -68,8 +68,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+if DEBUG:
+    MIDDLEWARE.extend([
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ])
 
 CSRF_COOKIE_SECURE = 1 - int(os.getenv("DEBUG", default=0))
 
@@ -94,6 +98,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
+
+AUTH_USER_MODEL = 'accounts.CodingrushAccount'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -120,38 +126,6 @@ CACHES = {
         },
         "KEY_PREFIX": "default",
     },
-    "emailExists": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis/2",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"
-        },
-        "KEY_PREFIX": "emailExists",
-    },
-    "usernameExists": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis/3",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"
-        },
-        "KEY_PREFIX": "usernameExists",
-    },
-    "privateAccountInfo": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis/4",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"
-        },
-        "KEY_PREFIX": "account",
-    },
-    "publicAccountInfo": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis/5",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"
-        },
-        "KEY_PREFIX": "statistics",
-    }
 }
 
 # Data (tokens and exists views) cache time to live is 5 minutes.
@@ -168,7 +142,15 @@ if DEBUG:
             },
         },
         'loggers': {
-            'django': {
+            'django.db': {
+                'handlers': ['console'],
+                'level': 'DEBUG',
+            },
+            'django.request': {
+                'handlers': ['console'],
+                'level': 'DEBUG',
+            },
+            'django.server': {
                 'handlers': ['console'],
                 'level': 'DEBUG',
             },
@@ -177,21 +159,20 @@ if DEBUG:
 
 # REST framework setup
 
-DEFAULT_RENDERER_CLASSES = (
+DEFAULT_RENDERER_CLASSES = [
     'rest_framework.renderers.JSONRenderer',
-)
+]
 
 if DEBUG:
-    DEFAULT_RENDERER_CLASSES = DEFAULT_RENDERER_CLASSES + (
+    DEFAULT_RENDERER_CLASSES.extend([
         'rest_framework.renderers.BrowsableAPIRenderer',
-    )
+    ])
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),

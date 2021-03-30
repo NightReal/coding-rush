@@ -1,55 +1,95 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model, password_validation
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
-from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.models import BaseUserManager
+
+User = get_user_model()
 
 
-class PrivateUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
-
-
-class PublicUserSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(read_only=True)
-
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name',)
-
-
-class RegisterSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(
-        required=True,
-        validators=[UniqueValidator(queryset=User.objects.all(), message="User with such e-mail already exists")]
-    )
-
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+class UserRegisterSerializer(serializers.ModelSerializer):
+    """
+    Serializer for registering the user
+    """
     password_confirm = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'password_confirm', 'email', 'first_name', 'last_name')
+        fields = ('id', 'email', 'username', 'password', 'first_name', 'last_name', 'password_confirm')
+        read_only_fields = ('id',)
+        write_only_fields = ('password',)
         extra_kwargs = {
             'first_name': {'required': True},
-            'last_name': {'required': True}
+            'last_name': {'required': True},
+            'password': {'write_only': True},
         }
+
+    def validate_email(self, value):
+        user = User.objects.filter(email=value)
+        if user:
+            raise serializers.ValidationError("Email is already taken")
+        return BaseUserManager.normalize_email(value)
+
+    def validate_password(self, value):
+        password_validation.validate_password(value)
+        return value
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password_confirm']:
-            raise serializers.ValidationError({"password": "Password fields didn't match."})
+            raise serializers.ValidationError({
+                "password_confirm": ("Passwords didn't match",),
+            })
 
         return attrs
 
     def create(self, validated_data):
+        # TODO: email confirmation
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
             first_name=validated_data['first_name'],
-            last_name=validated_data['last_name']
+            last_name=validated_data['last_name'],
         )
 
         user.set_password(validated_data['password'])
         user.save()
-
         return user
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    """
+    Serializer for password change endpoint
+    """
+    old_password = serializers.CharField(required=True, write_only=True)
+    new_password = serializers.CharField(required=True, write_only=True)
+    new_password_confirm = serializers.CharField(required=True, write_only=True)
+
+    def validate_new_password(self, value):
+        password_validation.validate_password(value)
+        return value
+
+    def validate_old_password(self, value):
+        if not self.context['request'].user.check_password(value):
+            raise serializers.ValidationError('Current password does not match')
+        return value
+
+    def validate(self, data):
+        if data['new_password'] != data['new_password_confirm']:
+            raise serializers.ValidationError({
+                "new_password_confirm": ("Passwords didn't match",),
+            })
+        return data
+
+    def save(self, **kwargs):
+        password = self.validated_data['new_password']
+        user = self.context['request'].user
+        user.set_password(password)
+        user.save()
+        return user
+
+
+class PrivateProfileInformationSerializer(serializers.ModelSerializer):
+    """
+    Serializer for private info retrieving endpoint
+    """
+    class Meta:
+        model = User
+        fields = ('email', 'username', 'first_name', 'last_name')
