@@ -62,7 +62,6 @@ services:
       - backend
       - frontend
     volumes:
-      - ./nginx/dev/dev.conf:/etc/nginx/nginx.conf:ro
       - django-static:/usr/src/app/static
     networks:
       -  main
