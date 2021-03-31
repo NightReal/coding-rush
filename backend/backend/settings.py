@@ -75,7 +75,7 @@ if DEBUG:
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     ])
 
-CSRF_COOKIE_SECURE = 1 - int(os.getenv("DEBUG", default=0))
+CSRF_COOKIE_SECURE = not int(os.getenv("DEBUG", default=0))
 
 ROOT_URLCONF = 'backend.urls'
 
