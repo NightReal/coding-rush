@@ -28,4 +28,4 @@ jobs:
       - name: Check nginx and frontend logs
         run: docker logs prod_nginx
       - name: Check db logs
-        run: docker logs db
+        run: docker logs prod_db

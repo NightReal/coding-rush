@@ -57,7 +57,6 @@ services:
     volumes:
       - /etc/letsencrypt/:/etc/letsencrypt/
       - /etc/ssl/certs/dhparam.pem:/etc/ssl/certs/dhparam.pem
-      - ./nginx/prod/prod.conf:/etc/nginx/nginx.conf:ro
       - prod_django-static:/usr/src/app/static
     networks:
       -  prod_network
