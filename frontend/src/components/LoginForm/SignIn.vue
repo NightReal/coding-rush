@@ -5,9 +5,11 @@
     <v-form class="pa-0 px-6" ref="form" v-model="valid" lazy-validation autocomplete="off">
       <v-text-field class="form-field" v-model="username" ref="name"
                     :rules="nameRules" label="Username" required
+                    autocomplete="username"
       ></v-text-field>
       <v-text-field class="form-field" v-model="password" ref="password"
                     :rules="passwordRules" label="Password" type="password" required
+                    autocomplete="current-password"
       ></v-text-field>
       <a class="text-decoration-none font-weight-medium blue--text text--darken-3 text-body-2"
          href="https://youtu.be/dQw4w9WgXcQ">Forgot password?</a>
