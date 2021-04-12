@@ -31,7 +31,8 @@ const routes = [
     },
   },
   {
-    path: '/login',
+    path: '/signin',
+    alias: '/signup',
     name: 'Login',
     component: LoginView,
     props: true,
@@ -39,6 +40,8 @@ const routes = [
       requiresDisAuth: true,
     },
   },
+  { path: '/login', redirect: '/signin' },
+  { path: '/register', redirect: '/signup' },
   {
     path: '/profile/:username',
     name: 'Profile',
@@ -56,7 +59,7 @@ router.beforeEach((to, from, next) => {
   if (isAuthed() && to.matched.some((record) => record.meta.requiresDisAuth)) {
     next(from);
   } else if (!isAuthed() && to.matched.some((record) => record.meta.requiresAuth)) {
-    next('/login');
+    next('/signin');
   } else {
     next();
   }

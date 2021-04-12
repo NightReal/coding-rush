@@ -53,11 +53,16 @@
                   justify-content: space-between">
             <v-text-field class="form-field" v-model="password" ref="password"
                           :rules="passwordRules" label="Password" type="password" required
+                          autocomplete="new-password"
             ></v-text-field>
             <v-text-field class="form-field" v-model="passwordConfirm" ref="passwordConfirm"
                           :rules="passwordConfirmRules" label="Confirm password" type="password"
                           required
             ></v-text-field>
+            <div hidden>
+              <v-text-field name="username" :value="username" autocomplete="username">
+              </v-text-field>
+            </div>
 
             <p class="ma-0 pt-3 pb-0 text--disabled caption">
               By clicking «Sign Up», you accept

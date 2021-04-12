@@ -60,8 +60,8 @@ export default {
   },
   props: ['parentTab'],
   watch: {
-    parentTab(to) {
-      this.tab = to;
+    parentTab(tab) {
+      this.tab = tab;
     },
   },
 };

@@ -78,14 +78,14 @@ export default {
         {
           text: 'Sign in',
           icon: 'mdi-account-arrow-left',
-          path: '/login?type=signin',
+          path: '/signin',
           activating: true,
           function: (item) => this.goto(item),
         },
         {
           text: 'Sign up',
           icon: 'mdi-account-plus',
-          path: '/login?type=signup',
+          path: '/signup',
           activating: true,
           function: (item) => this.goto(item),
         },
