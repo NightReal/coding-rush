@@ -23,15 +23,15 @@
             </div>
           </div>
         </div>
-        <div class="mt-5">
+        <div class="mt-8">
           <v-icon class="mr-1">mdi-laptop</v-icon>
           {{ numberOfCompletedCodes === 0 ? 'no' : numberOfCompletedCodes }} completed
           code{{ numberOfCompletedCodes === 1 ? '' : 's' }}
         </div>
-        <v-btn class="mt-7 text-capitalize" style="font-size: 1rem !important; font-weight: 400"
-               v-if="$store.state.user.username !== undefined &&
+        <v-btn class="mt-11 text-capitalize" style="font-size: 1rem !important; font-weight: 400"
+               v-if="$store.getters.isAuthenticated && $store.state.user.username !== undefined &&
                      this.user.toLowerCase() === $store.state.user.username.toLowerCase()"
-              @click="$router.push('/settings')">
+               @click="$router.push('/settings')">
           Settings
         </v-btn>
       </div>
@@ -96,7 +96,9 @@ export default {
   },
 
   mounted() {
-    this.$store.dispatch('getUser');
+    if (this.$store.getters.isAuthenticated) {
+      this.$store.dispatch('getUser');
+    }
     APIHelper.get(`/account/profile/${this.user}`)
       .then((res) => {
         this.firstName = res.data.first_name;
