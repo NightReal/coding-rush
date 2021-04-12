@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue';
 import MainView from '../views/MainView.vue';
 import LoginView from '../views/LoginView.vue';
 import EditorView from '../views/EditorView.vue';
+import ProfileView from '../views/ProfileView.vue';
 // eslint-disable-next-line import/no-cycle
 import store from '../store/index';
 
@@ -41,6 +42,11 @@ const routes = [
   },
   { path: '/login', redirect: '/signin' },
   { path: '/register', redirect: '/signup' },
+  {
+    path: '/profile/:username',
+    name: 'Profile',
+    component: ProfileView,
+  },
 ];
 
 const router = new VueRouter({
