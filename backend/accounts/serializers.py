@@ -93,7 +93,7 @@ class PrivateProfileInformationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('avatar', 'email', 'username', 'first_name', 'last_name')
+        fields = ('avatar', 'email', 'username', 'first_name', 'last_name', 'last_login')
 
 
 class ProfileUpdateSerializer(serializers.ModelSerializer):

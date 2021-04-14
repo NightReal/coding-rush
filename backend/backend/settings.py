@@ -115,22 +115,6 @@ DATABASES = {
     }
 }
 
-# caching setup
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"
-        },
-        "KEY_PREFIX": "default",
-    },
-}
-
-# Data (tokens and exists views) cache time to live is 5 minutes.
-CACHE_TTL = 300
-
 # Logging setup
 
 if DEBUG:
