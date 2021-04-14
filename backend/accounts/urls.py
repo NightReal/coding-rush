@@ -25,7 +25,7 @@ urlpatterns = [
     path('changePassword/', ChangePasswordView.as_view(), name='change user password'),
     path('getme/', PrivateUserProfileView.as_view(), name='get current profile'),
     path('updateProfile/', ProfileUpdateView.as_view(), name='profile information update'),
-    path('profile/<str:username>', PublicProfileInformationView.as_view(), name='public profile information')
+    path('profile/<str:username>/', PublicProfileInformationView.as_view(), name='public profile information')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
