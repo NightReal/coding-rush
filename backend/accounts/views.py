@@ -5,6 +5,7 @@ from .serializers import (
     UserRegisterSerializer,
     PrivateProfileInformationSerializer,
     ProfileUpdateSerializer,
+    PublicProfileInformationSerializer,
 )
 from rest_framework import (
     views,
@@ -59,7 +60,6 @@ class EmailUserExistsView(views.APIView):
 
 
 class PrivateUserProfileView(views.APIView):
-    queryset = User.objects.all()
     permission_classes = [permissions.IsAuthenticated, ]
 
     def get(self, request, **kwargs):
@@ -69,7 +69,19 @@ class PrivateUserProfileView(views.APIView):
         return response.Response(data)
 
 
-class ProfileUpdate(generics.UpdateAPIView):
+class PublicProfileInformationView(views.APIView):
+    permission_classes = [permissions.AllowAny, ]
+
+    def get(self, request, username: str, *args, **kwargs):
+        user = User.objects.filter(username__iexact=username).first()
+        if user is None:
+            return response.Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = PublicProfileInformationSerializer(user)
+        data = serializer.data
+        return response.Response(data)
+
+
+class ProfileUpdateView(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileUpdateSerializer
     permission_classes = [permissions.IsAuthenticated, ]

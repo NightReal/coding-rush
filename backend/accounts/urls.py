@@ -5,7 +5,8 @@ from .views import (
     EmailUserExistsView,
     ChangePasswordView,
     PrivateUserProfileView,
-    ProfileUpdate,
+    ProfileUpdateView,
+    PublicProfileInformationView,
 )
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -23,7 +24,8 @@ urlpatterns = [
     path('emailExists/<str:email>', EmailUserExistsView.as_view(), name='email exists'),
     path('changePassword/', ChangePasswordView.as_view(), name='change user password'),
     path('getme/', PrivateUserProfileView.as_view(), name='get current profile'),
-    path('updateProfile/', ProfileUpdate.as_view(), name='profile infromation update')
+    path('updateProfile/', ProfileUpdateView.as_view(), name='profile information update'),
+    path('profile/<str:username>', PublicProfileInformationView.as_view(), name='public profile information')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

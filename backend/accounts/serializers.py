@@ -98,6 +98,16 @@ class PrivateProfileInformationSerializer(serializers.ModelSerializer):
         fields = ('avatar', 'email', 'username', 'first_name', 'last_name', 'last_login')
 
 
+class PublicProfileInformationSerializer(serializers.ModelSerializer):
+    """
+    Serializer for public profile information retrieving endpoint
+    """
+
+    class Meta:
+        model = User
+        fields = ('avatar', 'username', 'first_name', 'last_name', 'last_login')
+
+
 class ProfileUpdateSerializer(serializers.ModelSerializer):
     """
     Serializer for profile update endpoint
