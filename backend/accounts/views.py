@@ -4,12 +4,14 @@ from .serializers import (
     ChangePasswordSerializer,
     UserRegisterSerializer,
     PrivateProfileInformationSerializer,
+    ProfileUpdateSerializer,
 )
 from rest_framework import (
     views,
     response,
     permissions,
     generics,
+    status,
 )
 
 User = get_user_model()
@@ -28,9 +30,18 @@ class ChangePasswordView(generics.UpdateAPIView):
     serializer_class = ChangePasswordSerializer
     permission_classes = [permissions.IsAuthenticated, ]
 
+    def update(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            serializer.update()
+            return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+        return response.Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 class UsernameUserExistsView(views.APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = [permissions.AllowAny, ]
 
     def get(self, request, username: str, *args, **kwargs):
         user = User.objects.filter(username__iexact=username)
@@ -39,7 +50,7 @@ class UsernameUserExistsView(views.APIView):
 
 
 class EmailUserExistsView(views.APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = [permissions.AllowAny, ]
 
     def get(self, request, email: str, *args, **kwargs):
         user = User.objects.filter(email=email)
@@ -56,3 +67,19 @@ class PrivateUserProfileView(views.APIView):
         serializer = PrivateProfileInformationSerializer(user)
         data = serializer.data
         return response.Response(data)
+
+
+class ProfileUpdate(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = ProfileUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated, ]
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            user = request.user
+            serializer.update(user, serializer.validated_data)
+            return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+        return response.Response(status=status.HTTP_400_BAD_REQUEST)

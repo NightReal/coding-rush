@@ -78,7 +78,7 @@ class ChangePasswordSerializer(serializers.Serializer):
             })
         return data
 
-    def save(self, **kwargs):
+    def update(self, **kwargs):
         password = self.validated_data['new_password']
         user = self.context['request'].user
         user.set_password(password)
@@ -90,6 +90,17 @@ class PrivateProfileInformationSerializer(serializers.ModelSerializer):
     """
     Serializer for private info retrieving endpoint
     """
+
     class Meta:
         model = User
-        fields = ('email', 'username', 'first_name', 'last_name')
+        fields = ('avatar', 'email', 'username', 'first_name', 'last_name')
+
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for profile update endpoint
+    """
+
+    class Meta:
+        model = User
+        fields = ('avatar', 'first_name', 'last_name')
