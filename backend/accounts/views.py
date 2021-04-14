@@ -75,7 +75,7 @@ class ProfileUpdate(generics.UpdateAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
 
     def update(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data, partial=True)
 
         if serializer.is_valid(raise_exception=True):
             user = request.user
