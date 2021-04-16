@@ -1,8 +1,6 @@
 <template>
   <div>
-    <v-progress-linear color="accent" :active="loading" :indeterminate="loading"
-                       style="position: fixed; z-index: 5; top:0; left: 0; right: 0;">
-    </v-progress-linear>
+    <page-loader :loading="loading"></page-loader>
     <v-container id="bar-container" style="display: flex; justify-content: center;
                                             max-width: 1277px">
 
@@ -51,11 +49,12 @@
 
 import APIHelper from '@/api/apihelper';
 import Activity from '@/components/Profile/Activity.vue';
+import PageLoader from '@/components/PageLoader.vue';
 import defaultAvatar from '@/assets/default-avatar-268x268.png';
 
 export default {
   name: 'Profile',
-  components: { Activity },
+  components: { Activity, PageLoader },
   props: ['user'],
   data() {
     return {
