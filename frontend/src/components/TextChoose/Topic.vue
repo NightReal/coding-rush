@@ -3,8 +3,9 @@
        :style="`min-width: ${inRow === 4 ? 1250 : 750}px`" class="mb-16">
     <h1>{{ topic }}</h1>
     <div style="display: flex; justify-content: center">
-      <v-container style="display: inline-block; width: auto; border-radius: 10px;"
-                   :class="`pa-4 ma-0 bg-${color}`">
+      <v-container style="display: inline-block; width: auto; border-radius: 10px;
+                          padding: 12px !important;"
+                   :class="`ma-0 bg-${color}`">
         <v-container v-for="row in Math.ceil(texts.length / inRow)" v-bind:key="row"
                      style="display: flex; flex-direction: row; justify-content: center;"
                      class="pa-0 ma-0">
@@ -43,7 +44,7 @@ export default {
   },
   methods: {
     resizeHandler() {
-      this.inRow = window.innerWidth < 1250 ? 2 : 4;
+      this.inRow = window.innerWidth < 1270 ? 2 : 4;
     },
   },
 };

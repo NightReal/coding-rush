@@ -1,13 +1,13 @@
 <template>
-  <v-container class="pa-0 ma-4">
+  <v-container class="pa-0" style="margin: 12px !important;">
     <v-hover v-slot="{ hover }" v-if="!hide">
-      <v-card width="220px" height="220px" class="text-card px-1 pt-3 pb-1"
+      <v-card :width="cardWidth" :height="cardHeight" class="text-card px-1 pt-3 pb-1"
               style="display:flex; flex-direction:column; justify-content: space-between"
               :style="`background-color: ${hover ? '#4f4f4f' :'#fff'};
                                   color: ${hover ? '#fff' : '#000'}`"
               :elevation="hover ? 10 : 3">
         <div style="background-color: #8b8b8b; color: white; position:absolute;
-                    border-radius: 3px; padding: 2px 8px 2px 8px; font-size: 0.75rem; top: -14px;
+                    border-radius: 3px; padding: 2px 8px 2px 8px; font-size: 0.75rem; top: -10px;
                     align-self: flex-end; right: 10px; font-family: monospace">
           <b>Difficulty: {{ text.difficulty }}</b>
         </div>
@@ -30,7 +30,7 @@
         </div>
       </v-card>
     </v-hover>
-    <v-card v-else flat width="220px" height="220px" style="opacity: 0"></v-card>
+    <v-card v-else flat :width="cardWidth" :height="cardHeight" style="opacity: 0"></v-card>
   </v-container>
 </template>
 
@@ -42,6 +42,8 @@ export default {
   data: () => ({
     // eslint-disable-next-line quote-props
     lang_colors: { 'python': 'yellow', 'c++': '#68d2ff', 'java': '#ff7575' },
+    cardWidth: '250px',
+    cardHeight: '230px',
   }),
 
   methods: {
