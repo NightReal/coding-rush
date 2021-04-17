@@ -22,7 +22,9 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class LessonListSerializer(serializers.ModelSerializer):
+    codes = serializers.SlugRelatedField(many=True, read_only=True, slug_field='language')
+
     class Meta:
         model = Lesson
-        fields = ('id', 'title', 'topic')
+        fields = ('id', 'title', 'topic', 'codes')
         read_only_fields = fields
