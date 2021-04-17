@@ -60,7 +60,7 @@ export default {
 }
 
 .bg-green {
-  background-color: rgba(50, 255, 0, 0.05);
+  background-color: rgba(0, 255, 50, 0.05);
 }
 
 .bg-yellow {
@@ -73,6 +73,18 @@ export default {
 
 .bg-magenta {
   background-color: rgba(255, 0, 255, 0.04);
+}
+
+.bg-crimson {
+  background-color: rgba(215, 0, 75, 0.05);
+}
+
+.bg-chartreuse {
+  background-color: rgba(145, 255, 0, 0.1);
+}
+
+.bg-blue {
+  background-color: rgba(0, 0, 255, 0.05);
 }
 
 </style>

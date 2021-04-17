@@ -24,7 +24,16 @@ export default {
   data: () => ({
     loading: true,
     texts: [],
-    colors: ['red', 'green', 'orange', 'cyan', 'magenta', 'yellow'],
+    colors: [
+      'chartreuse',
+      'yellow',
+      'orange',
+      'red',
+      'crimson',
+      'magenta',
+      'blue',
+      'cyan',
+      'green'],
   }),
 
   mounted() {
