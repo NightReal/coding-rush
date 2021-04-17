@@ -10,6 +10,7 @@ class Lesson(models.Model):
     title = models.CharField(max_length=50, blank=True, default='')
     topic = models.CharField(default='no_topic', blank=False, max_length=50)
     description = models.CharField(default='', max_length=10000)
+    difficulty = models.IntegerField(choices=[(i, i) for i in range(11)], default=0)
 
     def __str__(self):
         return f"{self.title} - {self.topic}"
