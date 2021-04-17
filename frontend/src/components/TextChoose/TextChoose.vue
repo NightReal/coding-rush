@@ -1,10 +1,9 @@
 <template>
   <div>
     <page-loader :loading="loading"></page-loader>
-    <v-container style="max-width: 1277px">
-        <v-container v-for="text in texts" :key="text.id">
-          <TextCard :text="text"></TextCard>
-        </v-container>
+    <v-container style="display: flex; flex-direction: column; align-items: center">
+      <Topic v-for="i in colors.length" v-bind:key="i"
+             :texts="texts" :color="colors[i - 1]"></Topic>
     </v-container>
   </div>
 </template>
@@ -13,16 +12,17 @@
 
 import APIHelper from '@/api/apihelper';
 import PageLoader from '@/components/PageLoader.vue';
-import TextCard from '@/components/TextChoose/TextCard.vue';
+import Topic from '@/components/TextChoose/Topic.vue';
 
 export default {
   name: 'TextChoose',
 
-  components: { PageLoader, TextCard },
+  components: { Topic, PageLoader },
 
   data: () => ({
     loading: true,
     texts: null,
+    colors: ['red', 'green', 'orange', 'cyan', 'magenta', 'yellow'],
   }),
 
   mounted() {
