@@ -58,6 +58,7 @@ export default {
 </script>
 
 <style scoped>
+
 .bg-red {
   background-color: rgba(255, 30, 0, 0.05);
 }
