@@ -25,12 +25,11 @@ import TextCard from '@/components/TextChoose/TextCard.vue';
 
 export default {
   name: 'Topic',
-  props: ['texts', 'color'],
+  props: ['texts', 'color', 'topic'],
   components: { TextCard },
 
   data: () => ({
     inRow: 4,
-    topic: null,
   }),
 
   created() {
@@ -45,13 +44,6 @@ export default {
   methods: {
     resizeHandler() {
       this.inRow = window.innerWidth < 1250 ? 2 : 4;
-    },
-  },
-  watch: {
-    texts() {
-      if (this.texts && this.texts.length > 0) {
-        this.topic = String(this.texts[0].topic);
-      }
     },
   },
 };
