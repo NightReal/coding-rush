@@ -2,9 +2,11 @@
   <div>
     <page-loader :loading="loading"></page-loader>
     <v-container style="display: flex; flex-direction: column; align-items: center">
-      <Topic v-for="i in colors.length" v-bind:key="i"
-             :texts="texts" :color="colors[i - 1]"></Topic>
+      <Topic v-for="(texts, topic, i) in texts" v-bind:key="topic"
+             :texts="texts" :color="colors[i % colors.length]"
+             :topic="topic"></Topic>
     </v-container>
+    <Topic></Topic>
   </div>
 </template>
 
@@ -21,12 +23,12 @@ export default {
 
   data: () => ({
     loading: true,
-    texts: null,
+    texts: [],
     colors: ['red', 'green', 'orange', 'cyan', 'magenta', 'yellow'],
   }),
 
   mounted() {
-    APIHelper.get('/snippets')
+    APIHelper.get('/lessons')
       .then((res) => {
         this.parse_data(res.data);
         this.loading = false;
@@ -34,7 +36,16 @@ export default {
   },
   methods: {
     parse_data(data) {
-      this.texts = data;
+      const dt = {};
+      for (let i = 0; i < data.length; i += 1) {
+        const el = data[i];
+        if (el.topic in dt) {
+          dt[el.topic].push(el);
+        } else {
+          dt[el.topic] = [el];
+        }
+      }
+      this.texts = dt;
     },
   },
 };

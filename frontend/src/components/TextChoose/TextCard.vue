@@ -2,7 +2,7 @@
   <v-container class="pa-0 ma-4">
     <v-hover v-slot="{ hover }" v-if="!hide">
       <v-card width="220px" height="220px" class="text-card"
-              :style="`padding: 15px; background-color: ${hover ? 'rgba(255, 255, 255, 0.8)' :
+              :style="`padding: 15px; background-color: ${hover ? 'rgba(255, 255, 255, 0.85)' :
                                                                   'rgba(255, 255, 255, 1)'}`"
               :elevation="hover ? 7 : 3" @click="$router.push(`/text/${text.id}`)">
         <div style="width: 100%; display: flex; flex-direction: column; align-items: center;
