@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import TextChooseView from '@/views/TextChooseView.vue';
 import HomeView from '../views/HomeView.vue';
 import MainView from '../views/MainView.vue';
 import LoginView from '../views/LoginView.vue';
@@ -26,6 +27,14 @@ const routes = [
     path: '/editor',
     name: 'Editor',
     component: EditorView,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/texts',
+    name: 'Text Choose',
+    component: TextChooseView,
     meta: {
       requiresAuth: true,
     },
