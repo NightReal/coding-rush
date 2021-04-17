@@ -2,8 +2,6 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 // eslint-disable-next-line import/no-cycle
 import store from '../store';
-// eslint-disable-next-line import/no-cycle
-import router from '../router';
 
 const APIHelper = axios.create({
   headers: {
@@ -22,24 +20,27 @@ const requestInterceptor = (request) => {
 };
 
 const errorInterceptor = (error) => {
-  if (error.config && error.response && error.response.status === 401
-    && store.getters.isAuthenticated) {
-    return store.dispatch('refresh')
-      .then(() => {
-        const originalRequest = error.config;
-        originalRequest.headers.Authorization = `Bearer ${store.state.accessToken}`;
-        return APIHelper.request(originalRequest);
-      });
+  if (error.response.status !== 401 || !store.getters.isAuthenticated) {
+    return Promise.reject(error);
   }
-  if (error.config && error.response && error.response.status === 403
-    && store.getters.isAuthenticated) {
-    // here we got hacked or refresh expired or we got invalid login.
-    store.dispatch('logout');
-    router.push('/login');
-  }
-  return new Promise(((resolve, reject) => {
-    reject(error);
-  }));
+
+  return store.dispatch('refresh')
+    .then(() => {
+      const originalRequest = error.config;
+      originalRequest.headers.Authorization = `Bearer ${store.state.accessToken}`;
+
+      return new Promise(((resolve, reject) => {
+        APIHelper.request(originalRequest)
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((err) => {
+            store.dispatch('logout');
+            reject(err);
+          });
+      }));
+    })
+    .catch(() => Promise.reject(error));
 };
 
 APIHelper.interceptors.request.use(

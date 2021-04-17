@@ -109,7 +109,9 @@ export default {
         this.process_stats();
         this.loading = false;
       })
-      .catch(() => false);
+      .catch(() => {
+        this.$router.push('/404');
+      });
   },
 };
 
