@@ -47,27 +47,35 @@ export default new Vuex.Store({
     },
     refresh(context) {
       context.commit('destroyAccess');
+
       return new Promise(((resolve, reject) => {
         APIHelper.post('/account/token/refresh/', {
           refresh: context.state.refreshToken,
         })
           .then((response) => {
             context.commit('updateAccess', response.data.access);
-            return resolve();
+            resolve();
           })
-          .catch((err) => reject(err));
+          .catch((err) => {
+            reject(err);
+          });
       }));
     },
+
     getUser(context) {
       return new Promise(((resolve, reject) => {
         APIHelper('/account/getme/')
-          .then((response) => {
-            context.commit('updateUser', response.data);
-            return resolve();
+          .then((response) => response.data)
+          .catch((err) => {
+            reject(err);
           })
-          .catch((err) => reject(err));
+          .then((data) => {
+            context.commit('updateUser', data);
+            resolve();
+          });
       }));
     },
+
     login(context, credentials) {
       return new Promise(((resolve, reject) => {
         APIHelper.post('/account/token/', {

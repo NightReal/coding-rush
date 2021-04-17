@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     showSmthWrong(err) {
-      if (err.response.status === 401) {
+      if (err.response && err.response.status === 401) {
         this.errorMessage = 'Incorrect username or password.';
       } else {
         this.errorMessage = 'Something went wrong.';

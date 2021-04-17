@@ -6,7 +6,7 @@ import MainView from '../views/MainView.vue';
 import LoginView from '../views/LoginView.vue';
 import EditorView from '../views/EditorView.vue';
 import ProfileView from '../views/ProfileView.vue';
-// eslint-disable-next-line import/no-cycle
+import NotFoundView from '../views/404.vue';
 import store from '../store/index';
 
 Vue.use(VueRouter);
@@ -55,6 +55,15 @@ const routes = [
     path: '/profile/:username',
     name: 'Profile',
     component: ProfileView,
+  },
+  {
+    path: '/404',
+    component: NotFoundView,
+  },
+  {
+    path: '*',
+    redirect: '/404'
+    ,
   },
 ];
 

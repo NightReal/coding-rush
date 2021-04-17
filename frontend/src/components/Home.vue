@@ -12,7 +12,10 @@
 export default {
   name: 'Main',
   beforeMount() {
-    this.$store.dispatch('getUser');
+    this.$store.dispatch('getUser')
+      .catch(() => {
+        this.$router.push('/login');
+      });
   },
 };
 </script>
