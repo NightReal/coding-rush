@@ -1,15 +1,20 @@
 <template>
   <v-container class="pa-0 ma-4">
-    <v-hover v-slot="{ hover }" v-if="!hide"
-             style="display:flex; flex-direction:column; justify-content: space-between">
+    <v-hover v-slot="{ hover }" v-if="!hide">
       <v-card width="220px" height="220px" class="text-card px-1 pt-3 pb-1"
+              style="display:flex; flex-direction:column; justify-content: space-between"
               :style="`background-color: ${hover ? 'rgba(255, 255, 255, 0.85)' :
                                                    'rgba(255, 255, 255, 1)'}`"
               :elevation="hover ? 7 : 3">
-        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;
-                  font-size: 1.3rem; text-align: center; justify-content: space-between;
-                  font-family: monospace; font-style: normal; overflow-wrap: anywhere;">
-          {{ text.title }}
+        <div style="background-color: #8b8b8b; color: white; position:absolute;
+                    border-radius: 3px; padding: 2px 8px 2px 8px; font-size: 0.75rem; top: -14px;
+                    align-self: flex-end; right: 10px; font-family: monospace">
+          <b>Difficulty: {{ text.difficulty }}</b>
+        </div>
+        <div style="width: 100%; text-align: center;">
+          <div style="font-size: 1.3rem; font-family: monospace; font-style: normal;
+                            overflow-wrap: anywhere;">{{ text.title }}
+          </div>
         </div>
         <div style="display: flex">
           <template v-for="(lang, i) in text.codes">
@@ -48,5 +53,9 @@ export default {
 </script>
 
 <style scoped>
+
+.v-tooltip__content {
+  padding: 1px 8px !important;
+}
 
 </style>
