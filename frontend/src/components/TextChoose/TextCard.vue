@@ -3,7 +3,7 @@
     <v-hover v-slot="{ hover }" v-if="!hide">
       <v-card width="220px" height="220px" class="text-card px-1 pt-3 pb-1"
               style="display:flex; flex-direction:column; justify-content: space-between"
-              :style="`background-color: ${hover ? '#2b2b2b' :'#fff'};
+              :style="`background-color: ${hover ? '#4f4f4f' :'#fff'};
                                   color: ${hover ? '#fff' : '#000'}`"
               :elevation="hover ? 10 : 3">
         <div style="background-color: #8b8b8b; color: white; position:absolute;
