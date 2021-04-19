@@ -48,7 +48,8 @@ export default {
 
   methods: {
     go_type(lang) {
-      this.$router.push({ path: `/text/${this.text.id}`, params: { language: lang } });
+      this.$store.commit('updateLastUsedLanguage', lang);
+      this.$router.push(`/text/${this.text.id}`);
     },
   },
 };

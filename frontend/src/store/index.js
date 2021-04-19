@@ -10,9 +10,11 @@ export default new Vuex.Store({
     accessToken: localStorage.getItem('accessToken') || null,
     refreshToken: localStorage.getItem('refreshToken') || null,
     user: {},
+    lastUsedLanguage: localStorage.getItem('lastUsedLanguage') || 'c++',
   },
   getters: {
     isAuthenticated: (state) => state.accessToken != null,
+    lastUsedLanguage: (state) => state.lastUsedLanguage,
   },
   mutations: {
     destroyToken(state) {
@@ -38,6 +40,10 @@ export default new Vuex.Store({
     },
     updateUser(state, user) {
       state.user = user;
+    },
+    updateLastUsedLanguage(state, lang) {
+      localStorage.setItem('lastUsedLanguage', lang);
+      state.lastUsedLanguage = lang;
     },
   },
   actions: {
