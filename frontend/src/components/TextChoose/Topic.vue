@@ -4,7 +4,8 @@
     <h1>{{ topic }}</h1>
     <div style="display: flex; justify-content: center">
       <v-container style="display: inline-block; width: auto; border-radius: 10px;
-                          padding: 12px !important;"
+                          padding: 12px !important; border-width: 1px; border-color: #dedede;
+                          border-style: solid"
                    :class="`ma-0 bg-${color}`">
         <v-container v-for="row in Math.ceil(texts.length / inRow)" v-bind:key="row"
                      style="display: flex; flex-direction: row; justify-content: center;"

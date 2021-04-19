@@ -41,7 +41,7 @@ export default {
         {
           text: 'Typing',
           icon: 'mdi-keyboard',
-          path: '/editor',
+          path: '/texts',
           activating: true,
           function: (item) => this.goto(item),
         },
