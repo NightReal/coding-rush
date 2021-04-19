@@ -6,7 +6,6 @@
              :texts="texts" :color="colors[i % colors.length]"
              :topic="topic"></Topic>
     </v-container>
-    <Topic></Topic>
   </div>
 </template>
 
