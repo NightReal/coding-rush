@@ -42,10 +42,8 @@ class GetAllLessonsView(views.APIView):
     def get(self, request, *args, **kwargs):
         user = request.user
         # see above
-        # seems like it is NOT optimal here because it executes 1 query of lessons code for each lesson
-        # may be it should work with select_related() but I don't understand it quite yet
         prefetch = Prefetch('attempts', queryset=Attempt.objects.filter(user_id=user.id).order_by('lesson_id', '-score').distinct('lesson_id'),
                             to_attr='best_user_attempt')
-        lesson = Lesson.objects.prefetch_related(prefetch) .all()
+        lesson = Lesson.objects.prefetch_related(prefetch).prefetch_related('codes').all()
         serializer = LessonListSerializer(lesson, many=True)
         return response.Response(serializer.data)
