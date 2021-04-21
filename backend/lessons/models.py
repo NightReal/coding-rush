@@ -46,4 +46,4 @@ class Attempt(models.Model):
     )
     user = models.ForeignKey(CodingrushAccount, on_delete=models.CASCADE, related_name='attempts')
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='attempts')
-    code = models.ForeignKey(Code, on_delete=models.CASCADE, related_name='attempts')
+    code_language = models.CharField(choices=LANGUAGES_CHOICES, default='python', max_length=10)

@@ -7,11 +7,10 @@ from .models import (
 
 
 class AttemptSerializer(serializers.ModelSerializer):
-    code = serializers.SlugRelatedField(slug_field='language', read_only=True)
-
+    # TODO: validator for code_language existence for future write-ability
     class Meta:
         model = Attempt
-        fields = ('id', 'score', 'speed', 'accuracy', 'code')
+        fields = ('id', 'score', 'speed', 'accuracy', 'code_language')
         read_only_fields = fields
 
 
@@ -34,9 +33,9 @@ class LessonSerializer(serializers.ModelSerializer):
 
 class LessonListSerializer(serializers.ModelSerializer):
     codes = serializers.SlugRelatedField(many=True, read_only=True, slug_field='language')
-    best_lesson = AttemptSerializer(many=False, read_only=True)
+    best_attempt = AttemptSerializer(many=True, read_only=True, source='best_user_attempt', required=False)
 
     class Meta:
         model = Lesson
-        fields = ('id', 'title', 'topic', 'difficulty', 'codes', 'best_lesson')
+        fields = ('id', 'title', 'topic', 'difficulty', 'codes', 'best_attempt')
         read_only_fields = fields

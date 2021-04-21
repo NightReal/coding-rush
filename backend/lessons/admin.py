@@ -23,7 +23,7 @@ admin.site.register(Code, CodeAdmin)
 
 
 class AttemptAdmin(admin.ModelAdmin):
-    fields = ['score', 'speed', 'accuracy', 'user', 'lesson', 'code']
+    fields = ['score', 'speed', 'accuracy', 'user', 'lesson', 'code_language']
 
 
 admin.site.register(Attempt, AttemptAdmin)
