@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import (
     Lesson,
     Code,
+    Attempt,
 )
 
 
@@ -19,3 +20,10 @@ class CodeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Code, CodeAdmin)
+
+
+class AttemptAdmin(admin.ModelAdmin):
+    fields = ['score', 'speed', 'accuracy', 'user', 'lesson', 'code']
+
+
+admin.site.register(Attempt, AttemptAdmin)

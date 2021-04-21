@@ -1,4 +1,8 @@
 from django.db import models
+from accounts.models import (
+    CodingrushAccount,
+)
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
@@ -27,3 +31,19 @@ class Code(models.Model):
 
     def __str__(self):
         return f"{self.lesson} - {self.language}"
+
+
+class Attempt(models.Model):
+    id = models.AutoField(primary_key=True)
+    score = models.IntegerField(
+        default=1,
+        validators=[MaxValueValidator(100), MinValueValidator(1)]
+    )
+    speed = models.IntegerField(default=0)
+    accuracy = models.FloatField(
+        default=0,
+        validators=[MaxValueValidator(100), MinValueValidator(0)]
+    )
+    user = models.ForeignKey(CodingrushAccount, on_delete=models.CASCADE, related_name='attempts')
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='attempts')
+    code = models.ForeignKey(Code, on_delete=models.CASCADE, related_name='attempts')
