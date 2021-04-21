@@ -36,7 +36,16 @@ class GetLessonView(views.APIView):
         return response.Response(serializer.data)
 
 
-class GetAllLessonsView(generics.ListAPIView):
-    queryset = Lesson.objects.all()
-    serializer_class = LessonListSerializer
-    permission_classes = [permissions.AllowAny, ]
+class GetAllLessonsView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        # see above
+        # seems like it is NOT optimal here because it executes 1 query of lessons code for each lesson
+        # may be it should work with select_related() but I don't understand it quite yet
+        prefetch = Prefetch('attempts', queryset=Attempt.objects.filter(user_id=user.id).order_by('lesson_id', '-score').distinct('lesson_id'),
+                            to_attr='best_user_attempt')
+        lesson = Lesson.objects.prefetch_related(prefetch) .all()
+        serializer = LessonListSerializer(lesson, many=True)
+        return response.Response(serializer.data)
