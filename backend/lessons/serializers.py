@@ -33,7 +33,7 @@ class LessonSerializer(serializers.ModelSerializer):
 
 class LessonListSerializer(serializers.ModelSerializer):
     codes = serializers.SlugRelatedField(many=True, read_only=True, slug_field='language')
-    best_attempt = AttemptSerializer(many=True, read_only=True, source='best_user_attempt', required=False)
+    best_attempt = AttemptSerializer(many=False, read_only=True, source='best_user_attempt', required=False)
 
     class Meta:
         model = Lesson
