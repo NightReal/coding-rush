@@ -36,7 +36,7 @@
 
 <script>
 
-import langColors from '@/components/TextChoose/LangColors';
+import { langColors, changeLanguage } from '@/components/TextChoose/Languages';
 
 export default {
   name: 'TextCard',
@@ -51,7 +51,7 @@ export default {
   methods: {
     go_type(lang) {
       if (lang) {
-        this.$store.commit('updateLastUsedLanguage', lang);
+        changeLanguage(lang);
       }
       this.$router.push(`/text/${this.text.id}`);
     },

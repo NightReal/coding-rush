@@ -4,7 +4,7 @@
     <div>text id: {{ textid }}</div>
     <div>language: {{ lang }}</div>
     <div>{{ codes }}</div>
-    <DropDownMenu v-if="codes"
+    <DropDownMenu v-if="!loading"
                   :text="lang" min-width="100px" :color="lang_colors[lang]"
                   :items="Object.keys(codes)"
                   :on_change="changeLang"
@@ -16,7 +16,7 @@
 
 import PageLoader from '@/components/PageLoader.vue';
 import APIHelper from '@/api/apihelper';
-import langColors from '@/components/TextChoose/LangColors';
+import { langColors, changeLanguage } from '@/components/TextChoose/Languages';
 import DropDownMenu from '@/components/DropDownMenu.vue';
 
 export default {
@@ -50,6 +50,10 @@ export default {
         for (const code of e.data.codes) {
           this.codes[code.language] = code.code;
         }
+        if (this.codes[this.lang] === undefined) {
+          this.lang = e.data.codes[0].language;
+          changeLanguage(this.lang);
+        }
         this.loading = false;
       })
       .catch(() => {
@@ -59,7 +63,7 @@ export default {
 
   methods: {
     changeLang(lang) {
-      this.$store.commit('updateLastUsedLanguage', lang);
+      changeLanguage(lang);
       this.lang = lang;
     },
     go_type(lang) {
