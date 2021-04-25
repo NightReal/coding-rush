@@ -1,7 +1,7 @@
 <template>
   <v-container class="pa-0 mt-8">
     <TextDescription :textid="$route.params.textid"
-                     :lang="$store.getters.lastUsedLanguage"/>
+                     :default_lang="$store.getters.lastUsedLanguage"/>
   </v-container>
 </template>
 
