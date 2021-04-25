@@ -5,7 +5,7 @@
               style="display:flex; flex-direction:column; justify-content: space-between"
               :style="`background-color: ${hover ? '#4f4f4f' :'#fff'};
                                   color: ${hover ? '#fff' : '#000'}`"
-              :elevation="hover ? 10 : 3">
+              :elevation="hover ? 10 : 3" @click="go_type()" :ripple="false">
         <div style="background-color: #8b8b8b; color: white; position:absolute;
                     border-radius: 3px; padding: 2px 8px 2px 8px; font-size: 0.75rem; top: -10px;
                     align-self: flex-end; right: 10px; font-family: monospace">
@@ -50,7 +50,9 @@ export default {
 
   methods: {
     go_type(lang) {
-      this.$store.commit('updateLastUsedLanguage', lang);
+      if (lang) {
+        this.$store.commit('updateLastUsedLanguage', lang);
+      }
       this.$router.push(`/text/${this.text.id}`);
     },
   },
