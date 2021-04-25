@@ -35,20 +35,23 @@
 </template>
 
 <script>
+
+import langColors from '@/components/TextChoose/LangColors';
+
 export default {
   name: 'TextCard',
   props: ['text', 'hide'],
 
   data: () => ({
-    // eslint-disable-next-line quote-props
-    lang_colors: { 'python': 'yellow', 'c++': '#68d2ff', 'java': '#ff7575' },
+    lang_colors: langColors,
     cardWidth: '250px',
     cardHeight: '230px',
   }),
 
   methods: {
     go_type(lang) {
-      this.$router.push({ path: `/text/${this.text.id}`, params: { language: lang } });
+      this.$store.commit('updateLastUsedLanguage', lang);
+      this.$router.push(`/text/${this.text.id}`);
     },
   },
 };
