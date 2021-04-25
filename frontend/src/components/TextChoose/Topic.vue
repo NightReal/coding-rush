@@ -1,7 +1,7 @@
 <template>
   <div v-if="texts && texts.length > 0"
        :style="`min-width: ${inRow === 4 ? 1250 : 750}px`" class="mb-16">
-    <h1>{{ topic }}</h1>
+    <h1 :class="inRow === 4 ? '' : 'ml-16'">{{ topic }}</h1>
     <div style="display: flex; justify-content: center">
       <v-container style="display: inline-block; width: auto; border-radius: 10px;
                           padding: 12px !important; border-width: 1px; border-color: #dedede;
