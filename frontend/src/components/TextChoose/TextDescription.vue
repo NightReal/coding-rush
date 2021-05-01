@@ -1,14 +1,28 @@
 <template>
   <div>
     <page-loader :loading="loading"></page-loader>
-    <div>text id: {{ textid }}</div>
-    <div>language: {{ lang }}</div>
-    <div>{{ codes }}</div>
-    <DropDownMenu v-if="!loading"
-                  :text="lang" min-width="100px" :color="lang_colors[lang]"
-                  :items="Object.keys(codes)"
-                  :on_change="changeLang"
-                  :on_click="go_type"></DropDownMenu>
+    <div style="display: flex; flex-direction: column; align-items: center">
+      <v-card style="display: flex; justify-content: center; width: 60vw; height: 20vh;
+                     align-items: center">
+        <a href="" style="height: 18vh">
+          <img style="height: 18vh" src=""/>
+        </a>
+      </v-card>
+      <div style="display: flex; flex-direction: column; width: 50vw; margin-top: 30px">
+        <div style="display: flex; justify-content: space-between; align-items: center;
+                    margin-bottom: 30px">
+          <h1 class="mr-3" v-if="topic || title">
+            {{ topic }}<span style="word-spacing: 1rem"> — </span>{{ title }}
+          </h1>
+          <DropDownMenu v-if="!loading"
+                        :text="lang" min-width="100px" :color="lang_colors[lang]"
+                        :items="Object.keys(codes)"
+                        :on_change="changeLang"
+                        :on_click="go_type" tooltip-text="Start typing!"></DropDownMenu>
+        </div>
+        <div v-html="description"></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -34,6 +48,7 @@ export default {
     topic: null,
     title: null,
     difficulty: null,
+    attempts: null,
     lang_colors: langColors,
   }),
 
@@ -45,6 +60,7 @@ export default {
         this.topic = e.data.topic;
         this.title = e.data.title;
         this.difficulty = e.data.difficulty;
+        this.attempts = e.data.attempts;
         this.codes = {};
         // eslint-disable-next-line no-restricted-syntax
         for (const code of e.data.codes) {
