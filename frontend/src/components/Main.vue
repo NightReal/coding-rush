@@ -1,7 +1,7 @@
 <template>
   <v-container class="pa-0 ma-0">
     <v-sheet id="big-header" class="pa-0 ma-0" elevation="4" color="primary" dark>
-      <a href="/" id="header-title"><img alt="Coding Rush"
+      <a href="" id="header-title"><img alt="Coding Rush"
                                          src="@/assets/text-light-930x160.png"/></a>
       <v-container id="header-content" class="pa-0 ma-0">
         <v-container id="header-texts" class="pa-0 ma-0 mb-16 ml-16">
