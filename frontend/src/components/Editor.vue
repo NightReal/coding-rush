@@ -133,4 +133,8 @@ export default {
 .greenbg .CodeMirror, .greenbg .CodeMirror-gutter {
   background-color: #005a00 !important;
 }
+
+.CodeMirror {
+  height: 65vh;
+}
 </style>
