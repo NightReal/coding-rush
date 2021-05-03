@@ -6,60 +6,131 @@
       </v-col>
       <v-col cols="2">
         <v-btn min-width="90px" color="primary" dark @click="switchTyping()">
-          {{ typing ? 'Stop' : 'Start' }}
+          {{ typing ? "Stop" : "Start" }}
         </v-btn>
       </v-col>
     </v-row>
-    <v-row>
-      <v-textarea id="editor" outlined rounded v-model="code" ref="editor"
-                  @input="compareCode()"></v-textarea>
-      <v-textarea :readonly="typing" id="target" outlined rounded v-model="textb"/>
+    <v-row justify="space-between">
+      <v-container style="width: 50%">
+        <textarea ref="editor"></textarea>
+      </v-container>
+      <v-container style="width: 50%">
+        <textarea ref="target"></textarea>
+      </v-container>
     </v-row>
     <p>
-      {{ getCPM() + ' CPM' }}
+      {{ cpm + " CPM" }}
     </p>
   </v-container>
 </template>
 
 <script>
+import CodeMirror from 'codemirror';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/monokai.css';
+import 'codemirror/mode/clike/clike';
+
 export default {
   name: 'Editor',
-  props: ['textNameProp', 'textProp'],
+  props: ['textNameProp', 'targetTextProp'],
   data() {
     return {
-      textb: this.textProp,
+      targetText: this.targetTextProp,
       textName: this.textNameProp,
       typing: false,
-      code: '',
-      typingTimer: 0,
+      startTime: 0,
+      cpm: 0,
+      mark: null,
     };
   },
   methods: {
-    compareCode() {
-      if (!this.typing && this.code !== '') {
-        this.typing = true;
-        this.typingTimer = new Date();
-      }
-      if (this.code === this.textb) {
-        this.typing = false;
-        clearInterval(this.typingTimer);
-      }
-    },
     switchTyping() {
-      this.typing = !this.typing;
-      if (this.typing) {
-        this.$refs.editor.focus();
-        this.typingTimer = new Date();
+      if (!this.typing) {
+        this.editor.setValue('');
+        this.editor.focus();
+        this.startTime = new Date();
       }
-      this.code = '';
+      this.typing = !this.typing;
     },
-    getCPM() {
-      return Math.round((this.code.length * 1000 * 60) / (new Date() - this.typingTimer), 2);
+    onChange() {
+      if (!this.typing) {
+        this.typing = true;
+        this.startTime = new Date();
+      }
+      const lcp = this.getLCP(this.editor.getValue(), this.target.getValue());
+      this.updateCPM(lcp);
+      this.updateMark();
+      if (this.editor.getValue() === this.target.getValue()) {
+        this.typing = false;
+      }
     },
+    getLCP(s1, s2) {
+      let ans = 0;
+      while (ans < s1.length && ans < s2.length && s1[ans] === s2[ans]) {
+        ans += 1;
+      }
+      return ans;
+    },
+    getLineCh(n) {
+      let curLine = 0;
+      let curPos = 0;
+      const code = this.editor.getValue();
+      for (let i = 0; i < n; i += 1) {
+        if (code[i] === '\n') {
+          curLine += 1;
+          curPos = 0;
+        } else {
+          curPos += 1;
+        }
+      }
+      return { line: curLine, ch: curPos };
+    },
+    updateMark() {
+      if (this.mark !== null) {
+        this.mark.clear();
+      }
+      const length = this.getLCP(this.editor.getValue(), this.target.getValue());
+      this.mark = this.editor.markText(this.getLineCh(length),
+        this.getLineCh(this.editor.getValue().length),
+        { className: 'redbg' });
+      if (this.editor.getValue() === this.target.getValue()) {
+        this.mark.clear();
+        this.mark = this.editor.markText(
+          this.getLineCh(0),
+          this.getLineCh(this.editor.getValue().length),
+          { className: 'greenbg' },
+        );
+      }
+    },
+    updateCPM(lcp) {
+      this.cpm = (lcp * 1000 * 60) / (new Date() - this.startTime);
+    },
+  },
+  mounted() {
+    const cmOptions = {
+      mode: 'text/x-c++src',
+      theme: 'monokai',
+      tabSize: 4,
+      indentWithTabs: true, // change to false in case we switch to spaces again
+      smartIndent: true,
+      indentUnit: 4,
+      lineNumbers: true,
+    };
+    this.editor = CodeMirror.fromTextArea(this.$refs.editor, cmOptions);
+    this.editor.on('change', this.onChange);
+    cmOptions.readOnly = true;
+    this.target = CodeMirror.fromTextArea(this.$refs.target, cmOptions);
+    this.target.setValue(this.targetText);
   },
 };
 </script>
 
-<style scoped>
+<style>
+.redbg {
+  background-color: rgb(160, 31, 31);
+}
 
+.greenbg {
+  background-color: green;
+}
 </style>
