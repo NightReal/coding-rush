@@ -47,3 +47,5 @@ class Attempt(models.Model):
     user = models.ForeignKey(CodingrushAccount, on_delete=models.CASCADE, related_name='attempts')
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='attempts')
     code_language = models.CharField(choices=LANGUAGES_CHOICES, default='python', max_length=10)
+    date = models.DateTimeField(auto_now=True)
+    duration = models.IntegerField(default=1)  # duration of attempt in seconds
