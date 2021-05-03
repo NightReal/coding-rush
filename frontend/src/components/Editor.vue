@@ -11,7 +11,9 @@
       </v-col>
     </v-row>
     <v-row justify="space-between">
-      <v-container style="width: 50%">
+      <v-container
+        style="width: 50%"
+        :class="editorClass">
         <textarea ref="editor"></textarea>
       </v-container>
       <v-container style="width: 50%">
@@ -41,6 +43,7 @@ export default {
       startTime: 0,
       cpm: 0,
       mark: null,
+      editorClass: '',
     };
   },
   methods: {
@@ -94,12 +97,9 @@ export default {
         this.getLineCh(this.editor.getValue().length),
         { className: 'redbg' });
       if (this.editor.getValue() === this.target.getValue()) {
-        this.mark.clear();
-        this.mark = this.editor.markText(
-          this.getLineCh(0),
-          this.getLineCh(this.editor.getValue().length),
-          { className: 'greenbg' },
-        );
+        this.editorClass = 'greenbg';
+      } else {
+        this.editorClass = '';
       }
     },
     updateCPM(lcp) {
@@ -130,7 +130,7 @@ export default {
   background-color: rgb(160, 31, 31);
 }
 
-.greenbg {
-  background-color: green;
+.greenbg > .CodeMirror {
+  background-color: green !important;
 }
 </style>
