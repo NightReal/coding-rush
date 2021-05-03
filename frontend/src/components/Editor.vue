@@ -44,6 +44,7 @@ export default {
       cpm: 0,
       mark: null,
       editorClass: '',
+      cursorDefaul: null,
     };
   },
   methods: {
@@ -66,6 +67,19 @@ export default {
       if (this.editor.getValue() === this.target.getValue()) {
         this.typing = false;
       }
+      this.scrollIntoMiddle();
+    },
+    scrollIntoMiddle() {
+      const cursorPos = this.editor.cursorCoords(false, 'local');
+      const defPos = this.editor.cursorCoords({ line: 0, ch: 0 }, 'local');
+      const winInfo = this.editor.getScrollInfo();
+      this.editor.scrollTo(null, (cursorPos.top - defPos.top) - winInfo.clientHeight / 2);
+      const cursorPos2 = this.editor.cursorCoords(false, 'local');
+      const winInfo2 = this.editor.getScrollInfo();
+      console.log(winInfo2.left,
+        winInfo2.top, cursorPos2.bottom - cursorPos2.top);
+      this.target.scrollTo(winInfo2.left,
+        winInfo2.top + cursorPos2.bottom - cursorPos2.top);
     },
     getLCP(s1, s2) {
       let ans = 0;
@@ -114,7 +128,7 @@ export default {
       indentWithTabs: true, // change to false in case we switch to spaces again
       smartIndent: true,
       indentUnit: 4,
-      lineNumbers: true,
+      // lineNumbers: true,
     };
     this.editor = CodeMirror.fromTextArea(this.$refs.editor, cmOptions);
     this.editor.on('change', this.onChange);
