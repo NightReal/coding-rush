@@ -127,10 +127,10 @@ export default {
 
 <style>
 .redbg {
-  background-color: rgb(160, 31, 31);
+  background-color: #a01f1f;
 }
 
-.greenbg > .CodeMirror {
-  background-color: green !important;
+.greenbg .CodeMirror, .greenbg .CodeMirror-gutter {
+  background-color: #005a00 !important;
 }
 </style>
