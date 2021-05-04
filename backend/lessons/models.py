@@ -36,8 +36,8 @@ class Code(models.Model):
 class Attempt(models.Model):
     id = models.AutoField(primary_key=True)
     score = models.IntegerField(
-        default=1,
-        validators=[MaxValueValidator(100), MinValueValidator(1)]
+        default=0,
+        validators=[MaxValueValidator(100), MinValueValidator(0)]
     )
     speed = models.IntegerField(default=0)
     accuracy = models.FloatField(
