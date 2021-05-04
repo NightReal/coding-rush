@@ -29,7 +29,7 @@ class GetLessonView(views.APIView):
         lesson = Lesson.objects.filter(id=pk).first()
         if lesson is None:
             return response.Response(status=status.HTTP_404_NOT_FOUND)
-        lesson.cur_user_attempts = Attempt.objects.filter(user_id=user.id, lesson_id=pk)
+        lesson.cur_user_attempts = Attempt.objects.filter(user_id=user.id, lesson_id=pk).order_by('-id')
         serializer = LessonSerializer(lesson, read_only=True)
         return response.Response(serializer.data)
 
@@ -39,7 +39,7 @@ class GetAllLessonsView(views.APIView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
-        prefetch = Prefetch('attempts', queryset=Attempt.objects.filter(user_id=user.id).order_by('-score'))
+        prefetch = Prefetch('attempts', queryset=Attempt.objects.filter(user_id=user.id).order_by('-score', '-id'))
         lessons = Lesson.objects.prefetch_related(prefetch).prefetch_related('codes')
         for lesson in lessons:
             best = lesson.attempts.first()
