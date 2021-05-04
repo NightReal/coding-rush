@@ -40,7 +40,7 @@ export default {
     },
   },
   methods: {
-    deselectItem() { // ooof zhestokiy kostyl (idk how to do in normally)
+    deselectItem() { // ooof zhestokiy kostyl (idk how to do it normally)
       if (this.selectedItem === null) this.selectedItem = undefined;
       else this.selectedItem = null;
     },
