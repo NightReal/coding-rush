@@ -3,9 +3,9 @@
     <template v-slot:activator="scope">
       <v-card class="pa-0 ma-0" style="width: auto">
         <v-menu
-            offset-y
-            class="pa-0 ma-0"
-            transition="slide-y-transition"
+          offset-y
+          class="pa-0 ma-0"
+          transition="slide-y-transition"
         >
           <template v-slot:activator="{ attrs, on }">
             <div style="display: flex">
@@ -24,9 +24,9 @@
 
           <v-list class="pa-0 ma-0">
             <v-list-item
-                v-for="item in items"
-                :key="item"
-                @click="on_change(item)"
+              v-for="item in items"
+              :key="item"
+              @click="on_change(item)"
             >
               <v-list-item-title v-text="item" style="font-size: 0.9rem"
                                  class="text-capitalize"></v-list-item-title>
@@ -41,6 +41,9 @@
 </template>
 
 <script>
+
+import '@/components/tooltip.css';
+
 export default {
   name: 'DropDownMenu',
   props: ['text', 'minWidth', 'color', 'items', 'on_change', 'on_click', 'tooltipText'],
@@ -53,13 +56,5 @@ export default {
 </script>
 
 <style scoped>
-
-.v-tooltip__content {
-  background-color: #616161 !important;
-}
-
-.v-tooltip__content.menuable__content__active {
-  opacity: 0.9 !important;
-}
 
 </style>

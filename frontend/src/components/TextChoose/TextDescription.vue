@@ -3,7 +3,7 @@
     <page-loader :loading="loading"></page-loader>
     <div style="display: flex; flex-direction: column; align-items: center">
       <v-card style="display: flex; justify-content: center; width: 60vw; height: 20vh;
-                     align-items: center">
+                     align-items: center" rounded="lg" elevation="3">
         <a href="" style="height: 18vh">
           <img style="height: 18vh" src=""/>
         </a>
@@ -22,6 +22,7 @@
         </div>
         <div v-html="description"></div>
       </div>
+      <AttemptsList :attempts="attempts"></AttemptsList>
     </div>
   </div>
 </template>
@@ -32,13 +33,14 @@ import PageLoader from '@/components/PageLoader.vue';
 import APIHelper from '@/api/apihelper';
 import { langColors, changeLanguage } from '@/components/TextChoose/Languages';
 import DropDownMenu from '@/components/DropDownMenu.vue';
+import AttemptsList from '@/components/TextChoose/AttemptsList.vue';
 
 export default {
   name: 'TextChoose',
 
   props: ['textid', 'default_lang'],
 
-  components: { DropDownMenu, PageLoader },
+  components: { AttemptsList, DropDownMenu, PageLoader },
 
   data: () => ({
     lang: null,
