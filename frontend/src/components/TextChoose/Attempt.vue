@@ -112,9 +112,7 @@ export default {
   }),
 
   mounted() {
-    const a = 2 ** Math.floor(Math.random() ** 0.3333 * 21);
-    const date = new Date(Date.now() - 60000 * a); // this.attempt.date
-    this.attempt.duration = 100; //
+    const date = new Date(this.attempt.date);
     this.date = formatDate(date);
     this.speed = this.attempt.speed;
     this.accuracy = Math.floor(this.attempt.accuracy);

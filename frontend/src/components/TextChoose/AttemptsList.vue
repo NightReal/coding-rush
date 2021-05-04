@@ -4,15 +4,15 @@
     <v-card style="display: flex; flex-direction: column; align-items: center;"
             elevation="3" rounded="lg" class="pt-4 pb-2">
       <div style="display: flex; align-items: center; width: 60vw; padding: 0 2vw" class="pb-1">
-        <div class="attempt-title" style="flex-grow: 2"> Date </div>
-        <div class="attempt-title" style="flex-grow: 2"> Stars </div>
-        <div class="attempt-title"> Score </div>
-        <div class="attempt-title"> Speed </div>
-        <div class="attempt-title"> Accuracy </div>
-        <div class="attempt-title"> Duration </div>
+        <div class="attempt-title" style="flex-grow: 2">Date</div>
+        <div class="attempt-title" style="flex-grow: 2">Stars</div>
+        <div class="attempt-title">Score</div>
+        <div class="attempt-title">Speed</div>
+        <div class="attempt-title">Accuracy</div>
+        <div class="attempt-title">Duration</div>
       </div>
-      <div v-for="i in attempts.length" :key="i" class="py-4 ma-0 list-item">
-        <Attempt :attempt="attempts[i - 1]"></Attempt>
+      <div v-for="i in sorted_attempts.length" :key="i" class="py-4 ma-0 list-item">
+        <Attempt :attempt="sorted_attempts[i - 1]"></Attempt>
       </div>
     </v-card>
   </div>
@@ -29,16 +29,30 @@ export default {
 
   data: () => ({
     selectedItem: null,
-    items: [
-      { text: 'Real-Time', icon: 'mdi-clock' },
-      { text: 'Audience', icon: 'mdi-account' },
-      { text: 'Conversions', icon: 'mdi-flag' },
-    ],
+    sorted_attempts: [],
   }),
+  mounted() {
+    this.updateSortedAttempts();
+  },
+  watch: {
+    attempts() {
+      this.updateSortedAttempts();
+    },
+  },
   methods: {
-    deselectItem() {
+    deselectItem() { // ooof zhestokiy kostyl (idk how to do in normally)
       if (this.selectedItem === null) this.selectedItem = undefined;
       else this.selectedItem = null;
+    },
+    updateSortedAttempts() {
+      this.sorted_attempts = JSON.parse(JSON.stringify(this.attempts)); // deep copy
+      this.sorted_attempts.sort(
+        (a, b) => {
+          const timeA = new Date(a.date).getTime();
+          const timeB = new Date(b.date).getTime();
+          return timeB - timeA;
+        },
+      );
     },
   },
 };
