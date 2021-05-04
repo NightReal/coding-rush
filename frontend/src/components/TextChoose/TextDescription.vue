@@ -22,7 +22,7 @@
         </div>
         <div v-html="description"></div>
       </div>
-      <AttemptsList :attempts="attempts"></AttemptsList>
+      <AttemptsList v-if="attempts !== null" :attempts="attempts"></AttemptsList>
     </div>
   </div>
 </template>
