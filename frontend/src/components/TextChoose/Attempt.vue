@@ -4,7 +4,7 @@
       {{ date }}
     </div>
     <div class="attempt-text" style="flex-grow: 2">
-      <Stars :score="score"></Stars>
+      <Stars :score="score" size="1.7rem"></Stars>
     </div>
     <div class="attempt-text">
       {{ score }}

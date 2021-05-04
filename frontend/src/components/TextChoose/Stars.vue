@@ -5,7 +5,7 @@
     full-icon="mdi-star"
     half-icon="mdi-star-half-full"
     half-increments
-    size="1.7rem"
+    :size="size"
     length="5"
     readonly
     :value="score / 20"
@@ -16,7 +16,7 @@
 <script>
 export default {
   name: 'Stars',
-  props: ['score'],
+  props: ['score', 'size'],
 };
 </script>
 
