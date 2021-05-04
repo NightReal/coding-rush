@@ -1,6 +1,6 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center">
-    <h2 class="pa-4" style="color: #444; letter-spacing: 0.02rem">Submissions</h2>
+    <h2 class="pa-4" style="color: #444; letter-spacing: 0.02rem">Attempts</h2>
     <v-card style="display: flex; flex-direction: column; align-items: center;"
             elevation="3" rounded="lg" class="pt-4 pb-2">
       <div style="display: flex; align-items: center; width: 60vw; padding: 0 2vw" class="pb-1">
