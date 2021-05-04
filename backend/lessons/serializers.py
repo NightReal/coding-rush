@@ -10,7 +10,7 @@ class AttemptSerializer(serializers.ModelSerializer):
     # TODO: validator for code_language existence for future write-ability
     class Meta:
         model = Attempt
-        fields = ('id', 'score', 'speed', 'accuracy', 'code_language')
+        fields = ('id', 'score', 'speed', 'accuracy', 'code_language', 'date', 'duration')
         read_only_fields = fields
 
 
