@@ -4,25 +4,7 @@
       {{ date }}
     </div>
     <div class="attempt-text" style="flex-grow: 2">
-<!--      <v-tooltip top>-->
-<!--        <template v-slot:activator="scope">-->
-<!--          <div v-bind="scope.attrs" v-on="scope.on">-->
-            <v-rating
-              color="warning"
-              empty-icon="mdi-star-outline"
-              full-icon="mdi-star"
-              half-icon="mdi-star-half-full"
-              half-increments
-              size="1.7rem"
-              length="5"
-              readonly
-              :value="attempt.score / 20"
-              dense
-            ></v-rating>
-<!--          </div>-->
-<!--        </template>-->
-<!--        <span>Score: {{ attempt.score }}</span>-->
-<!--      </v-tooltip>-->
+      <Stars :score="score"></Stars>
     </div>
     <div class="attempt-text">
       {{ score }}
@@ -36,13 +18,13 @@
     <div class="attempt-text">
       {{ duration }}
     </div>
-    <!--    <div></div>-->
   </div>
 </template>
 
 <script>
 
 import '@/components/tooltip.css';
+import Stars from '@/components/TextChoose/Stars.vue';
 
 function time0(date) {
   const res = new Date(date);
@@ -101,6 +83,7 @@ function formatDuration(time) {
 
 export default {
   name: 'Attempt',
+  components: { Stars },
   props: ['attempt'],
 
   data: () => ({
