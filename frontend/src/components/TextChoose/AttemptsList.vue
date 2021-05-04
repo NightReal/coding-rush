@@ -40,10 +40,6 @@ export default {
     },
   },
   methods: {
-    deselectItem() { // ooof zhestokiy kostyl (idk how to do it normally)
-      if (this.selectedItem === null) this.selectedItem = undefined;
-      else this.selectedItem = null;
-    },
     updateSortedAttempts() {
       this.sorted_attempts = JSON.parse(JSON.stringify(this.attempts)); // deep copy
       this.sorted_attempts.sort(
