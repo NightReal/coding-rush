@@ -16,18 +16,44 @@
                             overflow-wrap: anywhere;">{{ text.title }}
           </div>
         </div>
-        <div style="display: flex">
-          <template v-for="(lang, i) in text.codes">
-            <!-- eslint-disable-next-line vue/valid-v-for -->
-            <v-btn style="flex: 1 1 0; height: 30px; width: auto" class="text-capitalize pa-0 ma-0"
-                   elevation="0"
-                   :color="lang_colors[lang]"
-                   @click="go_type(lang)">{{ lang }}
-            </v-btn>
-            <!-- eslint-disable-next-line vue/require-v-for-key -->
-            <div v-if="i !== text.codes.length - 1" style="width: 0; height: 0" class="mr-1"></div>
-          </template>
+        <div style="display: flex; flex-direction: column;">
+          <div v-if="text.best_attempt"
+            style="display: flex; justify-content: center; margin-bottom: 5px">
+            <v-tooltip top>
+              <template v-slot:activator="{on, attrs}">
+                <div v-on="on" v-bind="attrs">
+                  <Stars :score="text.best_attempt.score" size="1.3rem"></Stars>
+                </div>
+              </template>
+              <div>
+                <div style="display: flex;">
+                  <div style="margin-right: 5px">Speed:</div>
+                  <div>{{ text.best_attempt.speed }} cpm
+                  </div>
+                </div>
+                <div style="display: flex;">
+                  <div style="margin-right: 5px">Accuracy:</div>
+                  <div>{{ Math.floor(text.best_attempt.accuracy) }}%</div>
+                </div>
+              </div>
+            </v-tooltip>
+          </div>
+          <div style="display: flex">
+            <template v-for="(lang, i) in text.codes">
+              <!-- eslint-disable-next-line vue/valid-v-for -->
+              <v-btn style="flex: 1 1 0; height: 30px; width: auto"
+                     class="text-capitalize pa-0 ma-0"
+                     elevation="0"
+                     :color="lang_colors[lang]"
+                     @click="go_type(lang)">{{ lang }}
+              </v-btn>
+              <!-- eslint-disable-next-line vue/require-v-for-key -->
+              <div v-if="i !== text.codes.length - 1" style="width: 0; height: 0"
+                   class="mr-1"></div>
+            </template>
+          </div>
         </div>
+
       </v-card>
     </v-hover>
     <v-card v-else flat :width="cardWidth" :height="cardHeight" style="opacity: 0"></v-card>
@@ -37,9 +63,11 @@
 <script>
 
 import { langColors, changeLanguage } from '@/components/TextChoose/Languages';
+import Stars from '@/components/TextChoose/Stars.vue';
 
 export default {
   name: 'TextCard',
+  components: { Stars },
   props: ['text', 'hide'],
 
   data: () => ({
@@ -62,7 +90,8 @@ export default {
 <style scoped>
 
 .v-tooltip__content {
-  padding: 1px 8px !important;
+  padding: 3px 10px;
+  margin-top: 4px;
 }
 
 </style>
