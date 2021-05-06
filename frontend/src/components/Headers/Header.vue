@@ -98,9 +98,9 @@ export default {
   align-items: center !important;
   background-color: #2b2b2b !important;
   border-radius: 0 !important;
-  padding: 0 16px !important;;
-  font-size: 1.05rem !important;;
-  font-family: monospace !important;;
+  padding: 0 16px !important;
+  font-size: 1.05rem !important;
+  font-family: monospace !important;
   text-transform: none !important;
   letter-spacing: inherit !important;
 }
