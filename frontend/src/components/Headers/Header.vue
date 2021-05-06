@@ -33,18 +33,18 @@
           <div v-if="isAuthed()"
                style="display: flex; align-items: center;">
             <div style="width: 2.5vw"></div>
-            <v-card @click="goto('/')" flat class="header-btn">Home</v-card>
-            <v-card @click="goto('/texts')" flat class="header-btn">Typing</v-card>
+            <v-btn @click="goto('/')" text class="header-btn">Home</v-btn>
+            <v-btn @click="goto('/texts')" text class="header-btn">Typing</v-btn>
             <div style="width: 2.5vw"></div>
-            <v-card @click="signOutDialog = true" flat class="header-btn">Sign out</v-card>
+            <v-btn @click="signOutDialog = true" text class="header-btn">Sign out</v-btn>
           </div>
           <div v-else
                style="display: flex; align-items: center;">
             <div style="width: 2.5vw"></div>
-            <v-card @click="goto('/')" flat class="header-btn">About</v-card>
+            <v-btn @click="goto('/')" text class="header-btn">About</v-btn>
             <div style="width: 2.5vw"></div>
-            <v-card @click="goto('/signin')" flat class="header-btn">Sign in</v-card>
-            <v-card @click="goto('/signup')" flat class="header-btn">Sign up</v-card>
+            <v-btn @click="goto('/signin')" text class="header-btn">Sign in</v-btn>
+            <v-btn @click="goto('/signup')" text class="header-btn">Sign up</v-btn>
           </div>
         </div>
       </v-app-bar>
@@ -93,14 +93,16 @@ export default {
 }
 
 .header-btn {
-  height: 100%;
+  height: 100% !important;
   display: flex !important;
-  align-items: center;
+  align-items: center !important;
   background-color: #2b2b2b !important;
   border-radius: 0 !important;
-  padding: 0 16px;
-  font-size: 1.05rem;
-  font-family: monospace;
+  padding: 0 16px !important;;
+  font-size: 1.05rem !important;;
+  font-family: monospace !important;;
+  text-transform: none !important;
+  letter-spacing: inherit !important;
 }
 
 .header-btn:hover {
