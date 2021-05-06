@@ -1,8 +1,8 @@
 <template>
-  <v-container class="pa-0 mt-8">
+  <div>
     <TextDescription :textid="$route.params.textid"
                      :default_lang="$store.getters.lastUsedLanguage"/>
-  </v-container>
+  </div>
 </template>
 
 <script>

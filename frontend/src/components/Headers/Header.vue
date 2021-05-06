@@ -18,7 +18,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-container class="pa-0 ma-0" v-bind:class="padding()">
+    <div class="mb-12">
       <v-app-bar app dense color="primary" dark
                  v-bind:elevate-on-scroll="isMainPage() && !isAuthed()" class="ma-0 pa-0">
         <div style="display: flex; justify-content: flex-start;
@@ -48,7 +48,7 @@
           </div>
         </div>
       </v-app-bar>
-    </v-container>
+    </div>
   </div>
 </template>
 
@@ -75,15 +75,6 @@ export default {
     },
     isAuthed() {
       return store.getters.isAuthenticated;
-    },
-    padding() {
-      if (this.isAuthed()) {
-        return 'pa-3';
-      }
-      if (!this.isMainPage()) {
-        return 'pb-12';
-      }
-      return false;
     },
     signout() {
       this.$store.dispatch('logout')

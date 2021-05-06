@@ -1,8 +1,8 @@
 <template>
   <!-- <img src="./assets/logo.png"> -->
-  <v-container>
+  <div>
     <Home/>
-  </v-container>
+  </div>
 </template>
 
 <script>

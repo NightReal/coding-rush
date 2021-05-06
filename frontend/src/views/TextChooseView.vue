@@ -1,7 +1,7 @@
 <template>
-  <v-container class="pa-0 mt-8">
+  <div>
     <TextChoose/>
-  </v-container>
+  </div>
 </template>
 
 <script>

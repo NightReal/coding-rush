@@ -1,7 +1,7 @@
 <template>
-  <v-container class="pa-0 mt-8">
+  <div>
     <Profile :user="$route.params.username"/>
-  </v-container>
+  </div>
 </template>
 
 <script>
