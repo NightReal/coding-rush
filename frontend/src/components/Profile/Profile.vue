@@ -8,7 +8,7 @@
                                 flex-direction: column;">
         <div id="left-bar-info" style="display: flex; width: 100%;">
           <div id="pictureContainer">
-            <img class="elevation-5 rounded-circle" :src="picture"
+            <img class="elevation-5" :src="picture ? picture : defaultPicture"
                  @error="$event.target.src = defaultPicture"
                  style="width: 100%;"/>
           </div>
@@ -103,6 +103,7 @@ export default {
         this.firstName = res.data.first_name;
         this.lastName = res.data.last_name;
         this.username = res.data.username;
+        this.picture = res.data.avatar;
         if (this.username !== this.user) {
           this.$router.push(`/profile/${this.username}`);
         }

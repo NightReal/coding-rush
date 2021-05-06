@@ -5,6 +5,7 @@ from .serializers import (
     UserRegisterSerializer,
     PrivateProfileInformationSerializer,
     ProfileUpdateSerializer,
+    PublicProfileInformationSerializer,
 )
 from rest_framework import (
     views,
@@ -20,17 +21,23 @@ User = get_user_model()
 # Create your views here.
 
 class UserRegisterView(generics.CreateAPIView):
+    """
+    User registration endpoint
+    """
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
     permission_classes = [permissions.AllowAny, ]
 
 
-class ChangePasswordView(generics.UpdateAPIView):
+class ChangePasswordView(generics.GenericAPIView):
+    """
+    Password change endpoint
+    """
     queryset = User.objects.all()
     serializer_class = ChangePasswordSerializer
     permission_classes = [permissions.IsAuthenticated, ]
 
-    def update(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid(raise_exception=True):
@@ -41,6 +48,9 @@ class ChangePasswordView(generics.UpdateAPIView):
 
 
 class UsernameUserExistsView(views.APIView):
+    """
+    Check if user with such username exists
+    """
     permission_classes = [permissions.AllowAny, ]
 
     def get(self, request, username: str, *args, **kwargs):
@@ -50,6 +60,9 @@ class UsernameUserExistsView(views.APIView):
 
 
 class EmailUserExistsView(views.APIView):
+    """
+    Check in user with such email exists
+    """
     permission_classes = [permissions.AllowAny, ]
 
     def get(self, request, email: str, *args, **kwargs):
@@ -59,7 +72,9 @@ class EmailUserExistsView(views.APIView):
 
 
 class PrivateUserProfileView(views.APIView):
-    queryset = User.objects.all()
+    """
+    Private profile information retrieve
+    """
     permission_classes = [permissions.IsAuthenticated, ]
 
     def get(self, request, **kwargs):
@@ -69,13 +84,31 @@ class PrivateUserProfileView(views.APIView):
         return response.Response(data)
 
 
-class ProfileUpdate(generics.UpdateAPIView):
+class PublicProfileInformationView(views.APIView):
+    """
+    Public profile information retrieve
+    """
+    permission_classes = [permissions.AllowAny, ]
+
+    def get(self, request, username: str, *args, **kwargs):
+        user = User.objects.filter(username__iexact=username).first()
+        if user is None:
+            return response.Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = PublicProfileInformationSerializer(user)
+        data = serializer.data
+        return response.Response(data)
+
+
+class ProfileUpdateView(generics.GenericAPIView):
+    """
+    Endpoint for changing profile information
+    """
     queryset = User.objects.all()
     serializer_class = ProfileUpdateSerializer
     permission_classes = [permissions.IsAuthenticated, ]
 
-    def update(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+    def put(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, partial=True)
 
         if serializer.is_valid(raise_exception=True):
             user = request.user

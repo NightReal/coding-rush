@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model, password_validation
 from rest_framework import serializers
 from django.contrib.auth.models import BaseUserManager
+from django.core.files.images import get_image_dimensions
+from django.conf import settings
 
 User = get_user_model()
 
@@ -96,6 +98,16 @@ class PrivateProfileInformationSerializer(serializers.ModelSerializer):
         fields = ('avatar', 'email', 'username', 'first_name', 'last_name', 'last_login')
 
 
+class PublicProfileInformationSerializer(serializers.ModelSerializer):
+    """
+    Serializer for public profile information retrieving endpoint
+    """
+
+    class Meta:
+        model = User
+        fields = ('avatar', 'username', 'first_name', 'last_name', 'last_login')
+
+
 class ProfileUpdateSerializer(serializers.ModelSerializer):
     """
     Serializer for profile update endpoint
@@ -104,3 +116,11 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('avatar', 'first_name', 'last_name')
+
+    def validate_avatar(self, value):
+        if value is None:
+            return value
+        w, h = get_image_dimensions(value)
+        if w <= settings.MAX_AVATAR_SIZE and h <= settings.MAX_AVATAR_SIZE:
+            return value
+        raise serializers.ValidationError('Avatar is too big')
