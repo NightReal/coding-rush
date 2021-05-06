@@ -33,8 +33,8 @@
           <div v-if="isAuthed()"
                style="display: flex; align-items: center;">
             <div style="width: 2.5vw"></div>
-            <v-card @click="goto('/texts')" flat class="header-btn">Typing</v-card>
             <v-card @click="goto('/')" flat class="header-btn">Home</v-card>
+            <v-card @click="goto('/texts')" flat class="header-btn">Typing</v-card>
             <div style="width: 2.5vw"></div>
             <v-card @click="signOutDialog = true" flat class="header-btn">Sign out</v-card>
           </div>
