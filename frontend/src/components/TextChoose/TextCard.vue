@@ -7,7 +7,7 @@
                                   color: ${hover ? '#fff' : '#000'}`"
               :elevation="hover ? 10 : 3" @click="go_type()" :ripple="false">
         <div style="background-color: #8b8b8b; color: white; position:absolute;
-                    border-radius: 3px; padding: 2px 8px 2px 8px; font-size: 0.75rem; top: -10px;
+                    border-radius: 3px; padding: 2px 8px 2px 8px; font-size: 0.8rem; top: -14px;
                     align-self: flex-end; right: 10px; font-family: monospace">
           <b>Difficulty: {{ text.difficulty }}</b>
         </div>
@@ -25,10 +25,10 @@
                   <Stars :score="text.best_attempt.score" size="1.3rem"></Stars>
                 </div>
               </template>
-              <div>
+              <div style="font-family: monospace; font-size: 0.85rem; font-weight: bold">
                 <div style="display: flex;">
                   <div style="margin-right: 5px">Speed:</div>
-                  <div>{{ text.best_attempt.speed }} cpm
+                  <div>{{ text.best_attempt.speed }}cpm
                   </div>
                 </div>
                 <div style="display: flex;">
@@ -92,6 +92,11 @@ export default {
 .v-tooltip__content {
   padding: 3px 10px;
   margin-top: 4px;
+  background-color: #8b8b8b !important;
+}
+
+.v-tooltip__content.menuable__content__active {
+  opacity: 1 !important;
 }
 
 </style>
