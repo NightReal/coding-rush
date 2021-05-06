@@ -1,7 +1,7 @@
 <template>
-  <v-container class="pa-0 ma-0 mt-12">
+  <div>
     <Main/>
-  </v-container>
+  </div>
 </template>
 
 <script>

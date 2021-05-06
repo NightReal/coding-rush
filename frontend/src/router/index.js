@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import TextChooseView from '@/views/TextChooseView.vue';
+import TextDescriptionView from '@/views/TextDescriptionView.vue';
 import HomeView from '../views/HomeView.vue';
 import MainView from '../views/MainView.vue';
 import LoginView from '../views/LoginView.vue';
@@ -31,11 +33,26 @@ const routes = [
     },
   },
   {
+    path: '/texts',
+    name: 'Text Choose',
+    component: TextChooseView,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/text/:textid',
+    name: 'Text Description',
+    component: TextDescriptionView,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/signin',
     alias: '/signup',
     name: 'Login',
     component: LoginView,
-    props: true,
     meta: {
       requiresDisAuth: true,
     },

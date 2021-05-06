@@ -24,8 +24,8 @@ jobs:
       - name: Check running containers
         run: docker ps -a
       - name: Check backend logs
-        run: docker logs prod_backend
+        run: docker logs prod_backend | tail -n10
       - name: Check nginx and frontend logs
-        run: docker logs prod_nginx
+        run: docker logs prod_nginx | tail -n50
       - name: Check db logs
-        run: docker logs prod_db
+        run: docker logs prod_db | tail -n10
