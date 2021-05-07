@@ -114,7 +114,10 @@ export default {
       }
     },
     updateCPM(lcp) {
-      this.cpm = (lcp * 1000 * 60) / (new Date() - this.startTime);
+      const curTime = new Date();
+      if ((curTime - this.startTime) > 0.0001) {
+        this.cpm = (lcp * 1000 * 60) / (curTime - this.startTime);
+      }
     },
   },
   mounted() {
