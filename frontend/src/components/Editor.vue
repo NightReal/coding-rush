@@ -23,6 +23,9 @@
     <p>
       {{ cpm + " CPM" }}
     </p>
+    <p>
+      {{ acc * 100 + "%" }}
+    </p>
   </v-container>
 </template>
 
@@ -46,29 +49,44 @@ export default {
       mark: null,
       editorClass: '',
       cursorDefault: null,
+      isBad: null,
+      acc: 1,
     };
   },
   methods: {
     switchTyping() {
+      console.log(this.typing);
       if (!this.typing) {
         this.editor.setValue('');
         this.editor.focus();
         this.startTime = new Date();
+        this.isBad = new Array(0);
+      } else {
+        this.typing = false;
       }
-      this.typing = !this.typing;
     },
     onChange() {
-      if (!this.typing) {
-        this.typing = true;
-        this.startTime = new Date();
-      }
       const lcp = this.getLCP(this.editor.getValue(), this.target.getValue());
       this.updateCPM(lcp);
+      for (let i = lcp; i < this.editor.getValue().length; i += 1) {
+        this.isBadSum += 1 - this.isBad[i];
+        this.isBad[i] = 1;
+      }
+      this.updateAcc();
       this.updateMark();
       if (this.editor.getValue() === this.target.getValue()) {
         this.typing = false;
       }
       this.scrollIntoMiddle();
+    },
+    beforeChange() {
+      console.log('bruh');
+      if (!this.typing) {
+        this.typing = true;
+        this.startTime = new Date();
+        this.isBad = new Array(0);
+        this.editor.setValue('');
+      }
     },
     scrollIntoMiddle() {
       const cursorPos = this.editor.cursorCoords(false, 'local');
@@ -119,6 +137,16 @@ export default {
         this.cpm = (lcp * 1000 * 60) / (curTime - this.startTime);
       }
     },
+    updateAcc() {
+      const len = Math.max(this.editor.getValue().length, this.isBad.length);
+      let cntBad = 0;
+      for (let i = 0; i < this.isBad.length; i += 1) {
+        if (this.isBad[i] === 1) {
+          cntBad += 1;
+        }
+      }
+      this.acc = (len - cntBad) / len;
+    },
   },
   mounted() {
     const cmOptions = {
@@ -132,6 +160,7 @@ export default {
       // lineNumbers: true,
     };
     this.editor = CodeMirror.fromTextArea(this.$refs.editor, cmOptions);
+    this.editor.on('beforeChange', this.beforeChange);
     this.editor.on('change', this.onChange);
     cmOptions.readOnly = true;
     this.target = CodeMirror.fromTextArea(this.$refs.target, cmOptions);
