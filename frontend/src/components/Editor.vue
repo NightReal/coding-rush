@@ -69,16 +69,14 @@ export default {
         this.typing = false;
       }
       this.scrollIntoMiddle();
-      this.scrollIntoMiddle();
     },
     scrollIntoMiddle() {
       const cursorPos = this.editor.cursorCoords(false, 'local');
       const defPos = this.editor.cursorCoords({ line: 0, ch: 0 }, 'local');
       const winInfo = this.editor.getScrollInfo();
-      this.editor.scrollTo(null, (cursorPos.top - defPos.top) - winInfo.clientHeight / 2);
-      const winInfo2 = this.editor.getScrollInfo();
-      this.target.scrollTo(winInfo2.left,
-        winInfo2.top);
+      const top = (cursorPos.top - defPos.top) - winInfo.clientHeight / 2;
+      this.editor.scrollTo(null, top);
+      this.target.scrollTo(null, top);
     },
     getLCP(s1, s2) {
       let ans = 0;
