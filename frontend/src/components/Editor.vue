@@ -152,4 +152,9 @@ export default {
 .CodeMirror {
   height: 65vh;
 }
+
+.CodeMirror-vscrollbar {
+  display: block !important;
+}
+
 </style>
