@@ -45,7 +45,7 @@ export default {
       cpm: 0,
       mark: null,
       editorClass: '',
-      cursorDefaul: null,
+      cursorDefault: null,
     };
   },
   methods: {
@@ -141,6 +141,7 @@ export default {
 </script>
 
 <style>
+
 .redbg {
   background-color: #a01f1f;
 }
