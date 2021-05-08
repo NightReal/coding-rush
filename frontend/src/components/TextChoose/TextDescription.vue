@@ -13,7 +13,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center;
                     margin-bottom: 30px">
           <h1 class="mr-3" v-if="topic || title">
-            {{ topic }}<span style="word-spacing: 1rem"> — </span>{{ title }}
+            {{ topic }}<span style="word-spacing: 1rem" v-if="topic && title"> — </span>{{ title }}
           </h1>
           <DropDownMenu v-if="!loading"
                         :text="lang" min-width="100px" :color="lang_colors[lang]"
@@ -86,7 +86,15 @@ export default {
       this.lang = lang;
     },
     go_type(lang) {
-      console.log('type', lang);
+      this.$router.push({
+        name: 'Editor',
+        params: {
+          texts: this.codes,
+          language: lang,
+          topicName: this.topic,
+          titleName: this.title,
+        },
+      });
     },
   },
 };

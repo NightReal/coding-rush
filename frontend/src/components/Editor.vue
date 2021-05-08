@@ -1,16 +1,18 @@
 <template>
-  <v-container>
-    <v-row justify="space-between">
-      <v-col cols="2" style="white-space: nowrap">
-        {{ textName }}
-      </v-col>
-      <v-col cols="2">
+  <div style="margin: 50px 7vw; min-width: 800px">
+    <div style="display: flex; justify-content: space-between">
+      <div  style="white-space: nowrap">
+        <div v-if="topic || title" style="font-size: 1.5rem; margin-left: 20px; font-weight: 500">
+          {{ topic }}<span style="word-spacing: 1rem" v-if="topic && title"> — </span>{{ title }}
+        </div>
+      </div>
+      <div>
         <v-btn min-width="90px" color="primary" dark @click="switchTyping()">
           {{ typing ? "Stop" : "Start" }}
         </v-btn>
-      </v-col>
-    </v-row>
-    <v-row justify="space-between">
+      </div>
+    </div>
+    <div style="display: flex; justify-content: space-between">
       <v-container
         style="width: 50%"
         :class="editorClass">
@@ -19,17 +21,18 @@
       <v-container style="width: 50%">
         <textarea ref="target"></textarea>
       </v-container>
-    </v-row>
+    </div>
     <p>
       {{ cpm + " CPM" }}
     </p>
     <p>
       {{ acc * 100 + "%" }}
     </p>
-  </v-container>
+  </div>
 </template>
 
 <script>
+
 import CodeMirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/monokai.css';
@@ -38,11 +41,12 @@ import 'codemirror/addon/scroll/scrollpastend';
 
 export default {
   name: 'Editor',
-  props: ['textNameProp', 'targetTextProp'],
+  props: ['targetTextProp', 'topicName', 'titleName'],
   data() {
     return {
       targetText: this.targetTextProp,
-      textName: this.textNameProp,
+      topic: this.topicName,
+      title: this.titleName,
       typing: false,
       startTime: 0,
       cpm: 0,
@@ -55,7 +59,6 @@ export default {
   },
   methods: {
     switchTyping() {
-      console.log(this.typing);
       if (!this.typing) {
         this.editor.setValue('');
         this.editor.focus();
@@ -80,7 +83,6 @@ export default {
       this.scrollIntoMiddle();
     },
     beforeChange() {
-      console.log('bruh');
       if (!this.typing) {
         this.typing = true;
         this.startTime = new Date();
@@ -185,6 +187,7 @@ export default {
 
 .CodeMirror-vscrollbar {
   display: block !important;
+  bottom: 0px;
 }
 
 </style>

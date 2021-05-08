@@ -25,12 +25,13 @@ const routes = [
     },
   },
   {
-    path: '/editor',
+    path: '/type/:textid',
     name: 'Editor',
     component: EditorView,
     meta: {
       requiresAuth: true,
     },
+    props: true,
   },
   {
     path: '/texts',
