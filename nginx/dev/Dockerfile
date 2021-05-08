@@ -1,7 +1,7 @@
 FROM nginx:alpine
-COPY nginx/dev/nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 RUN mkdir /etc/nginx/sites-available/
-COPY nginx/dev/dev.conf /etc/nginx/sites-available/codingrush.cf.vhost
+COPY dev.conf /etc/nginx/sites-available/codingrush.cf.vhost
 
 RUN mkdir /etc/nginx/sites-enabled/
 RUN ln -s /etc/nginx/sites-available/codingrush.cf.vhost /etc/nginx/sites-enabled/
