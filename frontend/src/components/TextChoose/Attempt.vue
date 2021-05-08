@@ -1,10 +1,10 @@
 <template>
   <div style="display: flex; align-items: center; width: 60vw; padding: 0 2vw">
-    <div class="attempt-text" style="flex-grow: 2">
+    <div class="attempt-text" :style="`flex-grow: ${1 + showStars}`">
       {{ date }}
     </div>
-    <div class="attempt-text" style="flex-grow: 2">
-      <Stars :score="score" size="1.7rem"></Stars>
+    <div class="attempt-text" style="flex-grow: 2" v-if="showStars">
+      <Stars :score="score" :size="starSize"></Stars>
     </div>
     <div class="attempt-text">
       {{ score }}
@@ -84,7 +84,7 @@ function formatDuration(time) {
 export default {
   name: 'Attempt',
   components: { Stars },
-  props: ['attempt'],
+  props: ['attempt', 'showStars'],
 
   data: () => ({
     date: null,
@@ -92,7 +92,15 @@ export default {
     accuracy: null,
     duration: null,
     score: null,
+    starSize: null,
   }),
+
+  created() {
+    window.addEventListener('resize', this.resizeHandler);
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeHandler);
+  },
 
   mounted() {
     const date = new Date(this.attempt.date);
@@ -101,8 +109,13 @@ export default {
     this.accuracy = Math.floor(this.attempt.accuracy);
     this.duration = formatDuration(this.attempt.duration);
     this.score = this.attempt.score;
+    this.resizeHandler();
   },
-  methods: {},
+  methods: {
+    resizeHandler() {
+      this.starSize = window.innerWidth < 1270 ? '1.4rem' : '1.7rem';
+    },
+  },
 };
 </script>
 

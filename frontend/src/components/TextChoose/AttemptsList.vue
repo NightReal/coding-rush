@@ -4,15 +4,15 @@
     <v-card style="display: flex; flex-direction: column; align-items: center;"
             elevation="3" rounded="lg" class="pt-4 pb-2">
       <div style="display: flex; align-items: center; width: 60vw; padding: 0 2vw" class="pb-2">
-        <div class="attempt-title" style="flex-grow: 2">Date</div>
-        <div class="attempt-title" style="flex-grow: 2">Stars</div>
+        <div class="attempt-title" :style="`flex-grow: ${1 + showStars}`">Date</div>
+        <div class="attempt-title" style="flex-grow: 2" v-if="showStars">Stars</div>
         <div class="attempt-title">Score</div>
         <div class="attempt-title">Speed</div>
         <div class="attempt-title">Accuracy</div>
         <div class="attempt-title">Duration</div>
       </div>
       <div v-for="i in sorted_attempts.length" :key="i" class="py-4 ma-0 list-item">
-        <Attempt :attempt="sorted_attempts[i - 1]"></Attempt>
+        <Attempt :attempt="sorted_attempts[i - 1]" :show-stars="showStars"></Attempt>
       </div>
     </v-card>
   </div>
@@ -30,9 +30,17 @@ export default {
   data: () => ({
     selectedItem: null,
     sorted_attempts: [],
+    showStars: true,
   }),
+  created() {
+    window.addEventListener('resize', this.resizeHandler);
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeHandler);
+  },
   mounted() {
     this.updateSortedAttempts();
+    this.resizeHandler();
   },
   watch: {
     attempts() {
@@ -49,6 +57,9 @@ export default {
           return timeB - timeA;
         },
       );
+    },
+    resizeHandler() {
+      this.showStars = window.innerWidth >= 1000;
     },
   },
 };
