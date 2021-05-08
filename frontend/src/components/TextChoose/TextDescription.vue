@@ -3,12 +3,13 @@
     <page-loader :loading="loading"></page-loader>
     <div style="display: flex; flex-direction: column; align-items: center">
       <v-card style="display: flex; justify-content: center; width: 60vw; height: 20vh;
-                     align-items: center" rounded="lg" elevation="3">
+                     min-width: 470px; align-items: center" rounded="lg" elevation="3">
         <a href="" style="height: 18vh">
           <img style="height: 18vh" src=""/>
         </a>
       </v-card>
-      <div style="display: flex; flex-direction: column; width: 50vw; margin-top: 30px">
+      <div style="display: flex; flex-direction: column; width: 50vw; margin-top: 30px;
+                  min-width: 420px;">
         <div style="display: flex; justify-content: space-between; align-items: center;
                     margin-bottom: 30px">
           <h1 class="mr-3" v-if="topic || title">

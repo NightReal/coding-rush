@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; align-items: center; width: 60vw; padding: 0 2vw">
+  <div style="display: flex; align-items: center; width: 60vw; min-width: 470px; padding: 0 2vw">
     <div class="attempt-text" :style="`flex-grow: ${1 + showStars}`">
       {{ date }}
     </div>
@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     resizeHandler() {
-      this.starSize = window.innerWidth < 1270 ? '1.4rem' : '1.7rem';
+      this.starSize = window.innerWidth < 1350 ? '1.4rem' : '1.7rem';
     },
   },
 };

@@ -3,7 +3,8 @@
     <h2 class="pa-4" style="color: #444; letter-spacing: 0.02rem">Attempts</h2>
     <v-card style="display: flex; flex-direction: column; align-items: center;"
             elevation="3" rounded="lg" class="pt-4 pb-2">
-      <div style="display: flex; align-items: center; width: 60vw; padding: 0 2vw" class="pb-2">
+      <div style="display: flex; align-items: center; width: 60vw; min-width: 470px;
+                  padding: 0 2vw 8px 2vw">
         <div class="attempt-title" :style="`flex-grow: ${1 + showStars}`">Date</div>
         <div class="attempt-title" style="flex-grow: 2" v-if="showStars">Stars</div>
         <div class="attempt-title">Score</div>
@@ -59,7 +60,7 @@ export default {
       );
     },
     resizeHandler() {
-      this.showStars = window.innerWidth >= 1000;
+      this.showStars = window.innerWidth >= 1200;
     },
   },
 };
