@@ -26,7 +26,8 @@
           <div style="display: flex; align-items: center; margin-right: 16px">
             <img style="margin: 0 13px 0 15px"
                  src="@/assets/logo-light-35x35.png" alt=""/>
-            <div style="font-size: 1.3rem; font-weight: 500; letter-spacing: 0.05rem;">
+            <div style="font-size: 1.3rem; font-weight: 500; letter-spacing: 0.05rem;
+                        white-space: nowrap;">
               Coding Rush
             </div>
           </div>
