@@ -1,13 +1,14 @@
 <template>
   <div>
     <page-loader :loading="loading"></page-loader>
-    <Editor v-if="editorReady"
-            :targetTextProp="code" :topic-name="topic" :title-name="title"></Editor>
+    <EditorPage :texts="codes" :topic="topic" :title="title"
+                :ready="editorReady" :language="lang" :textid="textid"
+                @setLang="setLang"></EditorPage>
   </div>
 </template>
 
 <script>
-import Editor from '@/components/Editor.vue';
+import EditorPage from '@/components/Editor/EditorPage.vue';
 import APIHelper from '@/api/apihelper';
 import { changeLanguage } from '@/components/TextChoose/Languages';
 import PageLoader from '@/components/PageLoader.vue';
@@ -15,7 +16,7 @@ import PageLoader from '@/components/PageLoader.vue';
 export default {
   name: 'EditorView',
   components: {
-    Editor,
+    EditorPage,
     PageLoader,
   },
   props: [
@@ -32,7 +33,6 @@ export default {
       title: this.titleName,
       codes: null,
       lang: this.language ? this.language : this.$store.getters.lastUsedLanguage,
-      code: null,
       editorReady: false,
     };
   },
@@ -62,7 +62,6 @@ export default {
   methods: {
     prepareEditor() {
       this.fixLanguage();
-      this.code = this.codes[this.lang];
       this.editorReady = true;
     },
     fixLanguage() {
@@ -71,6 +70,10 @@ export default {
         this.lang = Object.keys(this.codes)[0];
         changeLanguage(this.lang);
       }
+    },
+    setLang(lang) {
+      this.lang = lang;
+      changeLanguage(this.lang);
     },
   },
 };
