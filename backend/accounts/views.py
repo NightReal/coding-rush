@@ -7,12 +7,19 @@ from .serializers import (
     ProfileUpdateSerializer,
     PublicProfileInformationSerializer,
 )
+from rest_framework.response import (
+    Response,
+)
+from rest_framework.status import (
+    HTTP_200_OK,
+    HTTP_204_NO_CONTENT,
+    HTTP_404_NOT_FOUND,
+    HTTP_400_BAD_REQUEST,
+)
 from rest_framework import (
     views,
-    response,
     permissions,
     generics,
-    status,
 )
 
 User = get_user_model()
@@ -29,22 +36,21 @@ class UserRegisterView(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny, ]
 
 
-class ChangePasswordView(generics.GenericAPIView):
+class ChangePasswordView(views.APIView):
     """
     Password change endpoint
     """
-    queryset = User.objects.all()
     serializer_class = ChangePasswordSerializer
     permission_classes = [permissions.IsAuthenticated, ]
 
     def put(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid(raise_exception=True):
             serializer.update()
-            return response.Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=HTTP_204_NO_CONTENT)
 
-        return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=HTTP_400_BAD_REQUEST)
 
 
 class UsernameUserExistsView(views.APIView):
@@ -56,7 +62,7 @@ class UsernameUserExistsView(views.APIView):
     def get(self, request, username: str, *args, **kwargs):
         user = User.objects.filter(username__iexact=username)
         res = {'username': bool(user)}
-        return response.Response(res)
+        return Response(res)
 
 
 class EmailUserExistsView(views.APIView):
@@ -68,7 +74,7 @@ class EmailUserExistsView(views.APIView):
     def get(self, request, email: str, *args, **kwargs):
         user = User.objects.filter(email=email)
         res = {'email': bool(user)}
-        return response.Response(res)
+        return Response(res)
 
 
 class PrivateUserProfileView(views.APIView):
@@ -81,7 +87,7 @@ class PrivateUserProfileView(views.APIView):
         user = request.user
         serializer = PrivateProfileInformationSerializer(user)
         data = serializer.data
-        return response.Response(data)
+        return Response(data)
 
 
 class PublicProfileInformationView(views.APIView):
@@ -93,26 +99,25 @@ class PublicProfileInformationView(views.APIView):
     def get(self, request, username: str, *args, **kwargs):
         user = User.objects.filter(username__iexact=username).first()
         if user is None:
-            return response.Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=HTTP_404_NOT_FOUND)
         serializer = PublicProfileInformationSerializer(user)
         data = serializer.data
-        return response.Response(data)
+        return Response(data)
 
 
-class ProfileUpdateView(generics.GenericAPIView):
+class ProfileUpdateView(views.APIView):
     """
     Endpoint for changing profile information
     """
-    queryset = User.objects.all()
     serializer_class = ProfileUpdateSerializer
     permission_classes = [permissions.IsAuthenticated, ]
 
     def put(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data, partial=True)
+        serializer = self.serializer_class(data=request.data, partial=True)
 
         if serializer.is_valid(raise_exception=True):
             user = request.user
             serializer.update(user, serializer.validated_data)
-            return response.Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=HTTP_204_NO_CONTENT)
 
-        return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=HTTP_400_BAD_REQUEST)

@@ -1,13 +1,20 @@
+from rest_framework.response import (
+    Response,
+)
+from rest_framework.status import (
+    HTTP_200_OK,
+    HTTP_204_NO_CONTENT,
+    HTTP_404_NOT_FOUND,
+    HTTP_400_BAD_REQUEST,
+)
 from rest_framework import (
-    generics,
     permissions,
-    response,
-    status,
     views,
 )
 from .serializers import (
     LessonSerializer,
     LessonListSerializer,
+    AttemptCommitSerializer,
 )
 from .models import (
     Lesson,
@@ -15,7 +22,6 @@ from .models import (
 )
 from django.db.models import (
     Prefetch,
-    Max,
 )
 
 
@@ -28,10 +34,10 @@ class GetLessonView(views.APIView):
         user = request.user
         lesson = Lesson.objects.filter(id=pk).first()
         if lesson is None:
-            return response.Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=HTTP_404_NOT_FOUND)
         lesson.cur_user_attempts = Attempt.objects.filter(user_id=user.id, lesson_id=pk).order_by('-id')
         serializer = LessonSerializer(lesson, read_only=True)
-        return response.Response(serializer.data)
+        return Response(serializer.data)
 
 
 class GetAllLessonsView(views.APIView):
@@ -46,4 +52,16 @@ class GetAllLessonsView(views.APIView):
             if best:
                 lesson.best_user_attempt = best
         serializer = LessonListSerializer(lessons, many=True, read_only=True)
-        return response.Response(serializer.data)
+        return Response(serializer.data)
+
+
+class CommitAttemptView(views.APIView):
+    serializer_class = AttemptCommitSerializer
+    permission_classes = [permissions.IsAuthenticated, ]
+
+    def put(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'user': request.user})
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(status=HTTP_204_NO_CONTENT)
+        return Response(status=HTTP_400_BAD_REQUEST)

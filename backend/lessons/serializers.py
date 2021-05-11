@@ -7,11 +7,24 @@ from .models import (
 
 
 class AttemptSerializer(serializers.ModelSerializer):
-    # TODO: validator for code_language existence for future write-ability
+    code = serializers.SlugRelatedField(read_only=True, slug_field='language')
+
     class Meta:
         model = Attempt
-        fields = ('id', 'score', 'speed', 'accuracy', 'code_language', 'date', 'duration')
+        fields = ('id', 'score', 'speed', 'accuracy', 'code', 'date', 'duration')
         read_only_fields = fields
+
+
+# FIXME: MAKE NORMAL VALIDATORS. OTHERWISE IT CAN BREAK THE SYSTEM
+class AttemptCommitSerializer(serializers.ModelSerializer):
+    code = serializers.PrimaryKeyRelatedField(queryset=Code.objects.all())
+
+    class Meta:
+        model = Attempt
+        fields = ('speed', 'accuracy', 'code', 'duration')
+
+    def create(self, validated_data):
+        return Attempt.objects.default_create(**self.context, **validated_data)
 
 
 class CodeSerializer(serializers.ModelSerializer):

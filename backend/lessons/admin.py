@@ -23,7 +23,11 @@ admin.site.register(Code, CodeAdmin)
 
 
 class AttemptAdmin(admin.ModelAdmin):
-    fields = ['score', 'speed', 'accuracy', 'user', 'lesson', 'code_language', 'duration']
+    fields = ['score', 'speed', 'accuracy', 'user', 'code', 'duration']
+
+    def save_model(self, request, obj, form, change):
+        obj.lesson = obj.code.lesson
+        super().save_model(request, obj, form, change)
 
 
 admin.site.register(Attempt, AttemptAdmin)
