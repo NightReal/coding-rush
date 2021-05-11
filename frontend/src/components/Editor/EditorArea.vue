@@ -1,33 +1,13 @@
 <template>
-  <div style="margin: 50px 7vw; min-width: 800px">
+  <div>
     <div style="display: flex; justify-content: space-between">
-      <div  style="white-space: nowrap">
-        <div v-if="topic || title" style="font-size: 1.5rem; margin-left: 20px; font-weight: 500">
-          {{ topic }}<span style="word-spacing: 1rem" v-if="topic && title"> — </span>{{ title }}
-        </div>
-      </div>
-      <div>
-        <v-btn min-width="90px" color="primary" dark @click="switchTyping()">
-          {{ typing ? "Stop" : "Start" }}
-        </v-btn>
-      </div>
-    </div>
-    <div style="display: flex; justify-content: space-between">
-      <v-container
-        style="width: 50%"
-        :class="editorClass">
+      <v-container style="width: 50%" :class="editorClass">
         <textarea ref="editor"></textarea>
       </v-container>
       <v-container style="width: 50%">
         <textarea ref="target"></textarea>
       </v-container>
     </div>
-    <p>
-      {{ cpm + " CPM" }}
-    </p>
-    <p>
-      {{ acc * 100 + "%" }}
-    </p>
   </div>
 </template>
 
@@ -40,21 +20,19 @@ import 'codemirror/mode/clike/clike';
 import 'codemirror/addon/scroll/scrollpastend';
 
 export default {
-  name: 'Editor',
-  props: ['targetTextProp', 'topicName', 'titleName'],
+  name: 'EditorArea',
+  props: ['targetText', 'isTyping'],
   data() {
     return {
-      targetText: this.targetTextProp,
-      topic: this.topicName,
-      title: this.titleName,
-      typing: false,
+      // targetText: this.targetTextProp,
+      cpm: null,
+      acc: null,
+      typing: this.isTyping,
       startTime: 0,
-      cpm: 0,
       mark: null,
       editorClass: '',
       cursorDefault: null,
       isBad: null,
-      acc: 1,
     };
   },
   methods: {
@@ -141,6 +119,10 @@ export default {
     },
     updateAcc() {
       const len = Math.max(this.editor.getValue().length, this.isBad.length);
+      if (len === 0) {
+        this.acc = 0;
+        return;
+      }
       let cntBad = 0;
       for (let i = 0; i < this.isBad.length; i += 1) {
         if (this.isBad[i] === 1) {
@@ -148,6 +130,20 @@ export default {
         }
       }
       this.acc = (len - cntBad) / len;
+    },
+  },
+  watch: {
+    typing() {
+      this.$emit('setTyping', this.typing);
+    },
+    cpm() {
+      this.$emit('setCPM', this.cpm);
+    },
+    acc() {
+      this.$emit('setACC', this.acc);
+    },
+    targetText() {
+      this.target.setValue(this.targetText);
     },
   },
   mounted() {
