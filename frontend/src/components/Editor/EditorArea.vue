@@ -25,9 +25,10 @@ export default {
   data() {
     return {
       // targetText: this.targetTextProp,
-      cpm: null,
-      acc: null,
+      cpm: 0,
+      acc: 1,
       typing: this.isTyping,
+      updateTimer: null,
       startTime: 0,
       mark: null,
       editorClass: '',
@@ -44,6 +45,7 @@ export default {
         this.isBad = new Array(0);
       } else {
         this.typing = false;
+        clearInterval(this.updateTimer);
       }
     },
     onChange() {
@@ -57,12 +59,18 @@ export default {
       this.updateMark();
       if (this.editor.getValue() === this.target.getValue()) {
         this.typing = false;
+        console.log('ok');
+        clearInterval(this.updateTimer);
       }
       this.scrollIntoMiddle();
     },
     beforeChange() {
       if (!this.typing) {
         this.typing = true;
+        this.updateTimer = setInterval(() => {
+          const lcp = this.getLCP(this.editor.getValue(), this.target.getValue());
+          this.updateCPM(lcp);
+        }, 150);
         this.startTime = new Date();
         this.isBad = new Array(0);
         this.editor.setValue('');
@@ -113,14 +121,14 @@ export default {
     },
     updateCPM(lcp) {
       const curTime = new Date();
-      if ((curTime - this.startTime) > 0.0001) {
+      if ((curTime - this.startTime) > 0.01) {
         this.cpm = (lcp * 1000 * 60) / (curTime - this.startTime);
       }
     },
     updateAcc() {
       const len = Math.max(this.editor.getValue().length, this.isBad.length);
       if (len === 0) {
-        this.acc = 0;
+        this.acc = 1;
         return;
       }
       let cntBad = 0;
@@ -163,6 +171,8 @@ export default {
     cmOptions.readOnly = true;
     this.target = CodeMirror.fromTextArea(this.$refs.target, cmOptions);
     this.target.setValue(this.targetText);
+    this.$emit('setCPM', this.cpm);
+    this.$emit('setACC', this.acc);
   },
 };
 </script>

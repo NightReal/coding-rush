@@ -1,7 +1,7 @@
 <template>
   <v-tooltip top :disabled="!tooltipText">
     <template v-slot:activator="scope">
-      <v-card class="pa-0 ma-0" style="width: auto">
+      <v-card class="pa-0 ma-0" style="width: auto; height: auto;" :disabled="disabled">
         <v-menu
           offset-y
           class="pa-0 ma-0"
@@ -10,6 +10,7 @@
           <template v-slot:activator="{ attrs, on }">
             <div style="display: flex">
               <v-btn class="text-capitalize pa-0 ma-0 rounded-0 rounded-l" elevation="0"
+                     :class="!on_click ? 'disable-events' : ''"
                      :color="color" @click="on_click(text)" v-bind="scope.attrs" v-on="scope.on">
                 <div class="text-capitalize" :style="`min-width: ${minWidth}; font-size: 0.95rem`">
                   {{ text }}
@@ -48,7 +49,7 @@ import '@/components/tooltip.css';
 
 export default {
   name: 'DropDownMenu',
-  props: ['text', 'minWidth', 'color', 'items', 'on_change', 'on_click', 'tooltipText'],
+  props: ['text', 'minWidth', 'color', 'items', 'on_change', 'on_click', 'tooltipText', 'disabled'],
 
   data: () => ({
     loading: true,
@@ -58,5 +59,9 @@ export default {
 </script>
 
 <style scoped>
+
+.disable-events {
+  pointer-events: none;
+}
 
 </style>
