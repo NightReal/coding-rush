@@ -1,5 +1,3 @@
-from math import round
-
 def score(speed: int, accuracy: float, difficulty: int):
     norm_cpm = speed / 400
     norm_acc = accuracy / 100
