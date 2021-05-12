@@ -48,7 +48,8 @@ export default new Vuex.Store({
       state.lastUsedLanguage = lang;
     },
     updateLastEditorWidth(state, w) {
-      if (typeof (w) !== 'number') return;
+      // eslint-disable-next-line no-restricted-globals
+      if (typeof (w) !== 'number' || isNaN(w)) return;
       localStorage.setItem('lastEditorWidth', w);
       state.lastEditorWidth = w;
     },
