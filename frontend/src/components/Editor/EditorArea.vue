@@ -45,6 +45,7 @@ export default {
         this.isBad = new Array(0);
       } else {
         this.typing = false;
+        this.updateStats();
         clearInterval(this.updateTimer);
       }
     },
@@ -57,18 +58,20 @@ export default {
       this.updateMark();
       if (this.editor.getValue() === this.target.getValue()) {
         this.typing = false;
+        this.updateStats();
         clearInterval(this.updateTimer);
       }
       this.scrollIntoMiddle();
     },
+    updateStats() {
+      const lcp = this.getLCP(this.editor.getValue(), this.target.getValue());
+      this.updateCPM(lcp);
+      this.updateAcc();
+    },
     beforeChange() {
       if (!this.typing) {
         this.typing = true;
-        this.updateTimer = setInterval(() => {
-          const lcp = this.getLCP(this.editor.getValue(), this.target.getValue());
-          this.updateCPM(lcp);
-          this.updateAcc();
-        }, 333);
+        this.updateTimer = setInterval(this.updateStats, 333);
         this.startTime = new Date();
         this.isBad = new Array(0);
         this.editor.setValue('');
