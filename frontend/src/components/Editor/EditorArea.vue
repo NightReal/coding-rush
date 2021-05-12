@@ -50,12 +50,10 @@ export default {
     },
     onChange() {
       const lcp = this.getLCP(this.editor.getValue(), this.target.getValue());
-      this.updateCPM(lcp);
       for (let i = lcp; i < this.editor.getValue().length; i += 1) {
         this.isBadSum += 1 - this.isBad[i];
         this.isBad[i] = 1;
       }
-      this.updateAcc();
       this.updateMark();
       if (this.editor.getValue() === this.target.getValue()) {
         this.typing = false;
@@ -69,7 +67,8 @@ export default {
         this.updateTimer = setInterval(() => {
           const lcp = this.getLCP(this.editor.getValue(), this.target.getValue());
           this.updateCPM(lcp);
-        }, 150);
+          this.updateAcc();
+        }, 333);
         this.startTime = new Date();
         this.isBad = new Array(0);
         this.editor.setValue('');
