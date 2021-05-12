@@ -1,6 +1,6 @@
 <template>
-  <div style="margin: 10px 7vw 50px 7vw; min-width: 800px">
-    <div style="display: flex; justify-content: space-between" v-if="ready">
+  <div style="margin: 10px 7vw 50px 7vw; min-width: 800px" v-if="ready">
+    <div style="display: flex; justify-content: space-between">
       <div style="white-space: nowrap; flex: 1 1 0; display: flex; align-items: center;
                   justify-content: space-between">
         <div v-if="topic || title" style="font-size: 1.6rem; margin-left: 20px; font-weight: 500">
@@ -87,16 +87,16 @@
     <div style="display: flex; justify-content: flex-end; margin: 0 7vw">
       <v-card style="display: inline-block">
         <v-btn v-long-press="500" class="rounded-0 rounded-l" elevation="0"
-               @long-press-start="startChangingEditorWidth(-20)"
+               @long-press-start="startChangingEditorWidth(-10)"
                @long-press-stop="stopChangingEditorWidth()"
-               @mousedown="changeEditorWidth(-20)"
+               @mousedown="changeEditorWidth(-10)"
                color="accent">
           <span style="font-size: 1.3rem">−</span>
         </v-btn>
         <v-btn v-long-press="500" class="rounded-0 rounded-r" elevation="0"
-               @long-press-start="startChangingEditorWidth(+20)"
+               @long-press-start="startChangingEditorWidth(+10)"
                @long-press-stop="stopChangingEditorWidth()"
-               @mousedown="changeEditorWidth(+20)"
+               @mousedown="changeEditorWidth(+10)"
                color="accent">
           <span style="font-size: 1.3rem">+</span>
         </v-btn>
@@ -199,7 +199,7 @@ export default {
       this.editorWidth = Math.min(window.innerWidth * 0.95, this.editorWidth);
     },
     startChangingEditorWidth(delta) {
-      this.intervalWidthEditor = setInterval(() => { this.changeEditorWidth(delta); }, 50);
+      this.intervalWidthEditor = setInterval(() => { this.changeEditorWidth(delta); }, 20);
     },
     stopChangingEditorWidth() {
       clearInterval(this.intervalWidthEditor);

@@ -61,7 +61,6 @@ export default {
   },
   methods: {
     prepareEditor() {
-      this.codes.python = '#include <bits/stdc++.h>\n\nusing namespace std;\n\nsigned main() {\n\tios_base::sync_with_stdio(false);\n\tcin.tie(nullptr);\n\tint n;\n\tcin >> n;\n\tvector<int> arr(n);\n\tfor (int &el : arr)\n\t\tcin >> el;\n\tint x;\n\tcin >> x;\n\tint l = 0, r = n;\n\twhile (r - l > 1) {\n\t\tint m = (l + r) / 2;\n\t\tif (arr[m] <= x)\n\t\t\tl = m;\n\t\telse\n\t\t\tr = m;\n\t}\n\tcout << m + 1;\n}';
       this.fixLanguage();
       this.editorReady = true;
     },
