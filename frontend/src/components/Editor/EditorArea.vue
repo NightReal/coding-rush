@@ -120,7 +120,7 @@ export default {
     },
     updateCPM(lcp) {
       const curTime = new Date();
-      if ((curTime - this.startTime) > 0.01) {
+      if ((curTime - this.startTime) > 1) {
         this.cpm = (lcp * 1000 * 60) / (curTime - this.startTime);
       }
     },

@@ -1,12 +1,14 @@
 <template>
   <div style="margin: 10px 7vw 50px 7vw; min-width: 800px">
     <div style="display: flex; justify-content: space-between" v-if="ready">
-      <div style="white-space: nowrap; flex: 1 1 0; display: flex; align-items: center">
+      <div style="white-space: nowrap; flex: 1 1 0; display: flex; align-items: center;
+                  justify-content: space-between">
         <div v-if="topic || title" style="font-size: 1.6rem; margin-left: 20px; font-weight: 500">
           {{ topic }}<span style="word-spacing: 1rem" v-if="topic && title"> — </span>{{ title }}
         </div>
       </div>
-      <div style="flex: 1 1 0; display: flex; justify-content: center" class="mx-4">
+      <div style="flex: 1 1 0; display: flex; justify-content: center; align-items: center"
+           class="mx-4">
         <div style="display: flex; flex-direction: column; text-align: center">
           <VueSvgGauge
             :start-angle="-100"
@@ -23,8 +25,8 @@
             easing="Cubic.Out"
             style="max-width: 170px"
           >
-            <div class="inner-text" style="margin-top: 80px; display: flex; justify-content: center;
-            font-size: 1.3rem">
+            <div class="inner-text" style="margin-top: 80px; display: flex;
+                                             justify-content: center; font-size: 1.3rem">
               {{ Math.min(999, Math.round(cpm)) }} cpm
             </div>
           </VueSvgGauge>
@@ -46,32 +48,38 @@
             easing="Cubic.Out"
             style="max-width: 170px"
           >
-            <div class="inner-text" style="margin-top: 80px; display: flex; justify-content: center;
-            font-size: 1.3rem">
+            <div class="inner-text" style="margin-top: 80px; display: flex;
+                                             justify-content: center; font-size: 1.3rem">
               {{ Math.round(acc * 100) }}%
             </div>
           </VueSvgGauge>
           <div style="font-weight: 600; font-size: 1.1rem; margin-top: -10px">Accuracy</div>
         </div>
       </div>
-      <div style="flex: 1 1 0; display: flex; justify-content: center; align-items: center">
-        <v-btn :color="typing ? '#ce0000' : '#00e000'" min-width="124px" class="mr-5"
+      <div style="flex: 1 1 0; display: flex; justify-content: center; align-items: center;">
+        <v-btn :color="typing ? '#ce0000' : '#00e000'" min-width="124px" min-height="45px"
+               class="mr-5"
                @click="switchTyping()">
-          <div class="text-capitalize" :style="`color: ${typing ? '#ffffff' : '#000000'}`"
-               style="font-size: 1rem">
-            {{ typing ? 'Stop' : 'Start' }}
+          <div v-if="!typing" class="text-capitalize" style="color: #000000; font-size: 1.1rem">
+            Start
+          </div>
+          <div v-else
+               style="font-family: monospace; font-size: 1.2rem; font-weight: 600;
+               color: #ffffff;
+                      letter-spacing: 0.05rem; word-spacing: -0.5rem; white-space: nowrap;">
+            {{ formatTime() }}
           </div>
         </v-btn>
         <DropDownMenu :text="language" :disabled="typing"
-                      min-width="100px" :color="lang_colors[language]"
+                      min-width="100px" min-height="45px" :color="lang_colors[language]"
                       :items="Object.keys(texts)"
-                      :on_change="changeLang"
+                      :on_change="changeLang" font-size="1.1rem"
                       :tooltip-text="`${this.typing ? 'Stop' : 'Start'} typing!`"></DropDownMenu>
       </div>
     </div>
     <EditorArea v-if="editorAreaReady" ref="editor"
                 :target-text="texts[language]" :is-typing="typing"
-                @setTyping="typing = $event"
+                @setTyping="typing = $event; duration = 0"
                 @setCPM="cpm = $event" @setACC="acc = $event"></EditorArea>
   </div>
 </template>
@@ -81,10 +89,12 @@ import EditorArea from '@/components/Editor/EditorArea.vue';
 import { langColors } from '@/components/TextChoose/Languages';
 import DropDownMenu from '@/components/DropDownMenu.vue';
 import { VueSvgGauge } from 'vue-svg-gauge';
+// import Timer from '@/components/Editor/Timer.vue';
 
 export default {
   name: 'EditorView',
   components: {
+    // Timer,
     DropDownMenu,
     EditorArea,
     // eslint-disable-next-line
@@ -105,6 +115,8 @@ export default {
       cpm: 0,
       acc: 0,
       lang_colors: langColors,
+      duration: 0,
+      timer: null,
     };
   },
   mounted() {
@@ -118,6 +130,13 @@ export default {
         this.onReady();
       }
     },
+    typing() {
+      if (this.typing) {
+        this.timer = setInterval(this.updateDuration, 1000);
+      } else {
+        clearInterval(this.timer);
+      }
+    },
   },
   methods: {
     onReady() {
@@ -125,6 +144,7 @@ export default {
       this.editorAreaReady = true;
     },
     switchTyping() {
+      this.duration = 0;
       this.$refs.editor.switchTyping();
     },
     changeLang(lang) {
@@ -132,6 +152,22 @@ export default {
         this.switchTyping();
       }
       this.$emit('setLang', lang);
+    },
+    formatTime() {
+      const s = this.duration % 60;
+      const m = Math.floor(this.duration / 60) % 60;
+      const h = Math.floor(this.duration / 3600);
+      const ss = ('0' + s).slice(-2); // eslint-disable-line prefer-template
+      const mm = ('0' + m).slice(-2); // eslint-disable-line prefer-template
+      if (h === 0) {
+        return mm + ' : ' + ss; // eslint-disable-line prefer-template
+      }
+      return (h <= 9 ? '0' : '') + h + ' : ' + mm + ' : ' + ss; // eslint-disable-line prefer-template
+    },
+    updateDuration() {
+      const curTime = new Date();
+      const seconds = (curTime - this.$refs.editor.startTime) / 1000;
+      this.duration = Math.floor(seconds);
     },
   },
 };
