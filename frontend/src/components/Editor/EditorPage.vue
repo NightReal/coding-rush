@@ -64,9 +64,8 @@
             Start
           </div>
           <div v-else
-               style="font-family: monospace; font-size: 1.2rem; font-weight: 600;
-               color: #ffffff;
-                      letter-spacing: 0.05rem; word-spacing: -0.5rem; white-space: nowrap;">
+               style="font-family: monospace; font-size: 1.2rem; font-weight: 600; color: #ffffff;
+               letter-spacing: 0.05rem; word-spacing: -0.5rem; white-space: nowrap;">
             {{ formatTime() }}
           </div>
         </v-btn>
@@ -77,10 +76,32 @@
                       :tooltip-text="`${this.typing ? 'Stop' : 'Start'} typing!`"></DropDownMenu>
       </div>
     </div>
-    <EditorArea v-if="editorAreaReady" ref="editor"
-                :target-text="texts[language]" :is-typing="typing"
-                @setTyping="typing = $event; duration = 0"
-                @setCPM="cpm = $event" @setACC="acc = $event"></EditorArea>
+    <div style="display: flex; justify-content: center">
+      <div :style="`min-width: ${editorWidth}px; max-width: ${editorWidth}px`">
+        <EditorArea v-if="editorAreaReady" ref="editor"
+                    :target-text="texts[language]" :is-typing="typing"
+                    @setTyping="typing = $event; duration = 0"
+                    @setCPM="cpm = $event" @setACC="acc = $event"></EditorArea>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; margin: 0 7vw">
+      <v-card style="display: inline-block">
+        <v-btn v-long-press="500" class="rounded-0 rounded-l" elevation="0"
+               @long-press-start="startChangingEditorWidth(-20)"
+               @long-press-stop="stopChangingEditorWidth()"
+               @mousedown="changeEditorWidth(-20)"
+               color="accent">
+          <span style="font-size: 1.3rem">−</span>
+        </v-btn>
+        <v-btn v-long-press="500" class="rounded-0 rounded-r" elevation="0"
+               @long-press-start="startChangingEditorWidth(+20)"
+               @long-press-stop="stopChangingEditorWidth()"
+               @mousedown="changeEditorWidth(+20)"
+               color="accent">
+          <span style="font-size: 1.3rem">+</span>
+        </v-btn>
+      </v-card>
+    </div>
   </div>
 </template>
 
@@ -89,16 +110,17 @@ import EditorArea from '@/components/Editor/EditorArea.vue';
 import { langColors } from '@/components/TextChoose/Languages';
 import DropDownMenu from '@/components/DropDownMenu.vue';
 import { VueSvgGauge } from 'vue-svg-gauge';
-// import Timer from '@/components/Editor/Timer.vue';
+import LongPress from 'vue-directive-long-press';
 
 export default {
   name: 'EditorView',
   components: {
-    // Timer,
     DropDownMenu,
     EditorArea,
-    // eslint-disable-next-line
     VueSvgGauge,
+  },
+  directives: {
+    'long-press': LongPress,
   },
   props: [
     'textid',
@@ -117,6 +139,8 @@ export default {
       lang_colors: langColors,
       duration: 0,
       timer: null,
+      editorWidth: 1300,
+      intervalWidthEditor: null,
     };
   },
   mounted() {
@@ -168,6 +192,17 @@ export default {
       const curTime = new Date();
       const seconds = (curTime - this.$refs.editor.startTime) / 1000;
       this.duration = Math.floor(seconds);
+    },
+    changeEditorWidth(delta) {
+      this.editorWidth += delta;
+      this.editorWidth = Math.max(600, this.editorWidth);
+      this.editorWidth = Math.min(window.innerWidth * 0.95, this.editorWidth);
+    },
+    startChangingEditorWidth(delta) {
+      this.intervalWidthEditor = setInterval(() => { this.changeEditorWidth(delta); }, 50);
+    },
+    stopChangingEditorWidth() {
+      clearInterval(this.intervalWidthEditor);
     },
   },
 };
