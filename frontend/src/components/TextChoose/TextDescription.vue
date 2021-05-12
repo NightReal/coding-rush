@@ -56,7 +56,7 @@ export default {
   }),
 
   mounted() {
-    this.lang = this.default_lang;
+    this.lang = this.default_lang ? this.default_lang : this.$store.getters.lastUsedLanguage;
     APIHelper.get(`/lessons/${this.textid}`)
       .then((e) => {
         this.description = e.data.description;
@@ -70,8 +70,10 @@ export default {
           this.codes[code.language] = code.code;
         }
         if (this.codes[this.lang] === undefined) {
-          this.lang = e.data.codes[0].language;
-          changeLanguage(this.lang);
+          if (e.data.codes.length !== 0) {
+            this.lang = e.data.codes[0].language;
+            changeLanguage(this.lang);
+          }
         }
         this.loading = false;
       })

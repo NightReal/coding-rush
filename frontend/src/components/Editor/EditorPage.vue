@@ -6,7 +6,7 @@
           {{ topic }}<span style="word-spacing: 1rem" v-if="topic && title"> — </span>{{ title }}
         </div>
       </div>
-      <div style="flex: 1 1 0; display: flex; justify-content: center">
+      <div style="flex: 1 1 0; display: flex; justify-content: center" class="mx-4">
         <div style="display: flex; flex-direction: column; text-align: center">
           <VueSvgGauge
             :start-angle="-100"
@@ -25,7 +25,7 @@
           >
             <div class="inner-text" style="margin-top: 80px; display: flex; justify-content: center;
             font-size: 1.3rem">
-              {{ min(999, Math.round(cpm)) }} cpm
+              {{ Math.min(999, Math.round(cpm)) }} cpm
             </div>
           </VueSvgGauge>
           <div style="font-weight: 600; font-size: 1.1rem; margin-top: -10px">Speed</div>

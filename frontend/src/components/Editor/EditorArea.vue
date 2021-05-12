@@ -59,7 +59,6 @@ export default {
       this.updateMark();
       if (this.editor.getValue() === this.target.getValue()) {
         this.typing = false;
-        console.log('ok');
         clearInterval(this.updateTimer);
       }
       this.scrollIntoMiddle();
