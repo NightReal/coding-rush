@@ -194,7 +194,8 @@ export default {
 
 .CodeMirror-vscrollbar {
   display: block !important;
-  bottom: 0px;
+  z-index: 1;
+  bottom: 0;
 }
 
 </style>

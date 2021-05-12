@@ -189,6 +189,8 @@ export default {
       return (h <= 9 ? '0' : '') + h + ' : ' + mm + ' : ' + ss; // eslint-disable-line prefer-template
     },
     saveEditorWidth() {
+      // eslint-disable-next-line no-restricted-globals
+      if (isNaN(this.editorWidth)) console.log('wtf');
       this.$store.commit('updateLastEditorWidth', this.editorWidth);
     },
     updateDuration() {
