@@ -26,7 +26,7 @@ class Code(models.Model):
     id = models.AutoField(primary_key=True)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='codes')
     language = models.CharField(choices=LANGUAGES_CHOICES, default='python', max_length=10)
-    code = models.CharField(blank=True, max_length=10000)
+    code = models.TextField(blank=True, max_length=10000)
 
     class Meta:
         unique_together = ['lesson', 'language']
