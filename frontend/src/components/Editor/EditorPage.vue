@@ -139,7 +139,7 @@ export default {
       lang_colors: langColors,
       duration: 0,
       timer: null,
-      editorWidth: 1300,
+      editorWidth: this.$store.getters.lastEditorWidth || 1300,
       intervalWidthEditor: null,
     };
   },
@@ -188,6 +188,9 @@ export default {
       }
       return (h <= 9 ? '0' : '') + h + ' : ' + mm + ' : ' + ss; // eslint-disable-line prefer-template
     },
+    saveEditorWidth() {
+      this.$store.commit('updateLastEditorWidth', this.editorWidth);
+    },
     updateDuration() {
       const curTime = new Date();
       const seconds = (curTime - this.$refs.editor.startTime) / 1000;
@@ -197,12 +200,15 @@ export default {
       this.editorWidth += delta;
       this.editorWidth = Math.max(600, this.editorWidth);
       this.editorWidth = Math.min(window.innerWidth * 0.95, this.editorWidth);
+      if (!this.intervalWidthEditor) this.saveEditorWidth();
     },
     startChangingEditorWidth(delta) {
       this.intervalWidthEditor = setInterval(() => { this.changeEditorWidth(delta); }, 20);
     },
     stopChangingEditorWidth() {
       clearInterval(this.intervalWidthEditor);
+      this.intervalWidthEditor = null;
+      this.saveEditorWidth();
     },
   },
 };

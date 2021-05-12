@@ -11,10 +11,12 @@ export default new Vuex.Store({
     refreshToken: localStorage.getItem('refreshToken') || null,
     user: {},
     lastUsedLanguage: localStorage.getItem('lastUsedLanguage') || 'c++',
+    lastEditorWidth: localStorage.getItem('lastEditorWidth') || 1300,
   },
   getters: {
     isAuthenticated: (state) => state.accessToken != null,
     lastUsedLanguage: (state) => state.lastUsedLanguage,
+    lastEditorWidth: (state) => state.lastEditorWidth,
   },
   mutations: {
     destroyToken(state) {
@@ -44,6 +46,11 @@ export default new Vuex.Store({
     updateLastUsedLanguage(state, lang) {
       localStorage.setItem('lastUsedLanguage', lang);
       state.lastUsedLanguage = lang;
+    },
+    updateLastEditorWidth(state, w) {
+      if (typeof (w) !== 'number') return;
+      localStorage.setItem('lastEditorWidth', w);
+      state.lastEditorWidth = w;
     },
   },
   actions: {
