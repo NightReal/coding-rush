@@ -23,7 +23,7 @@
         </div>
         <div v-html="description"></div>
       </div>
-      <AttemptsList v-if="attempts !== null" :attempts="attempts"></AttemptsList>
+      <AttemptsList v-if="attempts !== null" :attempts="attempts" class="mb-16"></AttemptsList>
     </div>
   </div>
 </template>
