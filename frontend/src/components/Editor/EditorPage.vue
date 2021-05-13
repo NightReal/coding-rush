@@ -28,8 +28,7 @@
         <DropDownMenu :text="language" :disabled="typing"
                       min-width="100px" min-height="45px" :color="lang_colors[language]"
                       :items="Object.keys(texts)"
-                      :on_change="changeLang" font-size="1.1rem"
-                      :tooltip-text="`${this.typing ? 'Stop' : 'Start'} typing!`"></DropDownMenu>
+                      :on_change="changeLang" font-size="1.1rem"></DropDownMenu>
       </div>
     </div>
     <div style="display: flex; justify-content: center">

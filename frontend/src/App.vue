@@ -12,11 +12,8 @@
 
 <script>
 
-// import HeaderAuth from '@/components/Headers/HeaderAuth.vue';
-// import HeaderUnauth from '@/components/Headers/HeaderUnauth.vue';
 import Header from '@/components/Headers/Header.vue';
 import Footer from '@/components/Footer.vue';
-import store from '@/store/index';
 
 export default {
   name: 'App',
@@ -24,14 +21,6 @@ export default {
   components: {
     Header,
     Footer,
-  },
-  methods: {
-    isAuthenticated() {
-      return store.getters.isAuthenticated;
-    },
-    isRoot() {
-      return this.$route.name === 'Root';
-    },
   },
 };
 </script>
