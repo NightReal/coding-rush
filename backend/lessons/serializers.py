@@ -30,7 +30,7 @@ class AttemptCommitSerializer(serializers.ModelSerializer):
 class CodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Code
-        fields = ('language', 'code')
+        fields = ('id', 'language', 'code')
         read_only_fields = fields
 
 
