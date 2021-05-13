@@ -15,6 +15,7 @@ from .serializers import (
     LessonSerializer,
     LessonListSerializer,
     AttemptCommitSerializer,
+    AttemptSerializer,
 )
 from .models import (
     Lesson,
@@ -60,8 +61,9 @@ class CommitAttemptView(views.APIView):
     permission_classes = [permissions.IsAuthenticated, ]
 
     def put(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data, context={'user': request.user})
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(status=HTTP_204_NO_CONTENT)
+        commit_serializer = self.serializer_class(data=request.data, context={'user': request.user})
+        if commit_serializer.is_valid(raise_exception=True):
+            attempt = commit_serializer.save()
+            ret_serializer = AttemptSerializer(attempt)
+            return Response(status=HTTP_200_OK, data=ret_serializer.data)
         return Response(status=HTTP_400_BAD_REQUEST)
