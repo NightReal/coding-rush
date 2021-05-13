@@ -40,7 +40,13 @@
                     @setCPM="cpm = $event" @setACC="acc = $event"></EditorArea>
       </div>
     </div>
-    <div style="display: flex; justify-content: flex-end; margin: 0 7vw">
+    <div style="display: flex; justify-content: space-between; margin: 0 7vw">
+
+      <v-btn class="text-capitalize" color="#ff8200" style="color: white; font-size: 0.95rem"
+             @click="$router.push(`/text/${textid}`)">
+        <v-icon class="ml-n2 mr-1">mdi-chevron-left</v-icon>
+        Back to lesson
+      </v-btn>
       <v-card style="display: inline-block">
         <v-btn v-long-press="500" class="rounded-0 rounded-l" elevation="0"
                @long-press-start="startChangingEditorWidth(-10)"
