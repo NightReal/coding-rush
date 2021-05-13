@@ -67,7 +67,7 @@ export default {
         this.codes = {};
         // eslint-disable-next-line no-restricted-syntax
         for (const code of e.data.codes) {
-          this.codes[code.language] = code.code;
+          this.codes[code.language] = { code: code.code, id: code.id };
         }
         if (this.codes[this.lang] === undefined) {
           if (e.data.codes.length !== 0) {

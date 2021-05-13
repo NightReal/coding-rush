@@ -2,7 +2,7 @@
   <div>
     <page-loader :loading="loading"></page-loader>
     <EditorPage :texts="codes" :topic="topic" :title="title"
-                :ready="editorReady" :language="lang" :textid="textid"
+                :ready="editorReady" :language="lang" :textid="id"
                 @setLang="setLang"></EditorPage>
   </div>
 </template>
@@ -34,17 +34,18 @@ export default {
       codes: null,
       lang: this.language ? this.language : this.$store.getters.lastUsedLanguage,
       editorReady: false,
+      id: parseInt(this.textid, 10),
     };
   },
   mounted() {
     if (this.texts === undefined) {
       this.loading = true;
-      APIHelper.get(`/lessons/${this.textid}`)
+      APIHelper.get(`/lessons/${this.id}`)
         .then((e) => {
           this.codes = {};
           // eslint-disable-next-line no-restricted-syntax
           for (const code of e.data.codes) {
-            this.codes[code.language] = code.code;
+            this.codes[code.language] = { code: code.code, id: code.id };
           }
           this.topic = e.data.topic;
           this.title = e.data.title;

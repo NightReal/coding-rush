@@ -9,52 +9,8 @@
       </div>
       <div style="flex: 1 1 0; display: flex; justify-content: center; align-items: center"
            class="mx-4">
-        <div style="display: flex; flex-direction: column; text-align: center">
-          <VueSvgGauge
-            :start-angle="-100"
-            :end-angle="100"
-            :value="cpm"
-            :separator-step="100"
-            :min="0"
-            :max="500"
-            :scale-interval="0"
-            :inner-radius="50"
-            :gauge-color="[{ offset: 0, color: '#0056b1'},
-                           { offset: 50, color: '#00a8a4'},
-                           { offset: 100, color: '#00cb51'}]"
-            easing="Cubic.Out"
-            style="max-width: 170px"
-          >
-            <div class="inner-text" style="margin-top: 80px; display: flex;
-                                             justify-content: center; font-size: 1.3rem">
-              {{ Math.min(999, Math.round(cpm)) }} cpm
-            </div>
-          </VueSvgGauge>
-          <div style="font-weight: 600; font-size: 1.1rem; margin-top: -10px">Speed</div>
-        </div>
-        <div class="ml-5" style="display: flex; flex-direction: column; text-align: center">
-          <VueSvgGauge
-            :start-angle="-100"
-            :end-angle="100"
-            :value="acc * 100"
-            :separator-step="25"
-            :min="0"
-            :max="100"
-            :scale-interval="0"
-            :inner-radius="50"
-            :gauge-color="[{ offset: 0, color: '#aa0000'},
-                           { offset: 50, color: '#ff992e'},
-                           { offset: 100, color: '#ffe600'}]"
-            easing="Cubic.Out"
-            style="max-width: 170px"
-          >
-            <div class="inner-text" style="margin-top: 80px; display: flex;
-                                             justify-content: center; font-size: 1.3rem">
-              {{ Math.round(acc * 100) }}%
-            </div>
-          </VueSvgGauge>
-          <div style="font-weight: 600; font-size: 1.1rem; margin-top: -10px">Accuracy</div>
-        </div>
+        <SpeedBar :cpm="cpm" max-width="170px" font-size="1.1rem" :max-cpm="999"></SpeedBar>
+        <AccuracyBar :acc="acc" max-width="170px" font-size="1.1rem"></AccuracyBar>
       </div>
       <div style="flex: 1 1 0; display: flex; justify-content: center; align-items: center;">
         <v-btn :color="typing ? '#ce0000' : '#00e000'" min-width="124px" min-height="45px"
@@ -79,8 +35,8 @@
     <div style="display: flex; justify-content: center">
       <div :style="`min-width: ${editorWidth}px; max-width: ${editorWidth}px`">
         <EditorArea v-if="editorAreaReady" ref="editor"
-                    :target-text="texts[language]" :is-typing="typing"
-                    @setTyping="typing = $event; duration = 0"
+                    :target-text="texts[language].code" :is-typing="typing"
+                    @setTyping="setTyping"
                     @setCPM="cpm = $event" @setACC="acc = $event"></EditorArea>
       </div>
     </div>
@@ -90,18 +46,23 @@
                @long-press-start="startChangingEditorWidth(-10)"
                @long-press-stop="stopChangingEditorWidth()"
                @mousedown="changeEditorWidth(-10)"
-               color="accent">
+               color="#ff8200" style="color: white">
           <span style="font-size: 1.3rem">−</span>
         </v-btn>
         <v-btn v-long-press="500" class="rounded-0 rounded-r" elevation="0"
                @long-press-start="startChangingEditorWidth(+10)"
                @long-press-stop="stopChangingEditorWidth()"
                @mousedown="changeEditorWidth(+10)"
-               color="accent">
+               color="#ff8200" style="color: white">
           <span style="font-size: 1.3rem">+</span>
         </v-btn>
       </v-card>
     </div>
+    <v-dialog v-model="finished" max-width="900"
+              transition="slide-y-transition" persistent>
+      <AttemptResult :cpm="cpm" :acc="acc" :duration="duration" :score="score"
+                     :committed="committed" :lesson_id="textid"></AttemptResult>
+    </v-dialog>
   </div>
 </template>
 
@@ -109,15 +70,21 @@
 import EditorArea from '@/components/Editor/EditorArea.vue';
 import { langColors } from '@/components/TextChoose/Languages';
 import DropDownMenu from '@/components/DropDownMenu.vue';
-import { VueSvgGauge } from 'vue-svg-gauge';
 import LongPress from 'vue-directive-long-press';
+import AttemptResult from '@/components/Editor/AttemptResult.vue';
+import SpeedBar from '@/components/Editor/SpeedBar.vue';
+import AccuracyBar from '@/components/Editor/AccuracyBar.vue';
+import { formatTime } from '@/components/Editor/formatTime';
+import APIHelper from '@/api/apihelper';
 
 export default {
   name: 'EditorView',
   components: {
+    AccuracyBar,
+    SpeedBar,
+    AttemptResult,
     DropDownMenu,
     EditorArea,
-    VueSvgGauge,
   },
   directives: {
     'long-press': LongPress,
@@ -141,6 +108,9 @@ export default {
       timer: null,
       editorWidth: this.$store.getters.lastEditorWidth || 1300,
       intervalWidthEditor: null,
+      finished: false,
+      score: null,
+      committed: false,
     };
   },
   mounted() {
@@ -164,7 +134,6 @@ export default {
   },
   methods: {
     onReady() {
-      this.code = this.texts[this.language];
       this.editorAreaReady = true;
     },
     switchTyping() {
@@ -178,15 +147,7 @@ export default {
       this.$emit('setLang', lang);
     },
     formatTime() {
-      const s = this.duration % 60;
-      const m = Math.floor(this.duration / 60) % 60;
-      const h = Math.floor(this.duration / 3600);
-      const ss = ('0' + s).slice(-2); // eslint-disable-line prefer-template
-      const mm = ('0' + m).slice(-2); // eslint-disable-line prefer-template
-      if (h === 0) {
-        return mm + ' : ' + ss; // eslint-disable-line prefer-template
-      }
-      return (h <= 9 ? '0' : '') + h + ' : ' + mm + ' : ' + ss; // eslint-disable-line prefer-template
+      return formatTime(this.duration);
     },
     saveEditorWidth() {
       // eslint-disable-next-line no-restricted-globals
@@ -210,6 +171,31 @@ export default {
       clearInterval(this.intervalWidthEditor);
       this.intervalWidthEditor = null;
       this.saveEditorWidth();
+    },
+    setTyping(t) {
+      this.typing = t;
+      if (t) this.duration = 0;
+      else if (this.$refs.editor.finished) this.finishAttempt();
+    },
+    finishAttempt() {
+      this.updateDuration();
+      const speed = Math.round(this.$refs.editor.cpm);
+      const accuracy = this.$refs.editor.acc * 100;
+      APIHelper.put('lessons/commitAttempt/', {
+        speed,
+        accuracy,
+        duration: this.duration,
+        code: this.texts[this.language].id,
+      })
+        .then((e) => {
+          this.score = e.data.score;
+          this.cpm = e.data.speed;
+          this.acc = e.data.accuracy / 100;
+          this.duration = e.data.duration;
+          this.committed = true;
+        })
+        .catch((err) => console.log(err));
+      this.finished = true;
     },
   },
 };

@@ -34,6 +34,7 @@ export default {
       editorClass: '',
       cursorDefault: null,
       isBad: null,
+      finished: false,
     };
   },
   methods: {
@@ -58,6 +59,7 @@ export default {
       this.updateMark();
       if (this.editor.getValue() === this.target.getValue()) {
         this.typing = false;
+        this.finished = true;
         this.updateStats();
         clearInterval(this.updateTimer);
       }
@@ -71,6 +73,7 @@ export default {
     beforeChange() {
       if (!this.typing) {
         this.typing = true;
+        this.finished = false;
         this.updateTimer = setInterval(this.updateStats, 333);
         this.startTime = new Date();
         this.isBad = new Array(0);
