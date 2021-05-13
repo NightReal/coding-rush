@@ -35,7 +35,7 @@
                style="display: flex; align-items: center;">
             <div style="width: 2.5vw"></div>
             <v-btn @click="goto('/')" text class="header-btn">Home</v-btn>
-            <v-btn @click="goto('/lessons')" text class="header-btn">Typing</v-btn>
+            <v-btn @click="goto('/lessons')" text class="header-btn">Lessons</v-btn>
             <div style="width: 2.5vw"></div>
             <v-btn @click="signOutDialog = true" text class="header-btn">Sign out</v-btn>
           </div>

@@ -2,6 +2,12 @@
   <div>
     <page-loader :loading="loading"></page-loader>
     <v-container style="display: flex; flex-direction: column; align-items: center">
+      <div class="mb-10" style="display: flex; flex-direction: column; align-items: center">
+        <div style="font-size: 2.5rem; font-weight: 600" class="mb-3">Lessons</div>
+        <div style="color: #444444; font-size: 1.2rem; max-width: 500px; text-align: center;">
+          Choose topic, lesson and programming language to learn algorithm and practice it.
+        </div>
+      </div>
       <Topic v-for="(texts, topic, i) in texts" v-bind:key="topic"
              :texts="texts" :color="colors[i % colors.length]"
              :topic="topic"></Topic>
