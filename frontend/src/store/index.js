@@ -16,7 +16,7 @@ export default new Vuex.Store({
   getters: {
     isAuthenticated: (state) => state.accessToken != null,
     lastUsedLanguage: (state) => state.lastUsedLanguage,
-    lastEditorWidth: (state) => state.lastEditorWidth,
+    lastEditorWidth: (state) => parseInt(state.lastEditorWidth, 10),
   },
   mutations: {
     destroyToken(state) {
