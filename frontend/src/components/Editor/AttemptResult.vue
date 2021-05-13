@@ -56,12 +56,12 @@
     <div style="display: flex; justify-content: space-between; width: 100%">
       <div>
         <v-btn class="mx-1 text-capitalize dbutton" color="#ff8200" style="color: white"
-               @click="$router.push(`/text/${lesson_id}`)">
+               @click="$router.push(`/lesson/${lesson_id}`)">
           <v-icon class="ml-n2 mr-1">mdi-format-list-bulleted</v-icon>
           Attempts
         </v-btn>
         <v-btn class="mx-1 text-capitalize dbutton" color="#ff8200" style="color: white"
-               @click="$router.push('/texts')">
+               @click="$router.push('/lessons')">
           <v-icon class="ml-n2 mr-1 ">mdi-view-grid-outline</v-icon>
           Lessons
         </v-btn>
@@ -73,7 +73,7 @@
           Try again
         </v-btn>
         <v-btn class="mx-1 text-capitalize dbutton" color="#ff8200" style="color: white"
-               @click="$router.push(`/text/${lesson_id + 1}`)">
+               @click="$router.push(`/lesson/${lesson_id + 1}`)">
           <v-icon class="ml-n2 mr-1">mdi-chevron-right</v-icon>
           Next lesson
         </v-btn>

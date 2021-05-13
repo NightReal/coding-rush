@@ -43,7 +43,7 @@
     <div style="display: flex; justify-content: space-between; margin: 0 7vw">
 
       <v-btn class="text-capitalize" color="#ff8200" style="color: white; font-size: 0.95rem"
-             @click="$router.push(`/text/${textid}`)">
+             @click="$router.push(`/lesson/${textid}`)">
         <v-icon class="ml-n2 mr-1">mdi-chevron-left</v-icon>
         Back to lesson
       </v-btn>

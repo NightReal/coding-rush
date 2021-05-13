@@ -81,7 +81,7 @@ export default {
       if (lang) {
         changeLanguage(lang);
       }
-      this.$router.push(`/text/${this.text.id}`);
+      this.$router.push(`/lesson/${this.text.id}`);
     },
   },
 };

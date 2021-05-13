@@ -34,7 +34,7 @@ const routes = [
     props: true,
   },
   {
-    path: '/texts',
+    path: '/lessons',
     name: 'Text Choose',
     component: TextChooseView,
     meta: {
@@ -42,7 +42,7 @@ const routes = [
     },
   },
   {
-    path: '/text/:textid',
+    path: '/lesson/:textid',
     name: 'Text Description',
     component: TextDescriptionView,
     meta: {
