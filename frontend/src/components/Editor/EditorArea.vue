@@ -44,6 +44,7 @@ export default {
         this.editor.focus();
         this.startTime = new Date();
         this.isBad = new Array(0);
+        this.isBadSum = 0;
       } else {
         this.typing = false;
         this.updateStats();
@@ -54,6 +55,9 @@ export default {
       const lcp = this.getLCP(this.editor.getValue(), this.target.getValue());
       for (let i = Math.max(lcp, this.editor.getValue().length - 1);
         i < this.editor.getValue().length; i += 1) {
+        if (!(i in this.isBad)) {
+          this.isBad[i] = 0;
+        }
         this.isBadSum += 1 - this.isBad[i];
         this.isBad[i] = 1;
       }
@@ -72,7 +76,6 @@ export default {
       this.updateAcc();
     },
     beforeChange(...[, changeObj]) {
-      console.log(changeObj);
       if (changeObj.origin === 'paste') {
         changeObj.cancel();
         return;
@@ -84,6 +87,7 @@ export default {
         this.startTime = new Date();
         this.isBad = new Array(0);
         this.editor.setValue('');
+        this.isBadSum = 0;
       }
     },
     scrollIntoMiddle() {
@@ -141,13 +145,7 @@ export default {
         this.acc = 1;
         return;
       }
-      let cntBad = 0;
-      for (let i = 0; i < this.isBad.length; i += 1) {
-        if (this.isBad[i] === 1) {
-          cntBad += 1;
-        }
-      }
-      this.acc = (len - cntBad) / len;
+      this.acc = (len - this.isBadSum) / len;
     },
   },
   watch: {
