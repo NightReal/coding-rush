@@ -52,7 +52,8 @@ export default {
     },
     onChange() {
       const lcp = this.getLCP(this.editor.getValue(), this.target.getValue());
-      for (let i = lcp; i < this.editor.getValue().length; i += 1) {
+      for (let i = Math.max(lcp, this.editor.getValue().length - 1);
+        i < this.editor.getValue().length; i += 1) {
         this.isBadSum += 1 - this.isBad[i];
         this.isBad[i] = 1;
       }
