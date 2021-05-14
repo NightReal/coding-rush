@@ -71,7 +71,12 @@ export default {
       this.updateCPM(lcp);
       this.updateAcc();
     },
-    beforeChange() {
+    beforeChange(...[, changeObj]) {
+      console.log(changeObj);
+      if (changeObj.origin === 'paste') {
+        changeObj.cancel();
+        return;
+      }
       if (!this.typing) {
         this.typing = true;
         this.finished = false;
