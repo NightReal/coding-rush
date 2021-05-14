@@ -63,7 +63,7 @@ export default {
       }
       this.loading = true;
       this.$store.dispatch('login', { username: this.username, password: this.password })
-        .then(() => (this.$route.path !== '/' ? this.$router.push('/') : {}))
+        .then(() => (this.$route.path !== '/' ? this.$router.go('/') : {}))
         .catch((err) => this.showSmthWrong(err))
         .then(() => { this.loading = false; });
     },

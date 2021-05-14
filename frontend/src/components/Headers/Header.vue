@@ -19,8 +19,8 @@
       </v-card>
     </v-dialog>
     <div class="mb-12">
-      <v-app-bar app dense color="primary" dark
-                 v-bind:elevate-on-scroll="isMainPage() && !isAuthed()" class="ma-0 pa-0">
+      <v-app-bar app dense color="primary" dark class="ma-0 pa-0"
+                 :elevate-on-scroll="isAboutPage()">
         <div style="display: flex; justify-content: flex-start;
                     padding: 0; margin: 0; width: 100%; height: 100%">
           <div style="display: flex; align-items: center; margin-right: 16px">
@@ -62,24 +62,26 @@ export default {
   components: {},
   data() {
     return {
-      drawer: false,
       signOutDialog: false,
     };
   },
   methods: {
-    goto(item) {
-      this.$router.push(item).catch((e) => e);
-      this.drawer = false;
+    goto(item, reload) {
+      if (reload) {
+        this.$router.go(item);
+      } else {
+        this.$router.push(item).catch((e) => e);
+      }
     },
-    isMainPage() {
-      return this.$route.name === 'Root';
+    isAboutPage() {
+      return this.$route.name === 'About';
     },
     isAuthed() {
       return store.getters.isAuthenticated;
     },
     signout() {
       this.$store.dispatch('logout')
-        .then(() => this.goto('/'))
+        .then(() => this.goto('/', true))
         // eslint-disable-next-line no-console
         .catch((err) => console.log(err));
     },

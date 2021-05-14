@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import TextChooseView from '@/views/TextChooseView.vue';
 import TextDescriptionView from '@/views/TextDescriptionView.vue';
-import HomeView from '../views/HomeView.vue';
+// import HomeView from '../views/HomeView.vue';
 import MainView from '../views/MainView.vue';
 import LoginView from '../views/LoginView.vue';
 import EditorView from '../views/EditorView.vue';
@@ -18,11 +18,10 @@ function isAuthed() {
 
 const routes = [
   {
-    path: '/',
-    name: 'Root',
-    component: {
-      render: (c) => c(isAuthed() ? HomeView : MainView),
-    },
+    path: '/about',
+    name: 'About',
+    component: MainView,
+    alias: '/',
   },
   {
     path: '/type/:textid',
@@ -85,11 +84,21 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (isAuthed() && to.matched.some((record) => record.meta.requiresDisAuth)) {
     next(from);
-  } else if (!isAuthed() && to.matched.some((record) => record.meta.requiresAuth)) {
-    next('/signin');
-  } else {
-    next();
+    return;
   }
+  if (!isAuthed() && to.matched.some((record) => record.meta.requiresAuth)) {
+    next('/signin');
+    return;
+  }
+  if (to.path === '/' && isAuthed()) {
+    store.dispatch('getUser').then(() => {
+      const { username } = store.getters.user;
+      next(`/profile/${username}`);
+    });
+    return;
+  }
+  console.log(to);
+  next();
 });
 
 export default router;
