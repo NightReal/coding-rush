@@ -31,13 +31,20 @@
               Coding Rush
             </div>
           </div>
-          <div v-if="isAuthed()"
-               style="display: flex; align-items: center;">
+          <div v-if="isAuthed()" style="display: flex; align-items: center; width: 100%">
             <div style="width: 2.5vw"></div>
-            <v-btn @click="goto('/')" text class="header-btn">Home</v-btn>
-            <v-btn @click="goto('/lessons')" text class="header-btn">Lessons</v-btn>
+            <div style="display: flex; align-items: center; height: 100%;
+                        justify-content: space-between; width: 100%">
+              <div style="display: flex; align-items: center; height: 100%">
+                <v-btn @click="goto('/lessons')" text class="header-btn">Lessons</v-btn>
+                <v-btn @click="goto('/')" text class="header-btn">Profile</v-btn>
+              </div>
+              <div style="display: flex; align-items: center; height: 100%">
+                <v-btn @click="goto('/about')" text class="header-btn">About</v-btn>
+                <v-btn @click="signOutDialog = true" text class="header-btn">Sign out</v-btn>
+              </div>
+            </div>
             <div style="width: 2.5vw"></div>
-            <v-btn @click="signOutDialog = true" text class="header-btn">Sign out</v-btn>
           </div>
           <div v-else
                style="display: flex; align-items: center;">

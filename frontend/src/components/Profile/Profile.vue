@@ -110,8 +110,12 @@ export default {
         this.process_stats();
         this.loading = false;
       })
-      .catch(() => {
-        this.$router.push('/404');
+      .catch((e) => {
+        if (e.response && e.response.status === 404) {
+          this.$router.push('/404');
+        } else {
+          this.$router.go(0);
+        }
       });
   },
 };

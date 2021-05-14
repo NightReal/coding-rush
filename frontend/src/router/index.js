@@ -97,7 +97,6 @@ router.beforeEach((to, from, next) => {
     });
     return;
   }
-  console.log(to);
   next();
 });
 

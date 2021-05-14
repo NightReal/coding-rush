@@ -14,8 +14,8 @@
             Improve your coding skills
           </v-container>
         </v-container>
-        <div style="max-width: 10vw; min-width: 10vw; height: 0"><!--it's space--></div>
-        <v-container class="pa-0 ma-0 mt-8 mr-10" style="width: auto">
+        <div style="max-width: 10vw; min-width: 10vw; height: 0" v-if="!isAuthed()"></div>
+        <v-container class="pa-0 ma-0 mt-8 mr-10" style="width: auto" v-if="!isAuthed()">
           <LoginForm class="pa-0 ma-0"/>
         </v-container>
       </v-container>
@@ -142,6 +142,9 @@ export default {
         top: elementTop,
         behavior: 'smooth',
       });
+    },
+    isAuthed() {
+      return this.$store.getters.isAuthenticated;
     },
   },
 };
