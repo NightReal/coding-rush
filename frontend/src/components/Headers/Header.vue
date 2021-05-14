@@ -44,15 +44,21 @@
                 <v-btn @click="signOutDialog = true" text class="header-btn">Sign out</v-btn>
               </div>
             </div>
-            <div style="width: 2.5vw"></div>
+            <div style="width: 5vw"></div>
           </div>
-          <div v-else
-               style="display: flex; align-items: center;">
+          <div v-else style="display: flex; align-items: center; width: 100%">
             <div style="width: 2.5vw"></div>
-            <v-btn @click="goto('/')" text class="header-btn">About</v-btn>
-            <div style="width: 2.5vw"></div>
-            <v-btn @click="goto('/signin')" text class="header-btn">Sign in</v-btn>
-            <v-btn @click="goto('/signup')" text class="header-btn">Sign up</v-btn>
+            <div style="display: flex; align-items: center; height: 100%;
+                        justify-content: space-between; width: 100%">
+              <div style="display: flex; align-items: center; height: 100%">
+                <v-btn @click="goto('/about')" text class="header-btn">About</v-btn>
+              </div>
+              <div style="display: flex; align-items: center; height: 100%">
+                <v-btn @click="goto('/signin')" text class="header-btn">Sign in</v-btn>
+                <v-btn @click="goto('/signup')" text class="header-btn">Sign up</v-btn>
+              </div>
+            </div>
+            <div style="width: 5vw"></div>
           </div>
         </div>
       </v-app-bar>
@@ -73,12 +79,8 @@ export default {
     };
   },
   methods: {
-    goto(item, reload) {
-      if (reload) {
-        this.$router.go(item);
-      } else {
-        this.$router.push(item).catch((e) => e);
-      }
+    goto(item) {
+      this.$router.push(item).catch((e) => e);
     },
     isAboutPage() {
       return this.$route.name === 'About';
@@ -88,7 +90,7 @@ export default {
     },
     signout() {
       this.$store.dispatch('logout')
-        .then(() => this.goto('/', true))
+        .then(() => this.goto('/'))
         // eslint-disable-next-line no-console
         .catch((err) => console.log(err));
     },

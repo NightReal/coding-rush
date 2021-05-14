@@ -9,7 +9,7 @@
         <div id="left-bar-info" style="display: flex; width: 100%;">
           <div id="pictureContainer">
             <img class="elevation-5" :src="picture ? picture : defaultPicture"
-                 @error="$event.target.src = defaultPicture"
+                 @error="$event.target.src = this.defaultPicture"
                  style="width: 100%;"/>
           </div>
           <div>

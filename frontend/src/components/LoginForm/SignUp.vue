@@ -264,7 +264,10 @@ export default {
               username: this.username,
               password: this.password,
             })
-            .then(() => (this.$route.path !== '/' ? this.$router.go('/') : {}))
+            .then(() => {
+              if (this.$route.path !== '/') this.$router.push('/');
+              else this.$router.go(0);
+            })
             .catch((err) => this.showSthWrong(err));
           this.loading = false;
         })
