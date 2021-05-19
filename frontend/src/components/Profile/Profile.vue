@@ -1,8 +1,8 @@
 <template>
   <div>
     <page-loader :loading="loading"></page-loader>
-    <v-container id="bar-container" style="display: flex; justify-content: center;
-                                            max-width: 1277px">
+    <v-container v-if="!loading" id="bar-container"
+                 style="display: flex; justify-content: center; max-width: 1277px">
 
       <div id="left-bar" style="display: flex; width: 100%; word-wrap: break-word;
                                 flex-direction: column;">
@@ -63,7 +63,7 @@ export default {
       username: '',
       picture: defaultAvatar,
       defaultPicture: defaultAvatar,
-      loading: true,
+      loading: false,
       numberOfCompletedCodes: 0,
     };
   },
@@ -95,6 +95,19 @@ export default {
   },
 
   mounted() {
+    if (this.$store.getters.isAuthenticated && this.$store.getters.user.username
+      && this.user.toLowerCase() === this.$store.getters.user.username.toLowerCase()) {
+      const { user } = this.$store.getters;
+      this.firstName = user.first_name;
+      this.lastName = user.last_name;
+      this.username = user.username;
+      this.picture = user.avatar;
+      if (this.username !== this.user) {
+        this.$router.push(`/profile/${this.username}`);
+      }
+      this.process_stats();
+      return;
+    }
     APIHelper.get(`/account/profile/${this.user}`)
       .then((res) => {
         this.firstName = res.data.first_name;
