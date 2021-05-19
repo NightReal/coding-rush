@@ -162,7 +162,6 @@ export default {
 
 #header-title {
   align-self: center;
-  margin-right: 100px;
   position: absolute;
 }
 
