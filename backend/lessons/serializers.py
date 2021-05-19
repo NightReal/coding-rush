@@ -1,4 +1,8 @@
-from rest_framework import serializers
+from rest_framework.serializers import (
+    ModelSerializer,
+    SlugRelatedField,
+    PrimaryKeyRelatedField,
+)
 from .models import (
     Code,
     Lesson,
@@ -6,8 +10,8 @@ from .models import (
 )
 
 
-class AttemptSerializer(serializers.ModelSerializer):
-    code = serializers.SlugRelatedField(read_only=True, slug_field='language')
+class AttemptSerializer(ModelSerializer):
+    code = SlugRelatedField(read_only=True, slug_field='language')
 
     class Meta:
         model = Attempt
@@ -16,8 +20,8 @@ class AttemptSerializer(serializers.ModelSerializer):
 
 
 # FIXME: MAKE NORMAL VALIDATORS. OTHERWISE IT CAN BREAK THE SYSTEM
-class AttemptCommitSerializer(serializers.ModelSerializer):
-    code = serializers.PrimaryKeyRelatedField(queryset=Code.objects.all())
+class AttemptCommitSerializer(ModelSerializer):
+    code = PrimaryKeyRelatedField(queryset=Code.objects.all())
 
     class Meta:
         model = Attempt
@@ -27,25 +31,26 @@ class AttemptCommitSerializer(serializers.ModelSerializer):
         return Attempt.objects.default_create(**self.context, **validated_data)
 
 
-class CodeSerializer(serializers.ModelSerializer):
+class CodeSerializer(ModelSerializer):
     class Meta:
         model = Code
         fields = ('id', 'language', 'code')
         read_only_fields = fields
 
 
-class LessonSerializer(serializers.ModelSerializer):
+class LessonSerializer(ModelSerializer):
     codes = CodeSerializer(many=True, read_only=True)
     attempts = AttemptSerializer(many=True, read_only=True, source='cur_user_attempts')
+    next_lesson = PrimaryKeyRelatedField(many=False, read_only=True)
 
     class Meta:
         model = Lesson
-        fields = ('id', 'title', 'topic', 'description', 'difficulty', 'codes', 'attempts')
+        fields = ('id', 'title', 'topic', 'description', 'difficulty', 'codes', 'attempts', 'next_lesson')
         read_only_fields = fields
 
 
-class LessonListSerializer(serializers.ModelSerializer):
-    codes = serializers.SlugRelatedField(many=True, read_only=True, slug_field='language')
+class LessonListSerializer(ModelSerializer):
+    codes = SlugRelatedField(many=True, read_only=True, slug_field='language')
     best_attempt = AttemptSerializer(many=False, read_only=True, source='best_user_attempt', required=False)
 
     class Meta:

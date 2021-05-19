@@ -36,6 +36,9 @@ class GetLessonView(views.APIView):
         lesson = Lesson.objects.filter(id=pk).first()
         if lesson is None:
             return Response(status=HTTP_404_NOT_FOUND)
+        next_lesson = Lesson.objects.filter(id__gt=lesson.id).order_by("id").first()
+        if next_lesson:
+            lesson.next_lesson = next_lesson
         lesson.cur_user_attempts = Attempt.objects.filter(user_id=user.id, lesson_id=pk).order_by('-id')
         serializer = LessonSerializer(lesson, read_only=True)
         return Response(serializer.data)
