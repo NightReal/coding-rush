@@ -8,8 +8,12 @@
                     autocomplete="username"
       ></v-text-field>
       <v-text-field class="form-field" v-model="password" ref="password"
-                    :rules="passwordRules" label="Password" type="password" required
+                    :rules="passwordRules" label="Password" required
                     autocomplete="current-password"
+                    :append-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="show_password ? 'text' : 'password'"
+                    @click:append="show_password = !show_password"
+
       ></v-text-field>
       <a class="text-decoration-none font-weight-medium blue--text text--darken-3 text-body-2"
          href="https://youtu.be/dQw4w9WgXcQ">Forgot password?</a>
@@ -43,6 +47,7 @@ export default {
       passwordRules: [
         (v) => !!v || 'Password is required',
       ],
+      show_password: false,
     };
   },
   methods: {
