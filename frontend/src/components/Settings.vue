@@ -112,7 +112,7 @@
 
 <script>
 import SettingsSection from '@/components/SettingsSection.vue';
-import APIHelper, { APIHelperFile } from '@/api/apihelper';
+import APIHelper from '@/api/apihelper';
 
 export default {
   name: 'Settings',
@@ -251,7 +251,11 @@ export default {
           return;
         }
         this.loadAvatarBinary(() => {
-          APIHelperFile.put('/account/updateProfile', this.avatarBinary);
+          APIHelper.put('/account/updateProfile', this.avatarBinary, {
+            headers: {
+              contentType: 'multipart/form-data',
+            },
+          });
         });
       });
     },
