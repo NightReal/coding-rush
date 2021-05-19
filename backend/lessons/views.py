@@ -25,9 +25,14 @@ from .models import (
 from django.db.models import (
     Prefetch,
 )
-
+from django.contrib.auth import (
+    get_user_model,
+)
 
 # Create your views here.
+
+User = get_user_model()
+
 
 class GetLessonView(views.APIView):
     permission_classes = [permissions.IsAuthenticated, ]
@@ -77,6 +82,8 @@ class UserStatisticsGetView(views.APIView):
     permission_classes = [permissions.IsAuthenticated, ]
 
     def get(self, request, user_id, *args, **kwargs):
+        if not User.objects.filter(id=user_id).first():
+            return Response(status=HTTP_404_NOT_FOUND)
         all_attempts = Attempt.objects.filter(user_id=user_id).all()
         lessons_cnt = Lesson.objects.count()
         serializer = AttemptStatisticsSerializer(all_attempts, many=True, read_only=True)
