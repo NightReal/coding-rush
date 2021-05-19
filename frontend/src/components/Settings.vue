@@ -112,7 +112,7 @@
 
 <script>
 import SettingsSection from '@/components/SettingsSection.vue';
-import APIHelper from '@/api/apihelper';
+import APIHelper, { APIHelperFile } from '@/api/apihelper';
 
 export default {
   name: 'Settings',
@@ -173,8 +173,9 @@ export default {
       avatarDimensions: [null, null],
       avatarErrorMessage: '',
       avatarRules: [
-        () => {
+        (v) => {
           this.avatarErrorMessage = '';
+          if (!v) this.resetAvatar();
           return true;
         },
         (v) => !!v || 'Image is required',
@@ -207,8 +208,8 @@ export default {
     },
     updatePassword() {
       const valid = this.$refs.curPassword.validate()
-                 && this.$refs.newPassword.validate()
-                 && this.$refs.passwordConfirm.validate();
+        && this.$refs.newPassword.validate()
+        && this.$refs.passwordConfirm.validate();
       if (!valid) {
         this.focusFirst(['curPassword', 'newPassword', 'passwordConfirm']);
         return;
@@ -230,6 +231,12 @@ export default {
         last_name: this.lastName,
       });
     },
+    resetAvatar() {
+      if (!this.avatarFile) {
+        this.avatarBinary = undefined;
+        this.avatarDimensions = [null, null];
+      }
+    },
     updateAvatar() {
       const valid = this.$refs.avatar.validate();
       if (!valid) {
@@ -244,9 +251,7 @@ export default {
           return;
         }
         this.loadAvatarBinary(() => {
-          APIHelper.put('/account/updateProfile', {
-            avatar: this.avatarBinary,
-          });
+          APIHelperFile.put('/account/updateProfile', this.avatarBinary);
         });
       });
     },
@@ -268,20 +273,10 @@ export default {
       reader.readAsDataURL(this.avatarFile);
     },
     loadAvatarBinary(next) {
-      if (!this.avatarFile) {
-        this.avatarBinary = undefined;
-        this.avatarDimensions = [null, null];
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        // const kek = new File(e.target.result, 'avatar');
-        // this.avatarBinary = ArrayBufferToBinary(e.target.result);
-        this.avatarBinary = e.target.result;
-        console.log(this.avatarBinary);
-        next();
-      };
-      reader.readAsBinaryString(this.avatarFile);
+      const formData = new FormData();
+      formData.append('avatar', this.avatarFile);
+      this.avatarBinary = formData;
+      next();
     },
   },
 };

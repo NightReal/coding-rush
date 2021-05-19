@@ -64,7 +64,7 @@ export default new Vuex.Store({
       context.commit('destroyAccess');
 
       return new Promise(((resolve, reject) => {
-        APIHelper.post('/account/token/refresh/', {
+        APIHelper.post('/account/token/refresh', {
           refresh: context.state.refreshToken,
         })
           .then((response) => {
@@ -79,7 +79,7 @@ export default new Vuex.Store({
 
     getUser(context) {
       return new Promise(((resolve, reject) => {
-        APIHelper('/account/getme/')
+        APIHelper('/account/getme')
           .then((response) => response.data)
           .catch((err) => {
             reject(err);
@@ -93,7 +93,7 @@ export default new Vuex.Store({
 
     login(context, credentials) {
       return new Promise(((resolve, reject) => {
-        APIHelper.post('/account/token/', {
+        APIHelper.post('/account/token', {
           username: credentials.username,
           password: credentials.password,
         })
@@ -109,7 +109,7 @@ export default new Vuex.Store({
     },
     register(context, credentials) {
       return new Promise((((resolve, reject) => {
-        APIHelper.post('account/register/', {
+        APIHelper.post('account/register', {
           username: credentials.username,
           password: credentials.password,
           password_confirm: credentials.password_confirm,

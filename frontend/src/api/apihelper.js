@@ -11,6 +11,14 @@ const APIHelper = axios.create({
   baseURL: '/api',
 });
 
+export const APIHelperFile = axios.create({
+  headers: {
+    contentType: 'multipart/form-data',
+    'X-CSRFToken': Cookies.get('csrftoken'),
+  },
+  baseURL: '/api',
+});
+
 const requestInterceptor = (request) => {
   if (store.getters.isAuthenticated) {
     // eslint-disable-next-line no-param-reassign
