@@ -1,7 +1,9 @@
 from rest_framework.serializers import (
+    Serializer,
     ModelSerializer,
     SlugRelatedField,
     PrimaryKeyRelatedField,
+    IntegerField,
 )
 from .models import (
     Code,
@@ -57,3 +59,18 @@ class LessonListSerializer(ModelSerializer):
         model = Lesson
         fields = ('id', 'title', 'topic', 'difficulty', 'codes', 'best_attempt')
         read_only_fields = fields
+
+
+class LessonStatisticsSerializer(ModelSerializer):
+    class Meta:
+        model = Lesson
+        fields = ('id', 'title', 'topic', 'difficulty')
+
+
+class AttemptStatisticsSerializer(ModelSerializer):
+    code_language = SlugRelatedField(read_only=True, slug_field='language', source='code')
+    lesson = LessonStatisticsSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Attempt
+        fields = ('score', 'speed', 'accuracy', 'code_language', 'date', 'lesson')

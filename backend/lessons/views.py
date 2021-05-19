@@ -16,6 +16,7 @@ from .serializers import (
     LessonListSerializer,
     AttemptCommitSerializer,
     AttemptSerializer,
+    AttemptStatisticsSerializer,
 )
 from .models import (
     Lesson,
@@ -70,3 +71,17 @@ class CommitAttemptView(views.APIView):
             ret_serializer = AttemptSerializer(attempt)
             return Response(status=HTTP_200_OK, data=ret_serializer.data)
         return Response(status=HTTP_400_BAD_REQUEST)
+
+
+class UserStatisticsGetView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+
+    def get(self, request, user_id, *args, **kwargs):
+        all_attempts = Attempt.objects.filter(user_id=user_id).all()
+        lessons_cnt = Lesson.objects.count()
+        serializer = AttemptStatisticsSerializer(all_attempts, many=True, read_only=True)
+        ret = {
+            "lessons_count": lessons_cnt,
+            "attempts": serializer.data,
+        }
+        return Response(ret)
