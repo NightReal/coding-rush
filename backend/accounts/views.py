@@ -40,11 +40,10 @@ class ChangePasswordView(views.APIView):
     """
     Password change endpoint
     """
-    serializer_class = ChangePasswordSerializer
     permission_classes = [permissions.IsAuthenticated, ]
 
     def put(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
+        serializer = ChangePasswordSerializer(data=request.data, context={'request': request})
 
         if serializer.is_valid(raise_exception=True):
             serializer.update()
@@ -109,11 +108,10 @@ class ProfileUpdateView(views.APIView):
     """
     Endpoint for changing profile information
     """
-    serializer_class = ProfileUpdateSerializer
     permission_classes = [permissions.IsAuthenticated, ]
 
     def put(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data, partial=True)
+        serializer = ProfileUpdateSerializer(data=request.data, partial=True)
 
         if serializer.is_valid(raise_exception=True):
             user = request.user
