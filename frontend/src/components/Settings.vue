@@ -244,10 +244,17 @@ export default {
         return;
       }
       this.loadAvatarWidth(() => {
-        const validwh = this.avatarDimensions[0] <= 500 && this.avatarDimensions[1] <= 500;
-        if (!validwh) {
-          this.focusFirst(['avatar']);
-          this.avatarErrorMessage = 'Image is bigger than 500x500 px';
+        let error = '';
+        const [w, h] = this.avatarDimensions;
+        if (w > 500 || h > 500) {
+          error = 'Image is bigger than 500x500 px';
+        } else if (w / h > 2) {
+          error = 'Image width is more than twice the height';
+        } else if (w / h < 0.5) {
+          error = 'Image height is more than twice the width';
+        }
+        if (error) {
+          this.avatarErrorMessage = error;
           return;
         }
         this.loadAvatarBinary(() => {
@@ -260,11 +267,6 @@ export default {
       });
     },
     loadAvatarWidth(next) {
-      if (!this.avatarFile) {
-        this.avatarSrc = '';
-        this.avatarDimensions = [null, null];
-        return;
-      }
       const reader = new FileReader();
       reader.onload = (e) => {
         const img = new Image();

@@ -121,6 +121,15 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
         if value is None:
             return value
         w, h = get_image_dimensions(value)
-        if w <= settings.MAX_AVATAR_SIZE and h <= settings.MAX_AVATAR_SIZE:
-            return value
-        raise serializers.ValidationError('Avatar is too big')
+        ratio = w / h
+        if value.size > settings.MAX_AVATAR_SIZE:
+            raise serializers.ValidationError('Avatar size is too big')
+        if w > settings.MAX_AVATAR_WIDTH:
+            raise serializers.ValidationError('Avatar width is too big')
+        if h > settings.MAX_AVATAR_HEIGHT:
+            raise serializers.ValidationError('Avatar height is too big')
+        if ratio > settings.MAX_AVATAR_RATIO:
+            raise serializers.ValidationError('Avatar aspect ratio too big')
+        if ratio < settings.MIN_AVATAR_RATIO:
+            raise serializers.ValidationError('Avatar aspect ratio is too small')
+        return value
