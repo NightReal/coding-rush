@@ -23,7 +23,7 @@ urlpatterns = [
     path('usernameExists/<str:username>', UsernameUserExistsView.as_view(), name='username exists'),
     path('emailExists/<str:email>', EmailUserExistsView.as_view(), name='email exists'),
     path('changePassword', ChangePasswordView.as_view(), name='change user password'),
-    path('getm/', PrivateUserProfileView.as_view(), name='get current profile'),
+    path('getme', PrivateUserProfileView.as_view(), name='get current profile'),
     path('updateProfile', ProfileUpdateView.as_view(), name='profile information update'),
     path('profile/<str:username>', PublicProfileInformationView.as_view(), name='public profile information')
 ]
