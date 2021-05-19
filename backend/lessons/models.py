@@ -13,7 +13,7 @@ User = get_user_model()
 
 class Lesson(models.Model):
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=50, blank=True, default='')
+    title = models.CharField(max_length=50, blank=True, default='', unique=True)
     topic = models.CharField(default='no_topic', blank=False, max_length=50)
     description = models.CharField(default='', max_length=10000)
     difficulty = models.IntegerField(choices=[(i, i) for i in range(1, 11)], default=1)
