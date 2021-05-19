@@ -95,9 +95,6 @@ export default {
   },
 
   mounted() {
-    if (this.$store.getters.isAuthenticated) {
-      this.$store.dispatch('getUser');
-    }
     APIHelper.get(`/account/profile/${this.user}`)
       .then((res) => {
         this.firstName = res.data.first_name;
@@ -106,6 +103,9 @@ export default {
         this.picture = res.data.avatar;
         if (this.username !== this.user) {
           this.$router.push(`/profile/${this.username}`);
+        }
+        if (this.$store.getters.isAuthenticated && !this.$store.getters.user.username) {
+          this.$store.dispatch('getUser');
         }
         this.process_stats();
         this.loading = false;

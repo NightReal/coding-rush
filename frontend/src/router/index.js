@@ -91,10 +91,15 @@ router.beforeEach((to, from, next) => {
     return;
   }
   if (to.path === '/' && isAuthed()) {
-    store.dispatch('getUser').then(() => {
+    if (!store.getters.user.username) {
+      store.dispatch('getUser').then(() => {
+        const { username } = store.getters.user;
+        next(`/profile/${username}`);
+      });
+    } else {
       const { username } = store.getters.user;
       next(`/profile/${username}`);
-    });
+    }
     return;
   }
   next();
