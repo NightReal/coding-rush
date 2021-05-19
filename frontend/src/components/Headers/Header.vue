@@ -41,6 +41,7 @@
               </div>
               <div style="display: flex; align-items: center; height: 100%">
                 <v-btn @click="goto('/about')" text class="header-btn">About</v-btn>
+                <v-btn @click="goto('/settings')" text class="header-btn">Settings</v-btn>
                 <v-btn @click="signOutDialog = true" text class="header-btn">Sign out</v-btn>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import SettingsView from '@/views/SettingsView.vue';
 import TextChooseView from '@/views/TextChooseView.vue';
 import TextDescriptionView from '@/views/TextDescriptionView.vue';
 // import HomeView from '../views/HomeView.vue';
@@ -67,6 +68,13 @@ const routes = [
   {
     path: '/404',
     component: NotFoundView,
+  },
+  {
+    path: '/settings',
+    component: SettingsView,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '*',
