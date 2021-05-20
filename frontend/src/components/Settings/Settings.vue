@@ -7,10 +7,10 @@
     <div style="display: flex; flex-direction: column; align-items: center;" class="mt-7">
 
       <SettingsSection name="Security">
-        <v-form class="pa-0 ma-0" ref="formPassword" lazy-validation autocomplete="off">
-          <SettingsCard title="Change Password" :error-box="passwordErrorBox"
-                        @update="updatePassword()"
-                        @cancel="cancelPassword()">
+        <SettingsCard title="Change Password" :error-box="passwordErrorBox"
+                      @update="updatePassword()"
+                      @cancel="cancelPassword()">
+          <v-form class="pa-0 ma-0" ref="formPassword" lazy-validation autocomplete="off">
             <v-text-field v-model="curPassword" ref="curPassword"
                           :rules="curPasswordRules" label="Current password" required
                           autocomplete="password"
@@ -31,8 +31,8 @@
                           :type="showPasswordConfirm ? 'text' : 'password'"
                           @click:append="showPasswordConfirm = !showPasswordConfirm"
             ></v-text-field>
-          </SettingsCard>
-        </v-form>
+          </v-form>
+        </SettingsCard>
       </SettingsSection>
 
       <SettingsSection name="Profile" class="mt-7">
