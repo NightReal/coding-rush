@@ -26,7 +26,8 @@
           {{ numberOfCompletedCodes === 0 ? 'no' : numberOfCompletedCodes }} completed
           code{{ numberOfCompletedCodes === 1 ? '' : 's' }}
         </div>
-        <v-btn class="mt-11 text-capitalize" style="font-size: 1rem !important; font-weight: 400"
+        <v-btn style="font-size: 1.1rem !important; font-weight: 500;
+                      color: white" color="#ff8200" class="mt-11 text-capitalize"
                v-if="$store.getters.isAuthenticated && $store.state.user.username !== undefined &&
                      this.user.toLowerCase() === $store.state.user.username.toLowerCase()"
                @click="$router.push('/settings')">
