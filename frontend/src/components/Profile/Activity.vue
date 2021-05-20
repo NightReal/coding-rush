@@ -1,5 +1,5 @@
 <template>
-  <div :id="chartId" class="activity-chart" style="width: 100%" :ref="chartId"></div>
+  <div :id="chartId" class="activity-chart" style="width: 90%" :ref="chartId"></div>
 </template>
 
 <script>

@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import Settings from '@/components/Settings.vue';
-// import APIHelper from '@/api/apihelper';
+
+import Settings from '@/components/Settings/Settings.vue';
 import PageLoader from '@/components/PageLoader.vue';
 
 export default {

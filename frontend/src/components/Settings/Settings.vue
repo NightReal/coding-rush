@@ -1,12 +1,16 @@
 <template>
-  <div style="display: flex; flex-direction: column; align-items: center;" class="mt-7">
-    <div style="display: flex; flex-direction: column; align-items: center;">
+  <div style="display: flex; flex-direction: column; align-items: center;" class="mt-3">
+    <div style="font-size: 2.5rem; font-weight: 600" class="mb-3">Settings</div>
+    <div style="color: #444444; font-size: 1.2rem; max-width: 500px; text-align: center;">
+      Here you can set up your account.
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center;" class="mt-7">
 
       <SettingsSection name="Security">
-        <v-card class="px-7 pt-5 pb-6 ma-2" style="width: 315px; min-height: 300px;
-                                                   display: flex; flex-direction: column">
-          <div style="font-weight: 500; font-size: 1.3rem" class="mb-2">Change Password</div>
-          <div>
+        <v-form class="pa-0 ma-0" ref="formPassword" lazy-validation autocomplete="off">
+          <SettingsCard title="Change Password" :error-box="passwordErrorBox"
+                        @update="updatePassword()"
+                        @cancel="cancelPassword()">
             <v-text-field v-model="curPassword" ref="curPassword"
                           :rules="curPasswordRules" label="Current password" required
                           autocomplete="password"
@@ -27,60 +31,30 @@
                           :type="showPasswordConfirm ? 'text' : 'password'"
                           @click:append="showPasswordConfirm = !showPasswordConfirm"
             ></v-text-field>
-          </div>
-          <div style="flex-grow: 100"></div>
-          <div style="display: flex" class="mt-3">
-            <v-btn style="flex: 1 1 0;" color="#ff8200"
-                   class="mr-2" text
-                   @click="$refs.curPassword.reset();
-                         $refs.newPassword.reset();
-                         $refs.passwordConfirm.reset();
-                        ">
-              Cancel
-            </v-btn>
-            <v-btn style="flex: 1 1 0; color: white" color="#ff8200" @click="updatePassword()">
-              Update
-            </v-btn>
-          </div>
-        </v-card>
+          </SettingsCard>
+        </v-form>
       </SettingsSection>
 
-      <SettingsSection name="Profile" class="mt-10">
-        <v-card class="px-7 pt-5 pb-6 ma-2" style="width: 315px; min-height: 300px;
-                                                   display: flex; flex-direction: column">
-          <div style="font-weight: 500; font-size: 1.3rem">Update Name</div>
-          <div style="color: #444444" class="mb-2">Your current name is
-                                                   {{ currentUser.first_name }}
-                                                   {{ currentUser.last_name }}
-          </div>
-          <div>
+      <SettingsSection name="Profile" class="mt-7">
+        <SettingsCard title="Update Name" :error-box="nameErrorBox"
+                      :caption="`Your current name is
+                                ${currentUser.first_name} ${currentUser.last_name}`"
+                      @update="updateName()"
+                      @cancel="cancelName">
+          <v-form class="pa-0 ma-0" ref="formName" lazy-validation autocomplete="off">
             <v-text-field v-model="firstName" ref="firstName"
                           :rules="firstNameRules" label="First name" required
             ></v-text-field>
             <v-text-field v-model="lastName" ref="lastName"
                           :rules="lastNameRules" label="Last name" required
             ></v-text-field>
-          </div>
-          <div style="flex-grow: 100"></div>
-          <div style="display: flex" class="mt-3">
-            <v-btn style="flex: 1 1 0;" color="#ff8200"
-                   class="mr-2" text
-                   @click="$refs.firstName.reset();
-                         $refs.lastName.reset();
-                        ">
-              Cancel
-            </v-btn>
-            <v-btn style="flex: 1 1 0; color: white" color="#ff8200" @click="updateName()">
-              Update
-            </v-btn>
-          </div>
-        </v-card>
-        <v-card class="px-7 pt-5 pb-6 ma-2" style="width: 315px; min-height: 300px;
-                                                   display: flex; flex-direction: column">
-          <div style="font-weight: 500; font-size: 1.3rem">Update Avatar</div>
-          <div class="mb-2"></div>
-          <div>
-            <v-file-input ref="avatar" v-model="avatarFile"
+          </v-form>
+        </SettingsCard>
+        <SettingsCard title="Update Avatar" :error-box="avatarErrorBox"
+                      @update="updateAvatar()"
+                      @cancel="cancelAvatar()">
+          <v-form class="pa-0 ma-0" ref="formAvatar" lazy-validation autocomplete="off">
+            <v-file-input ref="avatar" v-model="avatarFile" class="mt-3"
                           :rules="avatarRules"
                           accept="image/png, image/jpeg, image/gif"
                           placeholder="Choose an avatar"
@@ -89,39 +63,30 @@
                           label="Avatar"
                           :error-messages="avatarErrorMessage"
             ></v-file-input>
-          </div>
-          <div style="color: #444444" class="">Maximum allowed size: 500x500 px</div>
+          </v-form>
+          <div style="color: #444444" class="mt-1">Maximum allowed size: 500x500 px</div>
           <div style="color: #444444" class="">Available formats: JPG, PNG or GIF</div>
-
-          <div style="flex-grow: 100"></div>
-          <div style="display: flex" class="mt-3">
-            <v-btn style="flex: 1 1 0;" color="#ff8200"
-                   class="mr-2" text
-                   @click="$refs.avatar.reset()">
-              Cancel
-            </v-btn>
-            <v-btn style="flex: 1 1 0; color: white" color="#ff8200" @click="updateAvatar()">
-              Update
-            </v-btn>
-          </div>
-        </v-card>
+        </SettingsCard>
       </SettingsSection>
     </div>
   </div>
 </template>
 
 <script>
-import SettingsSection from '@/components/SettingsSection.vue';
+import SettingsSection from '@/components/Settings/SettingsSection.vue';
 import APIHelper from '@/api/apihelper';
+import SettingsCard from '@/components/Settings/SettingsCard.vue';
 
 export default {
   name: 'Settings',
-  components: { SettingsSection },
+  components: { SettingsCard, SettingsSection },
   data() {
     return {
       currentUser: {},
 
       // Password
+
+      passwordErrorBox: '',
 
       curPassword: '',
       showCurPassword: false,
@@ -147,6 +112,8 @@ export default {
 
       // First Name and Last Name
 
+      nameErrorBox: '',
+
       firstName: '',
       lastName: '',
       firstNameRules: [
@@ -167,6 +134,8 @@ export default {
       ],
 
       // Avatar
+
+      avatarErrorBox: '',
 
       avatarFile: undefined,
       avatarBinary: undefined,
@@ -206,10 +175,9 @@ export default {
         }
       }
     },
+
     updatePassword() {
-      const valid = this.$refs.curPassword.validate()
-        && this.$refs.newPassword.validate()
-        && this.$refs.passwordConfirm.validate();
+      const valid = this.$refs.formPassword.validate();
       if (!valid) {
         this.focusFirst(['curPassword', 'newPassword', 'passwordConfirm']);
         return;
@@ -217,11 +185,48 @@ export default {
       APIHelper.put('/account/changePassword', {
         old_password: this.curPassword,
         new_password: this.newPassword,
-        password_confirm: this.passwordConfirm,
-      });
+        new_password_confirm: this.passwordConfirm,
+      })
+        .then(() => this.successPassword())
+        .catch((e) => this.errorPassword(e));
     },
+    cancelPassword() {
+      this.$refs.curPassword.reset();
+      this.$refs.newPassword.reset();
+      this.$refs.passwordConfirm.reset();
+      this.passwordErrorBox = '';
+    },
+    errorPassword(err) {
+      if (err.response && err.response.data) {
+        const e = err.response.data;
+        if (e.old_password && e.old_password.includes('Current password does not match')) {
+          this.passwordErrorBox = 'Current password is incorrect.';
+          return;
+        }
+        if (e.new_password && e.new_password.includes('This password is too common.')) {
+          this.passwordErrorBox = 'New password is too common.';
+          return;
+        }
+        const order = ['old_password', 'new_password', 'new_password_confirm'];
+        for (const sec of order) { // eslint-disable-line no-restricted-syntax
+          if (e[sec] && e[sec].length) {
+            this.passwordErrorBox = e[sec][0]; // eslint-disable-line prefer-destructuring
+            return;
+          }
+        }
+      }
+      this.passwordErrorBox = 'Something went wrong.';
+      console.log(err);
+      console.log(err.response);
+    },
+    successPassword() {
+      this.cancelPassword();
+      this.passwordErrorBox = '!Password Updated!';
+    },
+
     updateName() {
-      const valid = this.$refs.firstName.validate() && this.$refs.lastName.validate();
+      this.nameErrorBox = '';
+      const valid = this.$refs.formName.validate();
       if (!valid) {
         this.focusFirst(['firstName', 'lastName']);
         return;
@@ -229,16 +234,40 @@ export default {
       APIHelper.put('/account/updateProfile', {
         first_name: this.firstName,
         last_name: this.lastName,
-      });
+      })
+        .then(() => this.successName())
+        .catch((e) => this.errorName(e));
     },
-    resetAvatar() {
-      if (!this.avatarFile) {
-        this.avatarBinary = undefined;
-        this.avatarDimensions = [null, null];
+    cancelName() {
+      this.$refs.firstName.reset();
+      this.$refs.lastName.reset();
+      this.nameErrorBox = '';
+    },
+    errorName(err) {
+      if (err.response && err.response.data) {
+        const e = err.response.data;
+        for (const sec in e) { // eslint-disable-line no-restricted-syntax
+          if (e[sec] && e[sec].length) {
+            this.nameErrorBox = e[sec][0]; // eslint-disable-line prefer-destructuring
+            return;
+          }
+        }
       }
+      this.passwordErrorBox = 'Something went wrong.';
+      console.log(err);
+      console.log(err.response);
     },
+    successName() {
+      this.currentUser.first_name = this.firstName;
+      this.currentUser.last_name = this.lastName;
+      this.cancelName();
+      this.nameErrorBox = '!Name Updated!';
+      this.$store.dispatch('getUser');
+    },
+
     updateAvatar() {
-      const valid = this.$refs.avatar.validate();
+      this.avatarErrorBox = '';
+      const valid = this.$refs.formAvatar.validate();
       if (!valid) {
         this.focusFirst(['avatar']);
         return;
@@ -262,9 +291,40 @@ export default {
             headers: {
               contentType: 'multipart/form-data',
             },
-          });
+          })
+            .then(() => this.successAvatar())
+            .catch((e) => this.errorAvatar(e));
         });
       });
+    },
+    cancelAvatar() {
+      this.$refs.avatar.reset();
+      this.avatarErrorBox = '';
+    },
+    errorAvatar(err) {
+      if (err.response && err.response.data) {
+        const e = err.response.data;
+        for (const sec in e) { // eslint-disable-line no-restricted-syntax
+          if (e[sec] && e[sec].length) {
+            this.nameErrorBox = e[sec][0]; // eslint-disable-line prefer-destructuring
+            return;
+          }
+        }
+      }
+      this.passwordErrorBox = 'Something went wrong.';
+      console.log(err);
+      console.log(err.response);
+    },
+    successAvatar() {
+      this.cancelAvatar();
+      this.avatarErrorBox = '!Avatar updated!';
+      this.$store.dispatch('getUser');
+    },
+    resetAvatar() {
+      if (!this.avatarFile) {
+        this.avatarBinary = undefined;
+        this.avatarDimensions = [null, null];
+      }
     },
     loadAvatarWidth(next) {
       const reader = new FileReader();
@@ -284,6 +344,7 @@ export default {
       this.avatarBinary = formData;
       next();
     },
+
   },
 };
 </script>
