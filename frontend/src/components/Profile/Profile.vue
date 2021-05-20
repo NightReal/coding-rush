@@ -36,8 +36,9 @@
 
       <div id="center-bar" class="px-16" style="display: flex; flex-direction: column;
                                   align-items: center; width: 100%">
-        <div style="width: 90%; min-width: 350px">
-          <Activity class="mt-3" chart-id="activityChart" ref="activity"></Activity>
+        <div style="width: 90%; min-width: 400px">
+          <Activity class="mt-3" chart-id="activityChart" ref="activity"
+                    @ready="activity.ready = true"></Activity>
         </div>
       </div>
     </v-container>
@@ -65,6 +66,7 @@ export default {
       defaultPicture: defaultAvatar,
       loading: false,
       numberOfCompletedCodes: 0,
+      activity: { data: undefined, ready: false, loaded: false },
     };
   },
   methods: {
@@ -90,10 +92,20 @@ export default {
         }
         return arr;
       })();
-      this.$refs.activity.updateData(data);
+      this.activity.data = data;
     },
   },
-
+  watch: {
+    activity: {
+      deep: true,
+      handler() {
+        if (this.activity.data && this.activity.ready && !this.activity.loaded) {
+          this.activity.loaded = true;
+          this.$refs.activity.updateData(this.activity.data);
+        }
+      },
+    },
+  },
   mounted() {
     if (this.$store.getters.isAuthenticated && this.$store.getters.user.username
       && this.user.toLowerCase() === this.$store.getters.user.username.toLowerCase()) {
@@ -108,6 +120,7 @@ export default {
       this.process_stats();
       return;
     }
+    this.loading = true;
     APIHelper.get(`/account/profile/${this.user}`)
       .then((res) => {
         this.firstName = res.data.first_name;

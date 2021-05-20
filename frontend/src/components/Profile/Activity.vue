@@ -88,6 +88,11 @@ export default {
     this.chart = new Highcharts.Chart(this.options);
     this.resizeEvent();
   },
+  watch: {
+    chart() {
+      this.$emit('ready');
+    },
+  },
   created() {
     window.addEventListener('resize', this.resizeEvent);
   },
