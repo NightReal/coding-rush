@@ -186,7 +186,7 @@ export default {
       this.updateDuration();
       const speed = Math.round(this.$refs.editor.cpm);
       const accuracy = this.$refs.editor.acc * 100;
-      APIHelper.put('lessons/commitAttempt/', {
+      APIHelper.put('lessons/commitAttempt', {
         speed,
         accuracy,
         duration: this.duration,
