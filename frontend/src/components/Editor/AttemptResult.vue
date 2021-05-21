@@ -73,7 +73,7 @@
           Try again
         </v-btn>
         <v-btn class="mx-1 text-capitalize dbutton" color="#ff8200" style="color: white"
-               @click="$router.push(`/lesson/${next_lesson}`)">
+               @click="$router.push(`/lesson/${next_lesson}`)" :disabled="!next_lesson">
           <v-icon class="ml-n2 mr-1">mdi-chevron-right</v-icon>
           Next lesson
         </v-btn>
