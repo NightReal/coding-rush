@@ -1,7 +1,7 @@
 <template>
   <div>
-    <page-loader :loading="loading"></page-loader>
-    <v-container v-if="!loading" id="bar-container"
+    <page-loader :loading="loadingUser || loadingAttempts"></page-loader>
+    <v-container v-if="!loadingUser && !loadingAttempts" id="bar-container"
                  style="display: flex; justify-content: center; max-width: 1277px">
 
       <div id="left-bar" style="display: flex; width: 100%; word-wrap: break-word;
@@ -65,35 +65,117 @@ export default {
       username: '',
       picture: defaultAvatar,
       defaultPicture: defaultAvatar,
-      loading: false,
+      loadingUser: false,
+      loadingAttempts: false,
       numberOfCompletedCodes: 0,
       activity: { data: undefined, ready: false, loaded: false },
+      attempts: [],
     };
   },
   methods: {
-    // eslint-disable-next-line no-unused-vars
-    process_stats(rawData) {
-      const data = (() => {
-        const arr = [];
-        let x = 52;
-        const d = new Date();
-        let y = (d.getDay() + 6) % 7;
-        while (x >= 0) {
-          let value = Math.floor((Math.random() ** 8) * 10);
-          value = Math.max(value, 0);
-          arr.push({
-            x, y, value: value + 1, date: new Date(d.getTime()),
-          });
-          y -= 1;
-          d.setDate(d.getDate() - 1);
-          if (y < 0) {
-            y = 6;
-            x -= 1;
-          }
+    getDay(date) {
+      const d = new Date(date);
+      const dd = Math.floor(d.getTime() / 1000 / 60 / 60 / 24);
+      return dd;
+    },
+    process_activity_data() {
+      // const attempts = JSON.parse(JSON.stringify(this.attempts));
+      this.attempts.sort(
+        (a, b) => {
+          const timeA = new Date(a.date).getTime();
+          const timeB = new Date(b.date).getTime();
+          return timeA - timeB;
+        },
+      );
+      const activityData = [];
+      let p = this.attempts.length - 1;
+      let x = 52;
+      const d = new Date();
+      let y = (d.getDay() + 6) % 7;
+      while (x >= 0) {
+        let value = 0;
+        const curDay = this.getDay(d);
+        while (p >= 0 && this.getDay(this.attempts[p].date) === curDay) {
+          p -= 1;
+          value += 1;
         }
-        return arr;
-      })();
-      this.activity.data = data;
+        activityData.push({
+          x, y, value: value + 1, date: new Date(d.getTime()),
+        });
+        y -= 1;
+        d.setDate(d.getDate() - 1);
+        if (y < 0) {
+          y = 6;
+          x -= 1;
+        }
+      }
+      this.activity.data = activityData;
+    },
+    process_numberCompleted() {
+      const st = new Set();
+      // eslint-disable-next-line no-restricted-syntax
+      for (const at of this.attempts) {
+        st.add(at.lesson.id);
+      }
+      this.numberOfCompletedCodes = st.size;
+    },
+    process_stats() {
+      this.process_activity_data();
+      this.process_numberCompleted();
+    },
+    loadUser() {
+      if (this.$store.getters.isAuthenticated && this.$store.getters.user.username
+        && this.user.toLowerCase() === this.$store.getters.user.username.toLowerCase()) {
+        const { user } = this.$store.getters;
+        this.firstName = user.first_name;
+        this.lastName = user.last_name;
+        this.username = user.username;
+        this.picture = user.avatar;
+        if (this.username !== this.user) {
+          this.$router.push(`/profile/${this.username}`);
+        }
+      } else {
+        this.loadingUser = true;
+        APIHelper.get(`/account/profile/${this.user}`)
+          .then((res) => {
+            this.firstName = res.data.first_name;
+            this.lastName = res.data.last_name;
+            this.username = res.data.username;
+            this.picture = res.data.avatar;
+            if (this.username !== this.user) {
+              this.$router.push(`/profile/${this.username}`);
+            }
+            if (this.$store.getters.isAuthenticated && !this.$store.getters.user.username) {
+              this.$store.dispatch('getUser');
+            }
+            this.loadingUser = false;
+          })
+          .catch((e) => {
+            console.log(e);
+            if (e.response && e.response.status === 404) {
+              this.$router.push('/404');
+            } else {
+              this.$router.go(0);
+            }
+          });
+      }
+    },
+    loadAttempts() {
+      this.loadingAttempts = true;
+      APIHelper.get(`/lessons/attempts/${this.user}`)
+        .then((e) => {
+          this.attempts = e.data.attempts;
+          this.loadingAttempts = false;
+          this.process_stats();
+        })
+        .catch((e) => {
+          console.log(e);
+          if (e.response && e.response.status === 404) {
+            this.$router.push('/404');
+          } else {
+            this.$router.go(0);
+          }
+        });
     },
   },
   watch: {
@@ -108,42 +190,8 @@ export default {
     },
   },
   mounted() {
-    if (this.$store.getters.isAuthenticated && this.$store.getters.user.username
-      && this.user.toLowerCase() === this.$store.getters.user.username.toLowerCase()) {
-      const { user } = this.$store.getters;
-      this.firstName = user.first_name;
-      this.lastName = user.last_name;
-      this.username = user.username;
-      this.picture = user.avatar;
-      if (this.username !== this.user) {
-        this.$router.push(`/profile/${this.username}`);
-      }
-      this.process_stats();
-      return;
-    }
-    this.loading = true;
-    APIHelper.get(`/account/profile/${this.user}`)
-      .then((res) => {
-        this.firstName = res.data.first_name;
-        this.lastName = res.data.last_name;
-        this.username = res.data.username;
-        this.picture = res.data.avatar;
-        if (this.username !== this.user) {
-          this.$router.push(`/profile/${this.username}`);
-        }
-        if (this.$store.getters.isAuthenticated && !this.$store.getters.user.username) {
-          this.$store.dispatch('getUser');
-        }
-        this.process_stats();
-        this.loading = false;
-      })
-      .catch((e) => {
-        if (e.response && e.response.status === 404) {
-          this.$router.push('/404');
-        } else {
-          this.$router.go(0);
-        }
-      });
+    this.loadUser();
+    this.loadAttempts();
   },
 };
 
