@@ -73,7 +73,7 @@
           Try again
         </v-btn>
         <v-btn class="mx-1 text-capitalize dbutton" color="#ff8200" style="color: white"
-               @click="$router.push(`/lesson/${lesson_id + 1}`)">
+               @click="$router.push(`/lesson/${next_lesson}`)">
           <v-icon class="ml-n2 mr-1">mdi-chevron-right</v-icon>
           Next lesson
         </v-btn>
@@ -92,7 +92,7 @@ import Stars from '@/components/TextChoose/Stars.vue';
 export default {
   name: 'AttemptResult',
   components: { Stars, AccuracyBar, SpeedBar },
-  props: ['cpm', 'acc', 'duration', 'score', 'committed', 'lesson_id'],
+  props: ['cpm', 'acc', 'duration', 'score', 'committed', 'lesson_id', 'next_lesson'],
   methods: {
     formatTime() {
       return formatTime(this.duration);

@@ -2,7 +2,7 @@
   <div>
     <page-loader :loading="loading"></page-loader>
     <EditorPage :texts="codes" :topic="topic" :title="title"
-                :ready="editorReady" :language="lang" :textid="id"
+                :ready="editorReady" :language="lang" :textid="id" :next_lesson="next_lesson"
                 @setLang="setLang"></EditorPage>
   </div>
 </template>
@@ -25,6 +25,7 @@ export default {
     'language',
     'topicName',
     'titleName',
+    'nextLesson',
   ],
   data() {
     return {
@@ -35,6 +36,7 @@ export default {
       lang: this.language ? this.language : this.$store.getters.lastUsedLanguage,
       editorReady: false,
       id: parseInt(this.textid, 10),
+      next_lesson: this.nextLesson,
     };
   },
   mounted() {
@@ -49,6 +51,7 @@ export default {
           }
           this.topic = e.data.topic;
           this.title = e.data.title;
+          this.next_lesson = e.data.next_lesson;
           this.loading = false;
           this.prepareEditor();
         })
@@ -63,6 +66,7 @@ export default {
   methods: {
     prepareEditor() {
       this.fixLanguage();
+      this.fixCodes();
       this.editorReady = true;
     },
     fixLanguage() {
@@ -70,6 +74,12 @@ export default {
         // eslint-disable-next-line prefer-destructuring
         this.lang = Object.keys(this.codes)[0];
         changeLanguage(this.lang);
+      }
+    },
+    fixCodes() {
+      // eslint-disable-next-line guard-for-in,no-restricted-syntax
+      for (const key in this.codes) {
+        this.codes[key].code = this.codes[key].code.replaceAll('    ', '\t');
       }
     },
     setLang(lang) {

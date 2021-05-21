@@ -52,6 +52,7 @@ export default {
     title: null,
     difficulty: null,
     attempts: null,
+    next_lesson: null,
     lang_colors: langColors,
   }),
 
@@ -64,6 +65,7 @@ export default {
         this.title = e.data.title;
         this.difficulty = e.data.difficulty;
         this.attempts = e.data.attempts;
+        this.next_lesson = e.data.next_lesson;
         this.codes = {};
         // eslint-disable-next-line no-restricted-syntax
         for (const code of e.data.codes) {
@@ -95,6 +97,7 @@ export default {
           language: lang,
           topicName: this.topic,
           titleName: this.title,
+          nextLesson: this.next_lesson,
         },
       });
     },

@@ -163,7 +163,6 @@ export default {
     },
   },
   mounted() {
-    this.targetText = this.targetText.replaceAll('    ', '\t');
     const cmOptions = {
       mode: 'text/x-c++src',
       theme: 'monokai',

@@ -66,7 +66,8 @@
     <v-dialog v-model="finished" max-width="900"
               transition="slide-y-transition" persistent>
       <AttemptResult :cpm="cpm" :acc="acc" :duration="duration" :score="score"
-                     :committed="committed" :lesson_id="textid"></AttemptResult>
+                     :committed="committed" :lesson_id="textid"
+                     :next_lesson="next_lesson"></AttemptResult>
     </v-dialog>
   </div>
 </template>
@@ -101,6 +102,7 @@ export default {
     'topic',
     'title',
     'ready',
+    'next_lesson',
   ],
   data() {
     return {
