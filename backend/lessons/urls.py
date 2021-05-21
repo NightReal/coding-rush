@@ -12,7 +12,7 @@ urlpatterns = [
     path('<int:pk>', GetLessonView.as_view(), name='Get lesson'),
     path('', GetAllLessonsView.as_view(), name='Get all lessons'),
     path('commitAttempt', CommitAttemptView.as_view(), name='Commit new attempt'),
-    path('attempts/<int:user_id>', UserStatisticsGetView.as_view(), name='Get user statistics data'),
+    path('attempts/<str:username>', UserStatisticsGetView.as_view(), name='Get user statistics data'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
