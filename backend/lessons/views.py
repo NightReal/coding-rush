@@ -82,7 +82,7 @@ class UserStatisticsGetView(views.APIView):
     permission_classes = [permissions.IsAuthenticated, ]
 
     def get(self, request, username, *args, **kwargs):
-        user = User.objects.filter(username=username).first()
+        user = User.objects.filter(username__iexact=username).first()
         if not user:
             return Response(status=HTTP_404_NOT_FOUND)
         all_attempts = Attempt.objects.filter(user_id=user.id).all()
