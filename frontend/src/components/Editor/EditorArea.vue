@@ -235,13 +235,13 @@ export default {
 }
 
 .CodeMirror-linenumber {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   padding-top: 2px;
   margin-left: -3px;
 }
 
 .CodeMirror-linenumbers {
-  width: 32px !important;
+  min-width: 35px !important;
 }
 
 </style>
