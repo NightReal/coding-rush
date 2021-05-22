@@ -34,7 +34,7 @@
     <div style="display: flex; justify-content: center">
       <div :style="`min-width: ${editorWidth}px; max-width: ${editorWidth}px`">
         <EditorArea v-if="editorAreaReady" ref="editor"
-                    :target-text="texts[language].code" :is-typing="typing"
+                    :target-text="texts[language].code" :is-typing="typing" :lang="language"
                     @setTyping="setTyping"
                     @setCPM="cpm = $event" @setACC="acc = $event"></EditorArea>
       </div>

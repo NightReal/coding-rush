@@ -17,11 +17,12 @@ import CodeMirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/monokai.css';
 import 'codemirror/mode/clike/clike';
+import 'codemirror/mode/python/python';
 import 'codemirror/addon/scroll/scrollpastend';
 
 export default {
   name: 'EditorArea',
-  props: ['targetText', 'isTyping'],
+  props: ['targetText', 'isTyping', 'lang'],
   data() {
     return {
       // targetText: this.targetTextProp,
@@ -34,7 +35,8 @@ export default {
       editorClass: '',
       cursorDefault: null,
       isBad: null,
-      finished: true,
+      finished: false,
+      oneskip: false,
     };
   },
   methods: {
@@ -76,7 +78,8 @@ export default {
       this.updateAcc();
     },
     beforeChange(...[, changeObj]) {
-      if (this.finished) {
+      if (this.oneskip) {
+        this.oneskip = false;
         return;
       }
       if (changeObj.origin === 'paste') {
@@ -151,11 +154,21 @@ export default {
       this.acc = (len - this.isBadSum) / len;
     },
     init() {
+      this.oneskip = true;
       this.editor.setValue('');
       this.target.setValue(this.targetText);
       this.$emit('setCPM', this.cpm);
       this.$emit('setACC', this.acc);
       this.finished = false;
+    },
+    getMode() {
+      if (this.lang === 'c++') {
+        return 'text/x-c++src';
+      }
+      if (this.lang === 'python') {
+        return 'text/x-python';
+      }
+      return undefined;
     },
   },
   watch: {
@@ -171,10 +184,16 @@ export default {
     targetText() {
       this.target.setValue(this.targetText);
     },
+    lang() {
+      this.oneskip = true;
+      this.editor.setOption('mode', this.getMode());
+      this.editor.setValue('');
+      this.target.setOption('mode', this.getMode());
+    },
   },
   mounted() {
     const cmOptions = {
-      mode: 'text/x-c++src',
+      mode: this.getMode(),
       theme: 'monokai',
       tabSize: 4,
       indentWithTabs: true, // change to false in case we switch to spaces again
