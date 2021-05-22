@@ -1,14 +1,15 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center;" class="mt-3">
-    <div style="display: flex; justify-content: space-between; width: 53%">
+    <div style="display: flex; justify-content: space-between;
+                max-width: 1000px; min-width: 800px; width: 90vw">
       <v-btn class="text-capitalize mt-3" color="#ff8200"
-             style="color: white; font-size: 0.95rem"
+             style="color: white; font-size: 0.95rem; width: 110px"
              @click="$router.push(`/profile/${$store.getters.user.username}`)">
         <v-icon class="ml-n2 mr-1">mdi-chevron-left</v-icon>
         Profile
       </v-btn>
       <div style="font-size: 2.5rem; font-weight: 600" class="mb-3">Settings</div>
-      <div style="width: 100px"></div>
+      <div style="width: 110px"></div>
     </div>
     <div style="color: #444444; font-size: 1.2rem; max-width: 500px; text-align: center;">
       Here you can set up your account.
