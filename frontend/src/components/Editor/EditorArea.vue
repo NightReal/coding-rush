@@ -34,7 +34,7 @@ export default {
       editorClass: '',
       cursorDefault: null,
       isBad: null,
-      finished: false,
+      finished: true,
     };
   },
   methods: {
@@ -76,6 +76,9 @@ export default {
       this.updateAcc();
     },
     beforeChange(...[, changeObj]) {
+      if (this.finished) {
+        return;
+      }
       if (changeObj.origin === 'paste') {
         changeObj.cancel();
         return;
@@ -147,6 +150,13 @@ export default {
       }
       this.acc = (len - this.isBadSum) / len;
     },
+    init() {
+      this.editor.setValue('');
+      this.target.setValue(this.targetText);
+      this.$emit('setCPM', this.cpm);
+      this.$emit('setACC', this.acc);
+      this.finished = false;
+    },
   },
   watch: {
     typing() {
@@ -178,9 +188,7 @@ export default {
     this.editor.on('change', this.onChange);
     cmOptions.readOnly = true;
     this.target = CodeMirror.fromTextArea(this.$refs.target, cmOptions);
-    this.target.setValue(this.targetText);
-    this.$emit('setCPM', this.cpm);
-    this.$emit('setACC', this.acc);
+    this.init();
   },
 };
 </script>
