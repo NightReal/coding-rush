@@ -25,7 +25,6 @@ export default {
   props: ['targetText', 'isTyping', 'lang'],
   data() {
     return {
-      // targetText: this.targetTextProp,
       cpm: 0,
       acc: 1,
       typing: this.isTyping,
@@ -154,6 +153,9 @@ export default {
       this.acc = (len - this.isBadSum) / len;
     },
     init() {
+      this.cpm = 0;
+      this.acc = 0;
+      this.startTime = 0;
       this.oneskip = true;
       this.editor.setValue('');
       this.target.setValue(this.targetText);
@@ -200,7 +202,7 @@ export default {
       smartIndent: true,
       indentUnit: 4,
       scrollPastEnd: true,
-      // lineNumbers: true,
+      lineNumbers: true,
     };
     this.editor = CodeMirror.fromTextArea(this.$refs.editor, cmOptions);
     this.editor.on('beforeChange', this.beforeChange);
@@ -228,8 +230,18 @@ export default {
 
 .CodeMirror-vscrollbar {
   display: block !important;
-  z-index: 1;
+  z-index: 3;
   bottom: 0;
+}
+
+.CodeMirror-linenumber {
+  font-size: 0.9rem;
+  padding-top: 2px;
+  margin-left: -3px;
+}
+
+.CodeMirror-linenumbers {
+  width: 32px !important;
 }
 
 </style>
