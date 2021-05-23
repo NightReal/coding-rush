@@ -63,7 +63,7 @@ export default {
               id: 'cpm',
               ticks: {
                 suggestedMin: 0,
-                suggestedMax: 500,
+                suggestedMax: 400,
               },
               scaleLabel: {
                 display: true,
