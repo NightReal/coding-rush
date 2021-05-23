@@ -19,6 +19,12 @@ export default {
       options: {
         maintainAspectRatio: false,
         scaleShowValues: true,
+        legend: {
+          display: true,
+          labels: {
+            fontSize: 14,
+          },
+        },
         animation: {
           onComplete: () => {
             this.$emit('ready');
@@ -44,7 +50,8 @@ export default {
               return label;
             },
           },
-
+          titleFontSize: 13,
+          bodyFontSize: 13,
         },
         stacked: false,
         scales: {
@@ -53,6 +60,7 @@ export default {
               scaleLabel: {
                 display: true,
                 labelString: 'Difficulty',
+                fontSize: 14,
               },
             }],
           yAxes: [
@@ -68,6 +76,7 @@ export default {
               scaleLabel: {
                 display: true,
                 labelString: 'Speed - CPM',
+                fontSize: 14,
               },
               gridLines: {
                 display: false,
@@ -85,6 +94,7 @@ export default {
               scaleLabel: {
                 display: true,
                 labelString: 'Accuracy %',
+                fontSize: 14,
               },
             },
           ],
