@@ -35,15 +35,19 @@
         </v-btn>
       </div>
 
-      <div id="center-bar" class="px-16" style="display: flex; flex-direction: column;
+      <div id="center-bar" class="pl-7" style="display: flex; flex-direction: column;
                                   align-items: center; width: 100%">
-        <div style="width: 90%; min-width: 400px">
+        <div id="activity-container">
           <Activity class="mt-3" chart-id="activityChart" ref="activity"
                     @ready="activity.ready = true"></Activity>
         </div>
+        <div id="stats-on-difficulty-container" class="mt-10">
+          <OnDifficulty :cpm="onDifficulty.cpm" :acc="onDifficulty.acc"
+                       :labels="onDifficulty.labels"
+                       ref="onDifficulty" @ready="onDifficulty.ready = true"></OnDifficulty>
+        </div>
       </div>
     </v-container>
-
   </div>
 </template>
 
@@ -53,10 +57,11 @@ import APIHelper from '@/api/apihelper';
 import Activity from '@/components/Profile/Activity.vue';
 import PageLoader from '@/components/PageLoader.vue';
 import defaultAvatar from '@/assets/default-avatar-268x268.png';
+import OnDifficulty from '@/components/Profile/OnDifficulty.vue';
 
 export default {
   name: 'Profile',
-  components: { Activity, PageLoader },
+  components: { OnDifficulty, Activity, PageLoader },
   props: ['user'],
   data() {
     return {
@@ -70,12 +75,21 @@ export default {
       numberOfCompletedCodes: 0,
       activity: { data: undefined, ready: false, loaded: false },
       attempts: [],
+      onDifficulty: {
+        ready: false,
+        loaded: false,
+        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+        cpm: undefined,
+        acc: undefined,
+      },
     };
   },
   methods: {
     getDay(date) {
       const d = new Date(date);
-      const dd = Math.floor(d.getTime() / 1000 / 60 / 60 / 24);
+      let minutes = d.getTime() / 1000 / 60;
+      minutes -= d.getTimezoneOffset();
+      const dd = Math.floor(minutes / 60 / 24);
       return dd;
     },
     process_activity_data() {
@@ -119,9 +133,33 @@ export default {
       }
       this.numberOfCompletedCodes = st.size;
     },
+    process_statsOnDiff() {
+      const cntDiff = new Array(10).fill(0);
+      const cpm = new Array(10).fill(0);
+      const acc = new Array(10).fill(0);
+      // eslint-disable-next-line no-restricted-syntax
+      for (const at of this.attempts) {
+        const dif = at.lesson.difficulty - 1;
+        cntDiff[dif] += 1;
+        cpm[dif] += at.speed;
+        acc[dif] += at.accuracy;
+      }
+      for (let i = 0; i < 10; i += 1) {
+        if (cntDiff[i] === 0) {
+          cpm[i] = 0;
+          acc[i] = 0;
+        } else {
+          cpm[i] = Math.round(cpm[i] / cntDiff[i]);
+          acc[i] = Math.round(acc[i] / cntDiff[i]);
+        }
+      }
+      this.onDifficulty.cpm = cpm;
+      this.onDifficulty.acc = acc;
+    },
     process_stats() {
       this.process_activity_data();
       this.process_numberCompleted();
+      this.process_statsOnDiff();
     },
     loadUser() {
       if (this.$store.getters.isAuthenticated && this.$store.getters.user.username
@@ -188,6 +226,16 @@ export default {
         }
       },
     },
+    onDifficulty: {
+      deep: true,
+      handler() {
+        if (this.onDifficulty.cpm && this.onDifficulty.acc
+          && this.onDifficulty.ready && !this.onDifficulty.loaded) {
+          this.onDifficulty.loaded = true;
+          this.$refs.onDifficulty.updateData();
+        }
+      },
+    },
   },
   mounted() {
     this.loadUser();
@@ -198,7 +246,7 @@ export default {
 </script>
 <style>
 
-@media all and (min-width: 770px) {
+@media all and (min-width: 890px) {
   #left-bar-info {
     flex-direction: column;
   }
@@ -218,9 +266,18 @@ export default {
   #pictureContainer {
     margin-bottom: 20px;
   }
+
+  #activity-container {
+    width: 700px;
+  }
+
+  #stats-on-difficulty-container {
+    width: 700px;
+    height: 300px;
+  }
 }
 
-@media all and (max-width: 769px) {
+@media all and (max-width: 889px) {
   #left-bar, #center-bar {
     flex: 1 100%;
   }
@@ -244,6 +301,15 @@ export default {
 
   #bar-container {
     flex-direction: column;
+  }
+
+  #activity-container {
+    width: 500px;
+  }
+
+  #stats-on-difficulty-container {
+    width: 500px;
+    height: 300px;
   }
 }
 

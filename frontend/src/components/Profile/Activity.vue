@@ -1,5 +1,9 @@
 <template>
-  <div :id="chartId" class="activity-chart" style="width: 90%" :ref="chartId"></div>
+  <div style="height: 100%; width: 100%;
+              display: flex; flex-direction: column; align-items: center">
+    <div style="font-size: 1.3rem; color: #555555">User Activity</div>
+    <div :id="chartId" class="activity-chart" style="width: 100%" :ref="chartId"></div>
+  </div>
 </template>
 
 <script>
