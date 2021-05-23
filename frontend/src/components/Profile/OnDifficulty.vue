@@ -10,6 +10,7 @@
 import { Line } from 'vue-chartjs';
 
 export default {
+  name: 'OnDifficulty',
   components: { LineChart: Line },
   props: ['cpm', 'acc', 'labels'],
   data() {
