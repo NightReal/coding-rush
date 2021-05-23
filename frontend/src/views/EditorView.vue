@@ -80,6 +80,7 @@ export default {
       // eslint-disable-next-line guard-for-in,no-restricted-syntax
       for (const key in this.codes) {
         this.codes[key].code = this.codes[key].code.replaceAll('    ', '\t');
+        this.codes[key].code = this.codes[key].code.trim();
       }
     },
     setLang(lang) {

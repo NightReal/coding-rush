@@ -17,14 +17,14 @@ import CodeMirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/monokai.css';
 import 'codemirror/mode/clike/clike';
+import 'codemirror/mode/python/python';
 import 'codemirror/addon/scroll/scrollpastend';
 
 export default {
   name: 'EditorArea',
-  props: ['targetText', 'isTyping'],
+  props: ['targetText', 'isTyping', 'lang'],
   data() {
     return {
-      // targetText: this.targetTextProp,
       cpm: 0,
       acc: 1,
       typing: this.isTyping,
@@ -35,6 +35,7 @@ export default {
       cursorDefault: null,
       isBad: null,
       finished: false,
+      oneskip: false,
     };
   },
   methods: {
@@ -76,6 +77,10 @@ export default {
       this.updateAcc();
     },
     beforeChange(...[, changeObj]) {
+      if (this.oneskip) {
+        this.oneskip = false;
+        return;
+      }
       if (changeObj.origin === 'paste') {
         changeObj.cancel();
         return;
@@ -147,6 +152,26 @@ export default {
       }
       this.acc = (len - this.isBadSum) / len;
     },
+    init() {
+      this.cpm = 0;
+      this.acc = 0;
+      this.startTime = 0;
+      this.oneskip = true;
+      this.editor.setValue('');
+      this.target.setValue(this.targetText);
+      this.$emit('setCPM', this.cpm);
+      this.$emit('setACC', this.acc);
+      this.finished = false;
+    },
+    getMode() {
+      if (this.lang === 'c++') {
+        return 'text/x-c++src';
+      }
+      if (this.lang === 'python') {
+        return 'text/x-python';
+      }
+      return undefined;
+    },
   },
   watch: {
     typing() {
@@ -161,26 +186,30 @@ export default {
     targetText() {
       this.target.setValue(this.targetText);
     },
+    lang() {
+      this.oneskip = true;
+      this.editor.setOption('mode', this.getMode());
+      this.editor.setValue('');
+      this.target.setOption('mode', this.getMode());
+    },
   },
   mounted() {
     const cmOptions = {
-      mode: 'text/x-c++src',
+      mode: this.getMode(),
       theme: 'monokai',
       tabSize: 4,
       indentWithTabs: true, // change to false in case we switch to spaces again
       smartIndent: true,
       indentUnit: 4,
       scrollPastEnd: true,
-      // lineNumbers: true,
+      lineNumbers: true,
     };
     this.editor = CodeMirror.fromTextArea(this.$refs.editor, cmOptions);
     this.editor.on('beforeChange', this.beforeChange);
     this.editor.on('change', this.onChange);
     cmOptions.readOnly = true;
     this.target = CodeMirror.fromTextArea(this.$refs.target, cmOptions);
-    this.target.setValue(this.targetText);
-    this.$emit('setCPM', this.cpm);
-    this.$emit('setACC', this.acc);
+    this.init();
   },
 };
 </script>
@@ -201,8 +230,18 @@ export default {
 
 .CodeMirror-vscrollbar {
   display: block !important;
-  z-index: 1;
+  z-index: 3;
   bottom: 0;
+}
+
+.CodeMirror-linenumber {
+  font-size: 0.85rem;
+  padding-top: 2px;
+  margin-left: -3px;
+}
+
+.CodeMirror-linenumbers {
+  min-width: 35px !important;
 }
 
 </style>

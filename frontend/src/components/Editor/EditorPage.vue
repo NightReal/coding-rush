@@ -34,7 +34,7 @@
     <div style="display: flex; justify-content: center">
       <div :style="`min-width: ${editorWidth}px; max-width: ${editorWidth}px`">
         <EditorArea v-if="editorAreaReady" ref="editor"
-                    :target-text="texts[language].code" :is-typing="typing"
+                    :target-text="texts[language].code" :is-typing="typing" :lang="language"
                     @setTyping="setTyping"
                     @setCPM="cpm = $event" @setACC="acc = $event"></EditorArea>
       </div>
@@ -67,7 +67,7 @@
               transition="slide-y-transition" persistent>
       <AttemptResult :cpm="cpm" :acc="acc" :duration="duration" :score="score"
                      :committed="committed" :lesson_id="textid"
-                     :next_lesson="next_lesson"></AttemptResult>
+                     :next_lesson="next_lesson" :reset="resetPage"></AttemptResult>
     </v-dialog>
   </div>
 </template>
@@ -138,6 +138,11 @@ export default {
         clearInterval(this.timer);
       }
     },
+    finished() {
+      if (!this.finished) {
+        setTimeout(this.continueReset, 200);
+      }
+    },
   },
   methods: {
     onReady() {
@@ -203,6 +208,19 @@ export default {
         })
         .catch((err) => console.log(err));
       this.finished = true;
+    },
+    resetPage() {
+      this.finished = false;
+      this.typing = false;
+      this.committed = false;
+    },
+    continueReset() {
+      this.score = null;
+      this.cpm = 0;
+      this.acc = 0;
+      this.duration = 0;
+      const { editor } = this.$refs;
+      editor.init();
     },
   },
 };

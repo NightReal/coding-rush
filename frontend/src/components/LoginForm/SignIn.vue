@@ -69,8 +69,7 @@ export default {
       this.loading = true;
       this.$store.dispatch('login', { username: this.username, password: this.password })
         .then(() => {
-          if (this.$route.path !== '/') this.$router.push('/');
-          else this.$router.go(0);
+          this.$router.push(`/profile/${this.username}`);
         })
         .catch((err) => this.showSmthWrong(err))
         .then(() => { this.loading = false; });
