@@ -211,7 +211,8 @@ export default {
           if (e.response && e.response.status === 404) {
             this.$router.push('/404');
           } else {
-            this.$router.go(0);
+            // this.$router.go(0);
+            this.$router.push('/signin');
           }
         });
     },
