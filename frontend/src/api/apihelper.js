@@ -38,7 +38,7 @@ const errorInterceptor = (error) => {
           })
           .catch((err) => {
             store.dispatch('logout');
-            router.push('/login');
+            router.push('/signin');
             reject(err);
           });
       }));
