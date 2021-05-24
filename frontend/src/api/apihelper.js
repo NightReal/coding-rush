@@ -1,7 +1,9 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 // eslint-disable-next-line import/no-cycle
-import store from '../store';
+import store from '@/store';
+// eslint-disable-next-line import/no-cycle
+import router from '@/router';
 
 const APIHelper = axios.create({
   headers: {
@@ -36,6 +38,7 @@ const errorInterceptor = (error) => {
           })
           .catch((err) => {
             store.dispatch('logout');
+            router.push('/login');
             reject(err);
           });
       }));
