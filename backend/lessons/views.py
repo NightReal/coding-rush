@@ -79,7 +79,7 @@ class CommitAttemptView(views.APIView):
 
 
 class UserStatisticsGetView(views.APIView):
-    permission_classes = [permissions.IsAuthenticated, ]
+    permission_classes = [permissions.AllowAny, ]
 
     def get(self, request, username, *args, **kwargs):
         user = User.objects.filter(username__iexact=username).first()
