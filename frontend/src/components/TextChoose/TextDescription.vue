@@ -39,7 +39,7 @@ import VRuntimeTemplate from 'v-runtime-template';
 import * as vuetifyComponents from 'vuetify/lib';
 
 export default {
-  name: 'TextChoose',
+  name: 'TextDescription',
 
   props: ['textid', 'default_lang'],
 
