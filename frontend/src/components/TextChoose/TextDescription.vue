@@ -21,7 +21,7 @@
                         :on_change="changeLang"
                         :on_click="go_type" tooltip-text="Start typing!"></DropDownMenu>
         </div>
-        <div v-html="description"></div>
+        <v-runtime-template :template="description"></v-runtime-template>
       </div>
       <AttemptsList v-if="attempts !== null" :attempts="attempts" class="mb-16"></AttemptsList>
     </div>
@@ -35,13 +35,21 @@ import APIHelper from '@/api/apihelper';
 import { langColors, changeLanguage } from '@/components/TextChoose/Languages';
 import DropDownMenu from '@/components/DropDownMenu.vue';
 import AttemptsList from '@/components/TextChoose/AttemptsList.vue';
+import VRuntimeTemplate from 'v-runtime-template';
+import * as vuetifyComponents from 'vuetify/lib';
 
 export default {
   name: 'TextChoose',
 
   props: ['textid', 'default_lang'],
 
-  components: { AttemptsList, DropDownMenu, PageLoader },
+  components: {
+    AttemptsList,
+    DropDownMenu,
+    PageLoader,
+    VRuntimeTemplate,
+    ...vuetifyComponents,
+  },
 
   data: () => ({
     lang: null,
