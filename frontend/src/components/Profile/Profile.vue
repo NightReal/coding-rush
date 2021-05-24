@@ -9,8 +9,8 @@
         <div id="left-bar-info" style="display: flex; width: 100%;">
           <div id="pictureContainer">
             <img class="elevation-5" :src="picture ? picture : defaultPicture"
-                 @error="$event.target.src = this.defaultPicture"
-                 style="width: 100%;"/>
+                   @error="picture = null"
+                   style="width: 100%;"/>
           </div>
           <div>
             <div class="font-weight-bold" style="font-size: 1.625rem">
@@ -43,8 +43,8 @@
         </div>
         <div id="stats-on-difficulty-container" class="mt-10">
           <OnDifficulty :cpm="onDifficulty.cpm" :acc="onDifficulty.acc"
-                       :labels="onDifficulty.labels"
-                       ref="onDifficulty" @ready="onDifficulty.ready = true"></OnDifficulty>
+                        :labels="onDifficulty.labels"
+                        ref="onDifficulty" @ready="onDifficulty.ready = true"></OnDifficulty>
         </div>
       </div>
     </v-container>
@@ -75,6 +75,7 @@ export default {
       numberOfCompletedCodes: 0,
       activity: { data: undefined, ready: false, loaded: false },
       attempts: [],
+      best_attempts: [],
       onDifficulty: {
         ready: false,
         loaded: false,
@@ -91,6 +92,31 @@ export default {
       minutes -= d.getTimezoneOffset();
       const dd = Math.floor(minutes / 60 / 24);
       return dd;
+    },
+    process_best_attempts() {
+      const { attempts } = this;
+      attempts.sort(
+        (a, b) => {
+          const scoreA = a.score;
+          const scoreB = b.score;
+          if (scoreA !== scoreB) {
+            return scoreB - scoreA;
+          }
+          const timeA = new Date(a.date).getTime();
+          const timeB = new Date(b.date).getTime();
+          return timeA - timeB;
+        },
+      );
+      // eslint-disable-next-line camelcase
+      const best_attempts = {};
+      // eslint-disable-next-line no-restricted-syntax
+      for (const at of attempts) {
+        const { id } = at.lesson;
+        if (best_attempts[id] === undefined) {
+          best_attempts[id] = at;
+        }
+      }
+      this.best_attempts = Object.values(best_attempts);
     },
     process_activity_data() {
       // const attempts = JSON.parse(JSON.stringify(this.attempts));
@@ -126,19 +152,14 @@ export default {
       this.activity.data = activityData;
     },
     process_numberCompleted() {
-      const st = new Set();
-      // eslint-disable-next-line no-restricted-syntax
-      for (const at of this.attempts) {
-        st.add(at.lesson.id);
-      }
-      this.numberOfCompletedCodes = st.size;
+      this.numberOfCompletedCodes = this.best_attempts.length;
     },
     process_statsOnDiff() {
       const cntDiff = new Array(10).fill(0);
       const cpm = new Array(10).fill(0);
       const acc = new Array(10).fill(0);
       // eslint-disable-next-line no-restricted-syntax
-      for (const at of this.attempts) {
+      for (const at of this.best_attempts) {
         const dif = at.lesson.difficulty - 1;
         cntDiff[dif] += 1;
         cpm[dif] += at.speed;
@@ -157,6 +178,7 @@ export default {
       this.onDifficulty.acc = acc;
     },
     process_stats() {
+      this.process_best_attempts();
       this.process_activity_data();
       this.process_numberCompleted();
       this.process_statsOnDiff();
