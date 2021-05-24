@@ -9,7 +9,9 @@
 
 <script>
 import EditorPage from '@/components/Editor/EditorPage.vue';
+// eslint-disable-next-line import/no-cycle
 import APIHelper from '@/api/apihelper';
+// eslint-disable-next-line import/no-cycle
 import { changeLanguage } from '@/components/TextChoose/Languages';
 import PageLoader from '@/components/PageLoader.vue';
 

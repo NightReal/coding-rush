@@ -3,12 +3,12 @@ import VueRouter from 'vue-router';
 import SettingsView from '@/views/SettingsView.vue';
 import TextChooseView from '@/views/TextChooseView.vue';
 import TextDescriptionView from '@/views/TextDescriptionView.vue';
-// import HomeView from '../views/HomeView.vue';
 import MainView from '../views/MainView.vue';
 import LoginView from '../views/LoginView.vue';
 import EditorView from '../views/EditorView.vue';
 import ProfileView from '../views/ProfileView.vue';
 import NotFoundView from '../views/404.vue';
+// eslint-disable-next-line import/no-cycle
 import store from '../store/index';
 
 Vue.use(VueRouter);
