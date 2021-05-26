@@ -52,12 +52,18 @@
                   style="display: flex; flex-direction: column;
                   justify-content: space-between">
             <v-text-field class="form-field" v-model="password" ref="password"
-                          :rules="passwordRules" label="Password" type="password" required
+                          :rules="passwordRules" label="Password" required
                           autocomplete="new-password"
+                          :append-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
+                          :type="show_password ? 'text' : 'password'"
+                          @click:append="show_password = !show_password"
             ></v-text-field>
             <v-text-field class="form-field" v-model="passwordConfirm" ref="passwordConfirm"
-                          :rules="passwordConfirmRules" label="Confirm password" type="password"
+                          :rules="passwordConfirmRules" label="Confirm password"
                           required
+                          :append-icon="show_password_confirm ? 'mdi-eye' : 'mdi-eye-off'"
+                          :type="show_password_confirm ? 'text' : 'password'"
+                          @click:append="show_password_confirm = !show_password_confirm"
             ></v-text-field>
             <div hidden>
               <v-text-field name="username" :value="username" autocomplete="username">
@@ -154,12 +160,13 @@ export default {
         (v) => (v && v.length <= 64) || 'Password must be less than 64 characters',
         (v) => (v && v.length >= 8) || 'Password must be more than 8 characters',
       ],
+      show_password: false,
       passwordConfirm: '',
       passwordConfirmRules: [
         (v) => !!v || 'Password confirmation is required',
         (v) => (v === this.password) || 'Passwords didn\'t match',
       ],
-
+      show_password_confirm: false,
     };
   },
   methods: {
@@ -264,7 +271,9 @@ export default {
               username: this.username,
               password: this.password,
             })
-            .then(() => (this.$route.path !== '/' ? this.$router.push('/') : {}))
+            .then(() => {
+              this.$router.push(`/profile/${this.username}`);
+            })
             .catch((err) => this.showSthWrong(err));
           this.loading = false;
         })

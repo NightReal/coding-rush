@@ -1,0 +1,4 @@
+[submodule "backend/codes"]
+	path = backend/codes
+	url = https://github.com/NightReal/coding-rush-codes.git
+	branch = master

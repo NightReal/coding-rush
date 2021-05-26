@@ -1,9 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import SettingsView from '@/views/SettingsView.vue';
+import TextChooseView from '@/views/TextChooseView.vue';
+import TextDescriptionView from '@/views/TextDescriptionView.vue';
 import MainView from '../views/MainView.vue';
 import LoginView from '../views/LoginView.vue';
 import EditorView from '../views/EditorView.vue';
+import ProfileView from '../views/ProfileView.vue';
+import NotFoundView from '../views/404.vue';
 // eslint-disable-next-line import/no-cycle
 import store from '../store/index';
 
@@ -15,16 +19,32 @@ function isAuthed() {
 
 const routes = [
   {
-    path: '/',
-    name: 'Root',
-    component: {
-      render: (c) => c(isAuthed() ? HomeView : MainView),
+    path: '/about',
+    name: 'About',
+    component: MainView,
+    alias: '/',
+  },
+  {
+    path: '/type/:textid',
+    name: 'Editor',
+    component: EditorView,
+    meta: {
+      requiresAuth: true,
+    },
+    props: true,
+  },
+  {
+    path: '/lessons',
+    name: 'Text Choose',
+    component: TextChooseView,
+    meta: {
+      requiresAuth: true,
     },
   },
   {
-    path: '/editor',
-    name: 'Editor',
-    component: EditorView,
+    path: '/lesson/:textid',
+    name: 'Text Description',
+    component: TextDescriptionView,
     meta: {
       requiresAuth: true,
     },
@@ -34,13 +54,33 @@ const routes = [
     alias: '/signup',
     name: 'Login',
     component: LoginView,
-    props: true,
     meta: {
       requiresDisAuth: true,
     },
   },
   { path: '/login', redirect: '/signin' },
   { path: '/register', redirect: '/signup' },
+  {
+    path: '/profile/:username',
+    name: 'Profile',
+    component: ProfileView,
+  },
+  {
+    path: '/404',
+    component: NotFoundView,
+  },
+  {
+    path: '/settings',
+    component: SettingsView,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '*',
+    redirect: '/404'
+    ,
+  },
 ];
 
 const router = new VueRouter({
@@ -52,11 +92,25 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (isAuthed() && to.matched.some((record) => record.meta.requiresDisAuth)) {
     next(from);
-  } else if (!isAuthed() && to.matched.some((record) => record.meta.requiresAuth)) {
-    next('/signin');
-  } else {
-    next();
+    return;
   }
+  if (!isAuthed() && to.matched.some((record) => record.meta.requiresAuth)) {
+    next('/signin');
+    return;
+  }
+  if (to.path === '/' && isAuthed()) {
+    if (!store.getters.user.username) {
+      store.dispatch('getUser').then(() => {
+        const { username } = store.getters.user;
+        next(`/profile/${username}`);
+      });
+    } else {
+      const { username } = store.getters.user;
+      next(`/profile/${username}`);
+    }
+    return;
+  }
+  next();
 });
 
 export default router;

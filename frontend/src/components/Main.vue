@@ -1,7 +1,7 @@
 <template>
   <v-container class="pa-0 ma-0">
     <v-sheet id="big-header" class="pa-0 ma-0" elevation="4" color="primary" dark>
-      <a href="/" id="header-title"><img alt="Coding Rush"
+      <a href="" id="header-title"><img alt="Coding Rush"
                                          src="@/assets/text-light-930x160.png"/></a>
       <v-container id="header-content" class="pa-0 ma-0">
         <v-container id="header-texts" class="pa-0 ma-0 mb-16 ml-16">
@@ -14,8 +14,8 @@
             Improve your coding skills
           </v-container>
         </v-container>
-        <div style="max-width: 10vw; min-width: 10vw; height: 0"><!--it's space--></div>
-        <v-container class="pa-0 ma-0 mt-8 mr-10" style="width: auto">
+        <div style="max-width: 10vw; min-width: 10vw; height: 0" v-if="!isAuthed()"></div>
+        <v-container class="pa-0 ma-0 mt-8 mr-10" style="width: auto" v-if="!isAuthed()">
           <LoginForm class="pa-0 ma-0"/>
         </v-container>
       </v-container>
@@ -143,6 +143,9 @@ export default {
         behavior: 'smooth',
       });
     },
+    isAuthed() {
+      return this.$store.getters.isAuthenticated;
+    },
   },
 };
 </script>
@@ -159,7 +162,6 @@ export default {
 
 #header-title {
   align-self: center;
-  margin-right: 100px;
   position: absolute;
 }
 

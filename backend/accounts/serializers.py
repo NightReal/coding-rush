@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model, password_validation
 from rest_framework import serializers
 from django.contrib.auth.models import BaseUserManager
+from django.core.files.images import get_image_dimensions
+from django.conf import settings
 
 User = get_user_model()
 
@@ -78,7 +80,7 @@ class ChangePasswordSerializer(serializers.Serializer):
             })
         return data
 
-    def save(self, **kwargs):
+    def update(self, **kwargs):
         password = self.validated_data['new_password']
         user = self.context['request'].user
         user.set_password(password)
@@ -90,6 +92,44 @@ class PrivateProfileInformationSerializer(serializers.ModelSerializer):
     """
     Serializer for private info retrieving endpoint
     """
+
     class Meta:
         model = User
-        fields = ('email', 'username', 'first_name', 'last_name')
+        fields = ('avatar', 'email', 'username', 'first_name', 'last_name', 'last_login')
+
+
+class PublicProfileInformationSerializer(serializers.ModelSerializer):
+    """
+    Serializer for public profile information retrieving endpoint
+    """
+
+    class Meta:
+        model = User
+        fields = ('avatar', 'username', 'first_name', 'last_name', 'last_login')
+
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for profile update endpoint
+    """
+
+    class Meta:
+        model = User
+        fields = ('avatar', 'first_name', 'last_name')
+
+    def validate_avatar(self, value):
+        if value is None:
+            return value
+        w, h = get_image_dimensions(value)
+        ratio = w / h
+        if value.size > settings.MAX_AVATAR_SIZE:
+            raise serializers.ValidationError('Avatar size is too big')
+        if w > settings.MAX_AVATAR_WIDTH:
+            raise serializers.ValidationError('Avatar width is too big')
+        if h > settings.MAX_AVATAR_HEIGHT:
+            raise serializers.ValidationError('Avatar height is too big')
+        if ratio > settings.MAX_AVATAR_RATIO:
+            raise serializers.ValidationError('Avatar aspect ratio too big')
+        if ratio < settings.MIN_AVATAR_RATIO:
+            raise serializers.ValidationError('Avatar aspect ratio is too small')
+        return value

@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'accounts',
-    'snippets',
+    'lessons',
 ]
 
 if DEBUG:
@@ -114,22 +114,6 @@ DATABASES = {
         'PORT': 5432,
     }
 }
-
-# caching setup
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"
-        },
-        "KEY_PREFIX": "default",
-    },
-}
-
-# Data (tokens and exists views) cache time to live is 5 minutes.
-CACHE_TTL = 300
 
 # Logging setup
 
@@ -215,3 +199,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media'
+
+MAX_AVATAR_WIDTH = 500
+MAX_AVATAR_HEIGHT = 500
+MAX_AVATAR_SIZE = 2000000
+MAX_AVATAR_RATIO = 2
+MIN_AVATAR_RATIO = 0.5

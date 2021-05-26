@@ -1,0 +1,7 @@
+.v-tooltip__content {
+    background-color: #616161 !important;
+}
+
+.v-tooltip__content.menuable__content__active {
+    opacity: 0.9 !important;
+}

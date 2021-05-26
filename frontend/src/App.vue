@@ -3,7 +3,7 @@
     <Header/>
 
     <v-main class="pa-0 ma-0">
-      <router-view/>
+      <router-view :key="$route.fullPath"/>
     </v-main>
 
     <Footer/>
@@ -12,11 +12,8 @@
 
 <script>
 
-// import HeaderAuth from '@/components/Headers/HeaderAuth.vue';
-// import HeaderUnauth from '@/components/Headers/HeaderUnauth.vue';
 import Header from '@/components/Headers/Header.vue';
 import Footer from '@/components/Footer.vue';
-import store from '@/store/index';
 
 export default {
   name: 'App',
@@ -25,13 +22,13 @@ export default {
     Header,
     Footer,
   },
-  methods: {
-    isAuthenticated() {
-      return store.getters.isAuthenticated;
-    },
-    isRoot() {
-      return this.$route.name === 'Root';
-    },
-  },
 };
 </script>
+
+<style>
+
+body {
+  overflow-x: hidden;
+}
+
+</style>

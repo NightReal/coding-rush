@@ -10,9 +10,14 @@ export default new Vuex.Store({
     accessToken: localStorage.getItem('accessToken') || null,
     refreshToken: localStorage.getItem('refreshToken') || null,
     user: {},
+    lastUsedLanguage: localStorage.getItem('lastUsedLanguage') || 'c++',
+    lastEditorWidth: localStorage.getItem('lastEditorWidth') || 1300,
   },
   getters: {
     isAuthenticated: (state) => state.accessToken != null,
+    lastUsedLanguage: (state) => state.lastUsedLanguage,
+    lastEditorWidth: (state) => parseInt(state.lastEditorWidth, 10),
+    user: (state) => state.user,
   },
   mutations: {
     destroyToken(state) {
@@ -39,6 +44,16 @@ export default new Vuex.Store({
     updateUser(state, user) {
       state.user = user;
     },
+    updateLastUsedLanguage(state, lang) {
+      localStorage.setItem('lastUsedLanguage', lang);
+      state.lastUsedLanguage = lang;
+    },
+    updateLastEditorWidth(state, w) {
+      // eslint-disable-next-line no-restricted-globals
+      if (typeof (w) !== 'number' || isNaN(w)) return;
+      localStorage.setItem('lastEditorWidth', w);
+      state.lastEditorWidth = w;
+    },
   },
   actions: {
     logout(context) {
@@ -47,30 +62,38 @@ export default new Vuex.Store({
     },
     refresh(context) {
       context.commit('destroyAccess');
+
       return new Promise(((resolve, reject) => {
-        APIHelper.post('/account/token/refresh/', {
+        APIHelper.post('/account/token/refresh', {
           refresh: context.state.refreshToken,
         })
           .then((response) => {
             context.commit('updateAccess', response.data.access);
-            return resolve();
+            resolve();
           })
-          .catch((err) => reject(err));
+          .catch((err) => {
+            reject(err);
+          });
       }));
     },
+
     getUser(context) {
       return new Promise(((resolve, reject) => {
-        APIHelper('/account/getme/')
-          .then((response) => {
-            context.commit('updateUser', response.data);
-            return resolve();
+        APIHelper('/account/getme')
+          .then((response) => response.data)
+          .catch((err) => {
+            reject(err);
           })
-          .catch((err) => reject(err));
+          .then((data) => {
+            context.commit('updateUser', data);
+            resolve();
+          });
       }));
     },
+
     login(context, credentials) {
       return new Promise(((resolve, reject) => {
-        APIHelper.post('/account/token/', {
+        APIHelper.post('/account/token', {
           username: credentials.username,
           password: credentials.password,
         })
@@ -86,7 +109,7 @@ export default new Vuex.Store({
     },
     register(context, credentials) {
       return new Promise((((resolve, reject) => {
-        APIHelper.post('account/register/', {
+        APIHelper.post('account/register', {
           username: credentials.username,
           password: credentials.password,
           password_confirm: credentials.password_confirm,
