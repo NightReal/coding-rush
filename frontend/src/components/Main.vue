@@ -175,6 +175,7 @@ export default {
 <style scoped>
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600&family=Roboto:ital@1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&display=swap');
 
 #big-header {
   height: 750px;
@@ -212,14 +213,14 @@ export default {
 #header-text-big {
   font-size: 3rem;
   text-align: left;
-  font-family: monospace;
+  font-family: "Roboto Mono";
   font-style: normal;
 }
 
 #header-text-caption {
   font-size: 1.3rem;
   text-align: center;
-  font-family: monospace;
+  font-family: "Roboto Mono";
   font-style: italic;
 }
 
