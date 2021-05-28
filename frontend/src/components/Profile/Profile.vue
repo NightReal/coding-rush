@@ -180,8 +180,9 @@ export default {
         sumCpm += at.speed;
         sumAcc += at.accuracy;
       }
-      this.averageCpm = Math.round(sumCpm / this.numberOfCompletedCodes);
-      this.averageAcc = Math.round(sumAcc / this.numberOfCompletedCodes);
+      const num = Math.max(1, this.numberOfCompletedCodes);
+      this.averageCpm = Math.round(sumCpm / num);
+      this.averageAcc = Math.round(sumAcc / num);
     },
     process_statsOnDiff() {
       const cntDiff = new Array(10).fill(0);
