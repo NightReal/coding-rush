@@ -25,7 +25,7 @@
       </v-img>
 
       <div id="proceed-button" v-if="isAuthed()">
-        <v-btn color="#ff8200" style="color: white; font-size: 1.8rem" width="200px"
+        <v-btn color="#ff8200" style="color: white; font-size: 1.6rem" width="200px"
                height="60px" class="text-capitalize" @click="$router.push('/lessons')">
           Proceed
         </v-btn>
