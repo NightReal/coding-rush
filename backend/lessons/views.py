@@ -45,7 +45,7 @@ class GetLessonView(views.APIView):
         lesson = Lesson.objects.filter(id=pk).first()
         if lesson is None:
             return Response(status=HTTP_404_NOT_FOUND)
-        next_lesson = Lesson.objects.filter(id__gt=lesson.id).order_by("id").first()
+        next_lesson = Lesson.objects.order_by('difficulty', 'id').filter(id__gt=lesson.id).first()
         if next_lesson:
             lesson.next_lesson = next_lesson
         lesson.cur_user_attempts = Attempt.objects.filter(user_id=user.id, lesson_id=pk).order_by('-id')
