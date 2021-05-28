@@ -9,8 +9,8 @@
         <div id="left-bar-info" style="display: flex; width: 100%;">
           <div id="pictureContainer">
             <img class="elevation-5" :src="picture ? picture : defaultPicture"
-                   @error="picture = null"
-                   style="width: 100%;"/>
+                 @error="picture = null"
+                 style="width: 100%;"/>
           </div>
           <div>
             <div class="font-weight-bold" style="font-size: 1.625rem">
@@ -33,6 +33,7 @@
                @click="$router.push('/settings')">
           Settings
         </v-btn>
+        <AverageCpmAcc :cpm="averageCpm" :acc="averageAcc" class="mt-7"></AverageCpmAcc>
       </div>
 
       <div id="center-bar" class="pl-7" style="display: flex; flex-direction: column;
@@ -58,10 +59,13 @@ import Activity from '@/components/Profile/Activity.vue';
 import PageLoader from '@/components/PageLoader.vue';
 import defaultAvatar from '@/assets/default-avatar-268x268.png';
 import OnDifficulty from '@/components/Profile/OnDifficulty.vue';
+import AverageCpmAcc from '@/components/Profile/AverageCpmAcc.vue';
 
 export default {
   name: 'Profile',
-  components: { OnDifficulty, Activity, PageLoader },
+  components: {
+    OnDifficulty, Activity, PageLoader, AverageCpmAcc,
+  },
   props: ['user'],
   data() {
     return {
@@ -83,6 +87,8 @@ export default {
         cpm: undefined,
         acc: undefined,
       },
+      averageCpm: 0,
+      averageAcc: 0,
     };
   },
   methods: {
@@ -151,8 +157,17 @@ export default {
       }
       this.activity.data = activityData;
     },
-    process_numberCompleted() {
+    process_numbers() {
       this.numberOfCompletedCodes = this.best_attempts.length;
+      let sumCpm = 0;
+      let sumAcc = 0;
+      // eslint-disable-next-line no-restricted-syntax
+      for (const at of this.best_attempts) {
+        sumCpm += at.speed;
+        sumAcc += at.accuracy;
+      }
+      this.averageCpm = Math.round(sumCpm / this.numberOfCompletedCodes);
+      this.averageAcc = Math.round(sumAcc / this.numberOfCompletedCodes);
     },
     process_statsOnDiff() {
       const cntDiff = new Array(10).fill(0);
@@ -180,7 +195,7 @@ export default {
     process_stats() {
       this.process_best_attempts();
       this.process_activity_data();
-      this.process_numberCompleted();
+      this.process_numbers();
       this.process_statsOnDiff();
     },
     loadUser() {
@@ -233,8 +248,7 @@ export default {
           if (e.response && e.response.status === 404) {
             this.$router.push('/404');
           } else {
-            // this.$router.go(0);
-            this.$router.push('/signin');
+            this.$router.go(-1);
           }
         });
     },

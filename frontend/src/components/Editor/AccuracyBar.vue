@@ -1,5 +1,5 @@
 <template>
-  <div class="ml-5" style="display: inline-flex; flex-direction: column; text-align: center">
+  <div style="display: inline-flex; flex-direction: column; text-align: center">
     <VueSvgGauge
       :start-angle="-100"
       :end-angle="100"
@@ -21,7 +21,8 @@
         {{ Math.round(acc * 100) }}%
       </div>
     </VueSvgGauge>
-    <div style="font-weight: 600; margin-top: -10px"
+    <slot v-if="$slots.default"/>
+    <div v-else style="font-weight: 600; margin-top: -10px"
          :style="`font-size: ${fontSize}`">Accuracy
     </div>
   </div>

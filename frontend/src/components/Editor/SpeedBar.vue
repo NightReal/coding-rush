@@ -21,7 +21,8 @@
         {{ Math.min(maxCpm, Math.round(cpm)) }} cpm
       </div>
     </VueSvgGauge>
-    <div style="font-weight: 600; margin-top: -10px"
+    <slot v-if="$slots.default"/>
+    <div v-else style="font-weight: 600; margin-top: -10px"
          :style="`font-size: ${fontSize}`">Speed
     </div>
   </div>
