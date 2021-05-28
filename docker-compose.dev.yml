@@ -20,6 +20,7 @@ services:
     volumes:
       - ./backend:/code
       - django-static:/code/static
+      - django-media:/code/media
     ports:
       - "9000:8000"
     networks:
@@ -56,6 +57,7 @@ services:
       - frontend
     volumes:
       - django-static:/usr/src/app/static
+      - django-media:/usr/src/app/media
     networks:
       -  main
 
@@ -65,3 +67,4 @@ networks:
 
 volumes:
   django-static:
+  django-media:

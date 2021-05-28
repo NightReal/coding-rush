@@ -316,7 +316,7 @@ export default {
         const e = err.response.data;
         for (const sec in e) { // eslint-disable-line no-restricted-syntax
           if (e[sec] && e[sec].length) {
-            this.nameErrorBox = e[sec][0]; // eslint-disable-line prefer-destructuring
+            this.avatarErrorBox = e[sec][0]; // eslint-disable-line prefer-destructuring
             return;
           }
         }
