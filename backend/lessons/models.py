@@ -33,6 +33,7 @@ class Code(models.Model):
 
     class Meta:
         unique_together = ['lesson', 'language']
+        ordering = ['-language']
 
     def __str__(self):
         return f"{self.lesson}: {self.language}"
