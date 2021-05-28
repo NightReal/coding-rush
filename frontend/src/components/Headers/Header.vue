@@ -23,7 +23,8 @@
                  :elevate-on-scroll="isAboutPage()">
         <div style="display: flex; justify-content: flex-start;
                     padding: 0; margin: 0; width: 100%; height: 100%">
-          <div style="display: flex; align-items: center; margin-right: 16px">
+          <div style="display: flex; align-items: center; margin-right: 16px"
+                       @click="$router.push('/about')">
             <img style="margin: 0 13px 0 15px"
                  src="@/assets/logo-light-35x35.png" alt=""/>
             <div style="font-size: 1.3rem; font-weight: 500; letter-spacing: 0.05rem;

@@ -15,11 +15,17 @@
           <h1 class="mr-3" v-if="topic || title">
             {{ topic }}<span style="word-spacing: 1rem" v-if="topic && title"> — </span>{{ title }}
           </h1>
-          <DropDownMenu v-if="!loading"
-                        :text="lang" min-width="100px" :color="lang_colors[lang]"
-                        :items="Object.keys(codes)"
-                        :on_change="changeLang"
-                        :on_click="go_type" tooltip-text="Start typing!"></DropDownMenu>
+          <div style="display: flex">
+            <v-btn color="success" class="text-capitalize mr-3"
+                   style="font-size: 1rem; min-width: 124px"
+                   @click="go_type">
+              Start
+            </v-btn>
+            <DropDownMenu v-if="!loading"
+                          :text="lang" min-width="100px" :color="lang_colors[lang]"
+                          :items="Object.keys(codes)"
+                          :on_change="changeLang"></DropDownMenu>
+          </div>
         </div>
         <v-runtime-template :template="description"></v-runtime-template>
       </div>
