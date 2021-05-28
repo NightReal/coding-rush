@@ -1,3 +1,6 @@
+from django.http import (
+    JsonResponse,
+)
 from rest_framework.response import (
     Response,
 )
@@ -93,3 +96,11 @@ class UserStatisticsGetView(views.APIView):
             "attempts": serializer.data,
         }
         return Response(ret)
+
+
+class TopicListGetView(views.APIView):
+    permission_classes = [permissions.AllowAny, ]
+
+    def get(self, request, *args, **kwargs):
+        all_topics = tuple(set(Lesson.objects.values_list('topic', flat=True)))
+        return JsonResponse({'topics': all_topics})

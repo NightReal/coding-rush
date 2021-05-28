@@ -6,6 +6,7 @@ from .views import (
     GetAllLessonsView,
     CommitAttemptView,
     UserStatisticsGetView,
+    TopicListGetView,
 )
 
 urlpatterns = [
@@ -13,6 +14,7 @@ urlpatterns = [
     path('', GetAllLessonsView.as_view(), name='Get all lessons'),
     path('commitAttempt', CommitAttemptView.as_view(), name='Commit new attempt'),
     path('attempts/<str:username>', UserStatisticsGetView.as_view(), name='Get user statistics data'),
+    path('topicList', TopicListGetView.as_view(), name='Get all topic list'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
