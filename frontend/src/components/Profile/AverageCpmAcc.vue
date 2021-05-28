@@ -5,7 +5,7 @@
       <div style="font-size: 1.2rem; color: #333">Average Speed</div>
     </SpeedBar>
     <AccuracyBar :acc="acc / 100" max-width="200px"
-                 :animation-time="3000" class="mt-3" style="color: #555">
+                 :animation-time="3000" class="mt-5" style="color: #555">
       <div style="font-size: 1.2rem; color: #333">Average Accuracy</div>
     </AccuracyBar>
   </div>
