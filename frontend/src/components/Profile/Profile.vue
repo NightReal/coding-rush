@@ -33,7 +33,7 @@
                @click="$router.push('/settings')">
           Settings
         </v-btn>
-        <AverageCpmAcc :cpm="averageCpm" :acc="averageAcc" class="mt-7"></AverageCpmAcc>
+        <AverageCpmAcc :cpm="averageCpm" :acc="averageAcc" class="mt-10"></AverageCpmAcc>
       </div>
 
       <div id="center-bar" class="pl-7" style="display: flex; flex-direction: column;
@@ -83,7 +83,9 @@ export default {
       picture: defaultAvatar,
       defaultPicture: defaultAvatar,
       loadingUser: false,
-      loadingAttempts: false,
+      loadingAttempts: true,
+      loadingTopics: true,
+      topics: null,
       numberOfCompletedCodes: 0,
       activity: { data: undefined, ready: false, loaded: false },
       attempts: [],
@@ -220,16 +222,23 @@ export default {
         scores[topic] += at.score;
         counts[topic] += 1;
       }
-      this.scoreOnTopic.labels = Object.keys(scores);
+      this.scoreOnTopic.labels = this.topics;
       const score = [];
       // eslint-disable-next-line no-restricted-syntax
       for (const top of this.scoreOnTopic.labels) {
-        const sc = scores[top] / counts[top];
-        score.push(Math.round(sc));
+        if (top in scores) {
+          const sc = scores[top] / counts[top];
+          score.push(Math.round(sc));
+        } else {
+          score.push(0);
+        }
       }
       this.scoreOnTopic.data = score;
     },
     process_stats() {
+      if (this.loadingAttempts || this.loadingTopics) {
+        return;
+      }
       this.process_best_attempts();
       this.process_activity_data();
       this.process_numbers();
@@ -274,11 +283,26 @@ export default {
       }
     },
     loadAttempts() {
-      this.loadingAttempts = true;
       APIHelper.get(`/lessons/attempts/${this.user}`)
         .then((e) => {
           this.attempts = e.data.attempts;
           this.loadingAttempts = false;
+          this.process_stats();
+        })
+        .catch((e) => {
+          console.log(e);
+          if (e.response && e.response.status === 404) {
+            this.$router.push('/404').catch(() => {});
+          } else {
+            this.$router.go(-1);
+          }
+        });
+    },
+    loadTopics() {
+      APIHelper.get('lessons/topicList')
+        .then((e) => {
+          this.topics = e.data.topics;
+          this.loadingTopics = false;
           this.process_stats();
         })
         .catch((e) => {
@@ -325,6 +349,7 @@ export default {
   mounted() {
     this.loadUser();
     this.loadAttempts();
+    this.loadTopics();
   },
 };
 
@@ -374,6 +399,7 @@ export default {
 
   #left-bar {
     align-items: center;
+    margin-bottom: 30px;
   }
 
   #pictureContainer {
