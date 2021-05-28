@@ -174,8 +174,7 @@ export default {
 </script>
 <style scoped>
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600&family=Roboto:ital@1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Roboto+Slab:wght@400;600&family=Roboto:ital@1&display=swap');
 
 #big-header {
   height: 750px;
