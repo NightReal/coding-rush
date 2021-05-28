@@ -5,7 +5,7 @@
       <SpeedBar :cpm="cpm" max-width="250px" font-size="1.4rem" :animation-time="3000"
                 :max-cpm="9999" class="mr-10"></SpeedBar>
       <AccuracyBar :acc="acc" max-width="250px" font-size="1.4rem"
-                   :animation-time="3000"></AccuracyBar>
+                   :animation-time="3000" class="ml-5"></AccuracyBar>
     </div>
 
     <div style="display: flex; flex-direction: column; align-items: center">

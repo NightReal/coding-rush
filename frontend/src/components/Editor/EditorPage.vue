@@ -10,7 +10,7 @@
       <div style="flex: 1 1 0; display: flex; justify-content: center; align-items: center"
            class="mx-4">
         <SpeedBar :cpm="cpm" max-width="170px" font-size="1.1rem" :max-cpm="999"></SpeedBar>
-        <AccuracyBar :acc="acc" max-width="170px" font-size="1.1rem"></AccuracyBar>
+        <AccuracyBar :acc="acc" max-width="170px" font-size="1.1rem" class="ml-5"></AccuracyBar>
       </div>
       <div style="flex: 1 1 0; display: flex; justify-content: center; align-items: center;">
         <v-btn :color="typing ? '#ce0000' : '#00e000'" min-width="124px" min-height="45px"

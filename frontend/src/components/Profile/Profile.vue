@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-loader :loading="loadingUser || loadingAttempts"></page-loader>
-    <v-container v-if="!loadingUser && !loadingAttempts" id="bar-container"
+    <v-container v-if="!loadingUser && !loadingAttempts" id="bar-container" class="mb-8"
                  style="display: flex; justify-content: center; max-width: 1277px">
 
       <div id="left-bar" style="display: flex; width: 100%; word-wrap: break-word;
@@ -9,8 +9,8 @@
         <div id="left-bar-info" style="display: flex; width: 100%;">
           <div id="pictureContainer">
             <img class="elevation-5" :src="picture ? picture : defaultPicture"
-                   @error="picture = null"
-                   style="width: 100%;"/>
+                 @error="picture = null"
+                 style="width: 100%;"/>
           </div>
           <div>
             <div class="font-weight-bold" style="font-size: 1.625rem">
@@ -33,6 +33,7 @@
                @click="$router.push('/settings')">
           Settings
         </v-btn>
+        <AverageCpmAcc :cpm="averageCpm" :acc="averageAcc" class="mt-10"></AverageCpmAcc>
       </div>
 
       <div id="center-bar" class="pl-7" style="display: flex; flex-direction: column;
@@ -41,10 +42,16 @@
           <Activity class="mt-3" chart-id="activityChart" ref="activity"
                     @ready="activity.ready = true"></Activity>
         </div>
-        <div id="stats-on-difficulty-container" class="mt-10">
+        <PrettyDivider class="mt-10 mb-8" style="max-width: 60px"></PrettyDivider>
+        <div id="stats-on-difficulty-container">
           <OnDifficulty :cpm="onDifficulty.cpm" :acc="onDifficulty.acc"
                         :labels="onDifficulty.labels"
                         ref="onDifficulty" @ready="onDifficulty.ready = true"></OnDifficulty>
+        </div>
+        <PrettyDivider class="mt-16 mb-8" style="max-width: 60px"></PrettyDivider>
+        <div id="score-on-topic-container">
+          <ScoreOnTopic :data="scoreOnTopic.data" :labels="scoreOnTopic.labels" ref="scoreOnTopic"
+                        @ready="scoreOnTopic.ready = true"></ScoreOnTopic>
         </div>
       </div>
     </v-container>
@@ -58,10 +65,15 @@ import Activity from '@/components/Profile/Activity.vue';
 import PageLoader from '@/components/PageLoader.vue';
 import defaultAvatar from '@/assets/default-avatar-268x268.png';
 import OnDifficulty from '@/components/Profile/OnDifficulty.vue';
+import AverageCpmAcc from '@/components/Profile/AverageCpmAcc.vue';
+import ScoreOnTopic from '@/components/Profile/ScoreOnTopic.vue';
+import PrettyDivider from '@/components/PrettyDivider.vue';
 
 export default {
   name: 'Profile',
-  components: { OnDifficulty, Activity, PageLoader },
+  components: {
+    OnDifficulty, Activity, PageLoader, AverageCpmAcc, ScoreOnTopic, PrettyDivider,
+  },
   props: ['user'],
   data() {
     return {
@@ -71,7 +83,9 @@ export default {
       picture: defaultAvatar,
       defaultPicture: defaultAvatar,
       loadingUser: false,
-      loadingAttempts: false,
+      loadingAttempts: true,
+      loadingTopics: true,
+      topics: null,
       numberOfCompletedCodes: 0,
       activity: { data: undefined, ready: false, loaded: false },
       attempts: [],
@@ -83,6 +97,14 @@ export default {
         cpm: undefined,
         acc: undefined,
       },
+      scoreOnTopic: {
+        ready: false,
+        loaded: false,
+        labels: undefined,
+        data: undefined,
+      },
+      averageCpm: 0,
+      averageAcc: 0,
     };
   },
   methods: {
@@ -151,8 +173,18 @@ export default {
       }
       this.activity.data = activityData;
     },
-    process_numberCompleted() {
+    process_numbers() {
       this.numberOfCompletedCodes = this.best_attempts.length;
+      let sumCpm = 0;
+      let sumAcc = 0;
+      // eslint-disable-next-line no-restricted-syntax
+      for (const at of this.best_attempts) {
+        sumCpm += at.speed;
+        sumAcc += at.accuracy;
+      }
+      const num = Math.max(1, this.numberOfCompletedCodes);
+      this.averageCpm = Math.round(sumCpm / num);
+      this.averageAcc = Math.round(sumAcc / num);
     },
     process_statsOnDiff() {
       const cntDiff = new Array(10).fill(0);
@@ -177,11 +209,41 @@ export default {
       this.onDifficulty.cpm = cpm;
       this.onDifficulty.acc = acc;
     },
+    process_scoreOnTopic() {
+      const scores = {};
+      const counts = {};
+      // eslint-disable-next-line no-restricted-syntax
+      for (const at of this.best_attempts) {
+        const { topic } = at.lesson;
+        if (!(topic in scores)) {
+          scores[topic] = 0;
+          counts[topic] = 0;
+        }
+        scores[topic] += at.score;
+        counts[topic] += 1;
+      }
+      this.scoreOnTopic.labels = this.topics;
+      const score = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (const top of this.scoreOnTopic.labels) {
+        if (top in scores) {
+          const sc = scores[top] / counts[top];
+          score.push(Math.round(sc));
+        } else {
+          score.push(0);
+        }
+      }
+      this.scoreOnTopic.data = score;
+    },
     process_stats() {
+      if (this.loadingAttempts || this.loadingTopics) {
+        return;
+      }
       this.process_best_attempts();
       this.process_activity_data();
-      this.process_numberCompleted();
+      this.process_numbers();
       this.process_statsOnDiff();
+      this.process_scoreOnTopic();
     },
     loadUser() {
       if (this.$store.getters.isAuthenticated && this.$store.getters.user.username
@@ -213,7 +275,7 @@ export default {
           .catch((e) => {
             console.log(e);
             if (e.response && e.response.status === 404) {
-              this.$router.push('/404');
+              this.$router.push('/404').catch(() => {});
             } else {
               this.$router.go(0);
             }
@@ -221,7 +283,6 @@ export default {
       }
     },
     loadAttempts() {
-      this.loadingAttempts = true;
       APIHelper.get(`/lessons/attempts/${this.user}`)
         .then((e) => {
           this.attempts = e.data.attempts;
@@ -231,10 +292,25 @@ export default {
         .catch((e) => {
           console.log(e);
           if (e.response && e.response.status === 404) {
-            this.$router.push('/404');
+            this.$router.push('/404').catch(() => {});
           } else {
-            // this.$router.go(0);
-            this.$router.push('/signin');
+            this.$router.go(-1);
+          }
+        });
+    },
+    loadTopics() {
+      APIHelper.get('lessons/topicList')
+        .then((e) => {
+          this.topics = e.data.topics;
+          this.loadingTopics = false;
+          this.process_stats();
+        })
+        .catch((e) => {
+          console.log(e);
+          if (e.response && e.response.status === 404) {
+            this.$router.push('/404').catch(() => {});
+          } else {
+            this.$router.go(-1);
           }
         });
     },
@@ -259,10 +335,21 @@ export default {
         }
       },
     },
+    scoreOnTopic: {
+      deep: true,
+      handler() {
+        if (this.scoreOnTopic.data && this.scoreOnTopic.labels
+          && this.scoreOnTopic.ready && !this.scoreOnTopic.loaded) {
+          this.scoreOnTopic.loaded = true;
+          this.$refs.scoreOnTopic.updateData();
+        }
+      },
+    },
   },
   mounted() {
     this.loadUser();
     this.loadAttempts();
+    this.loadTopics();
   },
 };
 
@@ -298,6 +385,11 @@ export default {
     width: 700px;
     height: 300px;
   }
+
+  #score-on-topic-container {
+    width: 650px;
+    height: 300px;
+  }
 }
 
 @media all and (max-width: 889px) {
@@ -307,6 +399,7 @@ export default {
 
   #left-bar {
     align-items: center;
+    margin-bottom: 30px;
   }
 
   #pictureContainer {
@@ -331,6 +424,11 @@ export default {
   }
 
   #stats-on-difficulty-container {
+    width: 500px;
+    height: 300px;
+  }
+
+  #score-on-topic-container {
     width: 500px;
     height: 300px;
   }
