@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-loader :loading="loadingUser || loadingAttempts"></page-loader>
-    <v-container v-if="!loadingUser && !loadingAttempts" id="bar-container"
+    <v-container v-if="!loadingUser && !loadingAttempts" id="bar-container" class="mb-8"
                  style="display: flex; justify-content: center; max-width: 1277px">
 
       <div id="left-bar" style="display: flex; width: 100%; word-wrap: break-word;
@@ -42,10 +42,16 @@
           <Activity class="mt-3" chart-id="activityChart" ref="activity"
                     @ready="activity.ready = true"></Activity>
         </div>
-        <div id="stats-on-difficulty-container" class="mt-10">
+        <PrettyDivider class="mt-10 mb-8" style="max-width: 60px"></PrettyDivider>
+        <div id="stats-on-difficulty-container">
           <OnDifficulty :cpm="onDifficulty.cpm" :acc="onDifficulty.acc"
                         :labels="onDifficulty.labels"
                         ref="onDifficulty" @ready="onDifficulty.ready = true"></OnDifficulty>
+        </div>
+        <PrettyDivider class="mt-16 mb-8" style="max-width: 60px"></PrettyDivider>
+        <div id="score-on-topic-container">
+          <ScoreOnTopic :data="scoreOnTopic.data" :labels="scoreOnTopic.labels" ref="scoreOnTopic"
+                        @ready="scoreOnTopic.ready = true"></ScoreOnTopic>
         </div>
       </div>
     </v-container>
@@ -60,11 +66,13 @@ import PageLoader from '@/components/PageLoader.vue';
 import defaultAvatar from '@/assets/default-avatar-268x268.png';
 import OnDifficulty from '@/components/Profile/OnDifficulty.vue';
 import AverageCpmAcc from '@/components/Profile/AverageCpmAcc.vue';
+import ScoreOnTopic from '@/components/Profile/ScoreOnTopic.vue';
+import PrettyDivider from '@/components/PrettyDivider.vue';
 
 export default {
   name: 'Profile',
   components: {
-    OnDifficulty, Activity, PageLoader, AverageCpmAcc,
+    OnDifficulty, Activity, PageLoader, AverageCpmAcc, ScoreOnTopic, PrettyDivider,
   },
   props: ['user'],
   data() {
@@ -86,6 +94,12 @@ export default {
         labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
         cpm: undefined,
         acc: undefined,
+      },
+      scoreOnTopic: {
+        ready: false,
+        loaded: false,
+        labels: undefined,
+        data: undefined,
       },
       averageCpm: 0,
       averageAcc: 0,
@@ -192,11 +206,34 @@ export default {
       this.onDifficulty.cpm = cpm;
       this.onDifficulty.acc = acc;
     },
+    process_scoreOnTopic() {
+      const scores = {};
+      const counts = {};
+      // eslint-disable-next-line no-restricted-syntax
+      for (const at of this.best_attempts) {
+        const { topic } = at.lesson;
+        if (!(topic in scores)) {
+          scores[topic] = 0;
+          counts[topic] = 0;
+        }
+        scores[topic] += at.score;
+        counts[topic] += 1;
+      }
+      this.scoreOnTopic.labels = Object.keys(scores);
+      const score = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (const top of this.scoreOnTopic.labels) {
+        const sc = scores[top] / counts[top];
+        score.push(Math.round(sc));
+      }
+      this.scoreOnTopic.data = score;
+    },
     process_stats() {
       this.process_best_attempts();
       this.process_activity_data();
       this.process_numbers();
       this.process_statsOnDiff();
+      this.process_scoreOnTopic();
     },
     loadUser() {
       if (this.$store.getters.isAuthenticated && this.$store.getters.user.username
@@ -273,6 +310,16 @@ export default {
         }
       },
     },
+    scoreOnTopic: {
+      deep: true,
+      handler() {
+        if (this.scoreOnTopic.data && this.scoreOnTopic.labels
+          && this.scoreOnTopic.ready && !this.scoreOnTopic.loaded) {
+          this.scoreOnTopic.loaded = true;
+          this.$refs.scoreOnTopic.updateData();
+        }
+      },
+    },
   },
   mounted() {
     this.loadUser();
@@ -312,6 +359,11 @@ export default {
     width: 700px;
     height: 300px;
   }
+
+  #score-on-topic-container {
+    width: 650px;
+    height: 300px;
+  }
 }
 
 @media all and (max-width: 889px) {
@@ -345,6 +397,11 @@ export default {
   }
 
   #stats-on-difficulty-container {
+    width: 500px;
+    height: 300px;
+  }
+
+  #score-on-topic-container {
     width: 500px;
     height: 300px;
   }
