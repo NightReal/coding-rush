@@ -140,6 +140,29 @@ if DEBUG:
             },
         },
     }
+else:
+    LOGGING = {
+        'version': 1,
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+            },
+        },
+        'loggers': {
+            'django.db': {
+                'handlers': ['console'],
+                'level': 'WARNING',
+            },
+            'django.request': {
+                'handlers': ['console'],
+                'level': 'WARNING',
+            },
+            'django.server': {
+                'handlers': ['console'],
+                'level': 'WARNING',
+            },
+        },
+    }
 
 # REST framework setup
 
