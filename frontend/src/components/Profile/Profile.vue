@@ -266,7 +266,7 @@ export default {
           .catch((e) => {
             console.log(e);
             if (e.response && e.response.status === 404) {
-              this.$router.push('/404');
+              this.$router.push('/404').catch(() => {});
             } else {
               this.$router.go(0);
             }
@@ -284,7 +284,7 @@ export default {
         .catch((e) => {
           console.log(e);
           if (e.response && e.response.status === 404) {
-            this.$router.push('/404');
+            this.$router.push('/404').catch(() => {});
           } else {
             this.$router.go(-1);
           }
