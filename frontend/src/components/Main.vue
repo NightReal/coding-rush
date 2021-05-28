@@ -2,7 +2,7 @@
   <v-container class="pa-0 ma-0">
     <v-sheet id="big-header" class="pa-0 ma-0" elevation="4" color="primary" dark>
       <a href="" id="header-title"><img alt="Coding Rush"
-                                         src="@/assets/text-light-930x160.png"/></a>
+                                        src="@/assets/text-light-930x160.png"/></a>
       <v-container id="header-content" class="pa-0 ma-0">
         <v-container id="header-texts" class="pa-0 ma-0 mb-16 ml-16">
           <v-container id="header-text-big" class="pa-0 ma-0">
@@ -23,6 +23,14 @@
              src="@/assets/logo-light-430x430.png"
              @click="scrollToContentStart()">
       </v-img>
+
+      <div id="proceed-button" v-if="isAuthed()">
+        <v-btn color="#ff8200" style="color: white; font-size: 1.6rem" width="200px"
+               height="60px" class="text-capitalize" @click="$router.push('/lessons')">
+          Proceed
+        </v-btn>
+      </div>
+
     </v-sheet>
     <v-container id="content" ref="content">
       <v-card class="card mb-3" rounded="lg" width="600px" elevation="6">
@@ -32,7 +40,7 @@
                                   competitive programmers.</p>
         </v-container>
       </v-card>
-      <p key="" class="card-content pt-4"  style="width: 800px">
+      <p key="" class="card-content pt-4" style="width: 800px">
         You don't type snippets from books, lyrics from songs or
         famous quotes here. Instead, you can train your muscular memory to remember
         <span>competitive programming code</span>!
@@ -75,7 +83,7 @@
             <p class="list-item-title">Beginners</p>
             <v-divider></v-divider>
             <p class="list-item-content">You have just started coding
-            and know very few algorithms</p>
+                                         and know very few algorithms</p>
           </v-card>
           <v-card class="list-card" elevation="3">
             <p class="list-item-title">Advanced</p>
@@ -85,7 +93,7 @@
         </v-container>
         <p class="card-content" style="width: 600px">
           <span>Everyone</span> can find <span>something new</span>
-          here regardless of their programming experience.
+                                here regardless of their programming experience.
         </p>
       </v-container>
       <PrettyDivider/>
@@ -113,6 +121,21 @@
         <p class="card-content mb-0">All algorithms are available in
           <span>C++</span>. Some algorithms are also available in <span>Python 3</span>.
         </p>
+
+        <div v-if="isAuthed()">
+          <v-btn color="#ff8200" style="color: white; font-size: 1.3rem; margin-top: 100px"
+                 width="300px" height="40px" class="text-capitalize"
+                 @click="$router.push('/lessons')">
+            Proceed
+          </v-btn>
+        </div>
+        <div v-else>
+          <v-btn color="success" style="color: white; font-size: 1.2rem; margin-top: 100px"
+                 width="300px" height="40px" class="text-capitalize"
+                 @click="$router.push('/signin')">
+            Sign in / Sign up
+          </v-btn>
+        </div>
       </v-container>
     </v-container>
   </v-container>
@@ -209,12 +232,18 @@ export default {
   cursor: pointer;
 }
 
+#proceed-button {
+  margin-left: 60vw;
+  margin-top: 650px;
+  position: absolute;
+}
+
 #content {
   min-width: 100vw;
   max-width: 100vw;
   margin-top: 130px;
   padding-top: 70px;
-  padding-bottom: 100px;
+  padding-bottom: 50px;
   padding-left: 30px;
   display: flex;
   align-items: center;
