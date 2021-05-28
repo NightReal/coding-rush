@@ -20,6 +20,7 @@ services:
     volumes:
       - ./backend:/code
       - prod_django-static:/code/static
+      - prod_django-media:/code/media
     ports:
       - "8000:8000"
     networks:
@@ -52,6 +53,7 @@ services:
       - /etc/letsencrypt/:/etc/letsencrypt/
       - /etc/ssl/certs/dhparam.pem:/etc/ssl/certs/dhparam.pem
       - prod_django-static:/usr/src/app/static
+      - prod_django-media:/usr/src/app/media
     networks:
       -  prod_network
 
@@ -62,3 +64,4 @@ networks:
 volumes:
   prod_django-static:
   prod_postgres_data:
+  prod_django-media:
