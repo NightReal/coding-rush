@@ -13,10 +13,10 @@
         <AccuracyBar :acc="acc" max-width="170px" font-size="1.1rem" class="ml-5"></AccuracyBar>
       </div>
       <div style="flex: 1 1 0; display: flex; justify-content: center; align-items: center;">
-        <v-btn :color="typing ? '#ce0000' : '#00e000'" min-width="124px" min-height="45px"
+        <v-btn :color="typing ? '#ce0000' : '#4dc751'" min-width="124px" min-height="45px"
                class="mr-5"
                @click="switchTyping()">
-          <div v-if="!typing" class="text-capitalize" style="color: #000000; font-size: 1.1rem">
+          <div v-if="!typing" class="text-capitalize" style="font-size: 1.1rem">
             Start
           </div>
           <div v-else
