@@ -18,7 +18,7 @@
           <div style="display: flex">
             <v-btn color="success" class="text-capitalize mr-3"
                    style="font-size: 1rem; min-width: 124px"
-                   @click="go_type">
+                   @click="go_type(lang)">
               Start
             </v-btn>
             <DropDownMenu v-if="!loading"
